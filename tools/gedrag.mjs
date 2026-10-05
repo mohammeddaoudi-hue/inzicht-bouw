@@ -1,0 +1,50 @@
+import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path'; import { createRequire } from 'node:module';
+const puppeteer = createRequire('C:/Users/Mohammed/pixelperfect-photo-painter/package.json')('puppeteer-core');
+const ROOT='C:/Users/Mohammed/NORVO-DEMOS/inzichtbouw';
+const types={'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp'};
+const srv=http.createServer((q,r)=>{let p=decodeURIComponent(q.url.split('?')[0]);if(p.endsWith('/'))p+='index.html';const f=path.join(ROOT,p);fs.readFile(f,(e,b)=>{if(e){r.writeHead(404);r.end();return}r.writeHead(200,{'content-type':types[path.extname(f)]||'application/octet-stream'});r.end(b)})});
+await new Promise(r=>srv.listen(0,'127.0.0.1',r)); const url=`http://127.0.0.1:${srv.address().port}/`;
+const browser=await puppeteer.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:'new'});
+let pass=0,fail=0;const t=(naam,ok,info='')=>{ok?pass++:fail++;console.log((ok?'PASS ':'FAIL ')+naam+(info?'  '+info:''))};
+const p=await browser.newPage();await p.setViewport({width:1440,height:900});await p.goto(url,{waitUntil:'networkidle0'});
+t('identiteit',(await p.title()).includes('INzicht'));
+const zicht=()=>p.evaluate(()=>[...document.querySelectorAll('.paneel')].map(x=>!x.hidden));
+t('start: paneel 1 zichtbaar',JSON.stringify(await zicht())==='[true,false,false,false]');
+await p.click('#tab-3');t('klik tab 3',JSON.stringify(await zicht())==='[false,false,true,false]');
+t('aria-selected tab 3',await p.$eval('#tab-3',e=>e.getAttribute('aria-selected')==='true'));
+await p.focus('#tab-3');await p.keyboard.press('ArrowDown');t('pijl omlaag naar 4',JSON.stringify(await zicht())==='[false,false,false,true]');
+await p.keyboard.press('ArrowDown');t('pijl rond naar 1',JSON.stringify(await zicht())==='[true,false,false,false]');
+await p.click('.voet__lijst a[data-tab="2"]');t('voetlink opent tab 2',JSON.stringify(await zicht())==='[false,true,false,false]');
+const open=()=>p.evaluate(()=>[...document.querySelectorAll('.acc__item')].map(x=>x.classList.contains('is-open')&&!x.querySelector('.acc__antw').hidden));
+t('vraag 1 open bij start',JSON.stringify(await open())==='[true,false,false,false,false]');
+await p.click('#vr-2');t('klik vraag 2: alleen 2 open',JSON.stringify(await open())==='[false,true,false,false,false]');
+await p.click('#vr-2');t('nogmaals: alles dicht',JSON.stringify(await open())==='[false,false,false,false,false]');
+await p.click('.hero__knoppen [data-open-form]');t('heroknop opent venster',await p.$eval('#aanvraag',d=>d.open));
+await p.click('.modal__form button[type=submit]');
+t('leeg versturen blokkeert',await p.$eval('[data-stap=bedankt]',e=>e.hidden));
+t('naam gemarkeerd als fout',await p.$eval('#f-naam',e=>e.getAttribute('aria-invalid')==='true'));
+await p.type('#f-naam','Test');await p.type('#f-tel','0470000000');await p.type('#f-gem','Kampenhout');
+await p.click('.modal__form button[type=submit]');t('ingevuld: bedankt zichtbaar',await p.$eval('[data-stap=bedankt]',e=>!e.hidden));
+await p.click('[data-stap=bedankt] [data-close-form]');t('sluiten werkt',await p.$eval('#aanvraag',d=>!d.open));
+await p.click('.stempel');t('stempel opent venster',await p.$eval('#aanvraag',d=>d.open));await p.keyboard.press('Escape');
+t('escape sluit',await p.$eval('#aanvraag',d=>!d.open));
+const n=await p.$$eval('[data-open-form]',a=>a.length);t('aanvraagknoppen',n>=8,String(n));
+// contrast
+const contrast=await p.evaluate(()=>{const L=c=>{const m=c.match(/\d+(\.\d+)?/g).map(Number);const f=v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4};return .2126*f(m[0])+.7152*f(m[1])+.0722*f(m[2])};
+const bg=e=>{while(e){const b=getComputedStyle(e).backgroundColor;if(!/rgba\(0, 0, 0, 0\)|transparent/.test(b))return b;e=e.parentElement}return 'rgb(255,255,255)'};
+const sel=['.hero__tekst','.hero__kop2','.punt__tekst','.knop--accent','.paneel__tekst','.tab.is-actief','.tab:not(.is-actief)','.acc__antw p','.tip__meta','.cta__tekst p','.voet__lijst a','.voet__onder p','.voet__uren dd','.h2--wit'];
+document.querySelector('#vr-1').click();
+return sel.map(s=>{const e=document.querySelector(s);if(!e)return [s,'nvt'];const cs=getComputedStyle(e);let fg=cs.color;const op=parseFloat(cs.opacity);const a=L(fg),b=L(bg(e));let r=(Math.max(a,b)+.05)/(Math.min(a,b)+.05);
+if(op<1){const m=fg.match(/\d+/g).map(Number),n=bg(e).match(/\d+/g).map(Number);const mix=m.slice(0,3).map((v,i)=>Math.round(v*op+n[i]*(1-op)));r=(Math.max(L('rgb('+mix+')'),b)+.05)/(Math.min(L('rgb('+mix+')'),b)+.05)}
+return [s,r.toFixed(2),parseFloat(cs.fontSize)]})});
+for(const [s,r,fs] of contrast){const groot=fs>=24;t('contrast '+s,r==='nvt'||Number(r)>=(groot?3:4.5),r+':1 @'+fs+'px')}
+// mobiel
+const m=await browser.newPage();await m.setViewport({width:390,height:844,isMobile:true,hasTouch:true});await m.goto(url,{waitUntil:'networkidle0'});
+await m.click('.nav__burger');t('mobiel menu open',await m.$eval('#mobmenu',e=>!e.hidden));
+await m.click('#mobmenu a[href="#vragen"]');t('menu sluit na klik',await m.$eval('#mobmenu',e=>e.hidden));
+const klein=await m.evaluate(()=>[...document.querySelectorAll('a,button,input,select,textarea')].filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&!e.closest('dialog,#mobmenu,[hidden]')&&(r.height<40)}).map(e=>(e.className||e.tagName)+':'+Math.round(e.getBoundingClientRect().height)+':'+(e.textContent||'').trim().slice(0,20)));
+t('aanraakdoelen >= 40px op 390',klein.length===0,klein.join(' | '));
+const minfont=await m.evaluate(()=>{let min=99,w='';document.querySelectorAll('body *').forEach(e=>{if(e.closest('svg,dialog,[hidden]'))return;const tn=[...e.childNodes].some(n=>n.nodeType===3&&n.textContent.trim());if(!tn)return;const f=parseFloat(getComputedStyle(e).fontSize);if(f<min){min=f;w=e.className||e.tagName}});return min+' '+w});
+t('kleinste tekst >= 14px op 390',parseFloat(minfont)>=14,minfont);
+console.log(`\n${pass} PASS / ${fail} FAIL`);
+await browser.close();srv.close();process.exit(fail?1:0);
