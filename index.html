@@ -6,90 +6,97 @@
 <title>INzicht – bouw en renovatie</title>
 <meta name="description" content="INzicht neemt uw renovatie of nieuwbouw volledig aan, met het ontwerp en de coördinatie erbij. Gratis en vrijblijvend plaatsbezoek.">
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0b0b0b">
 <link rel="icon" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="img/hero.webp" type="image/webp">
-<link rel="stylesheet" href="styles.css?v=3">
+<link rel="preload" as="image" href="img/hero-vol.webp" type="image/webp" media="(min-width: 701px)">
+<link rel="preload" as="image" href="img/hero-vol-m.webp" type="image/webp" media="(max-width: 700px)">
+<link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-    <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
-    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m3 6 9 7 9-7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
-    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4 21a8 8 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
-    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor"/></symbol>
-    <symbol id="i-plan" viewBox="0 0 32 32"><path d="M5 27V6a1 1 0 0 1 1-1h20a1 1 0 0 1 1 1v21Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M5 13h9v9M14 5v4M19 13h8M19 13v6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 27v-2M13 27v-2M17 27v-2M21 27v-2" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
-    <symbol id="i-helm" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M14 6a6 6 0 0 1 6 6v3"/><path d="M4 15v-3a6 6 0 0 1 6-6"/><rect x="2" y="15" width="20" height="4" rx="1"/></g></symbol>
-    <symbol id="i-verslag" viewBox="0 0 32 32"><path d="M8 4h11l6 6v17a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M19 4v6h6M11 16h10M11 20h10M11 24h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
-    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
-    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m3 6 9 7 9-7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4 21a8 8 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="7.5" cy="7.5" r="1.3" fill="currentColor"/></symbol>
+    <symbol id="i-plan" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 27V6a1 1 0 0 1 1-1h20a1 1 0 0 1 1 1v21Z"/><path d="M5 13h9v9M14 5v4M19 13h8M19 13v6"/><path d="M9 27v-2M13 27v-2M17 27v-2M21 27v-2"/></g></symbol>
+    <symbol id="i-helm" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M14 6a6 6 0 0 1 6 6v3"/><path d="M4 15v-3a6 6 0 0 1 6-6"/><rect x="2" y="15" width="20" height="4" rx="1"/></g></symbol>
+    <symbol id="i-verslag" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h11l6 6v17a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"/><path d="M19 4v6h6M11 16h10M11 20h10M11 24h6"/></g></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
   </defs>
 </svg>
 
 <header class="nav" id="top">
   <div class="wrap nav__in">
     <a class="nav__logo" href="#top" aria-label="INzicht bouw en renovatie, naar boven">
-      <img src="img/logo-ink.png" width="227" height="140" alt="INzicht bouw en renovatie">
+      <img class="nav__logo-wit" src="img/logo-wit.png" width="227" height="140" alt="INzicht bouw en renovatie">
+      <img class="nav__logo-ink" src="img/logo-ink.png" width="227" height="140" alt="">
     </a>
     <nav class="nav__links" aria-label="Hoofdmenu">
       <a href="#diensten">Diensten</a>
       <a href="#waarom">Over ons</a>
-      <a href="#vragen">Veelgestelde vragen</a>
+      <a href="#vragen">Vragen</a>
+      <a href="#tips">Tips</a>
       <a href="#contact">Contact</a>
     </nav>
     <div class="nav__acties">
       <a class="nav__tel" href="tel:+32468359093"><svg width="18" height="18"><use href="#i-phone"/></svg>0468 35 90 93</a>
-      <button class="knop knop--accent" type="button" data-open-form>Gratis plaatsbezoek</button>
-      <button class="nav__burger" type="button" aria-label="Menu openen" aria-expanded="false" aria-controls="mobmenu"><svg width="24" height="24"><use href="#i-menu"/></svg></button>
-    </div>
-  </div>
-  <div class="mob" id="mobmenu" hidden>
-    <nav class="mob__links" aria-label="Mobiel menu">
-      <a href="#diensten">Diensten</a>
-      <a href="#waarom">Over ons</a>
-      <a href="#vragen">Veelgestelde vragen</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <div class="mob__cta">
-      <button class="knop knop--accent knop--vol" type="button" data-open-form>Gratis plaatsbezoek</button>
-      <a class="knop knop--rand knop--vol" href="tel:+32468359093"><svg width="18" height="18"><use href="#i-phone"/></svg>0468 35 90 93</a>
+      <button class="knop knop--accent knop--klein" type="button" data-open-form>Gratis plaatsbezoek<span class="knop__ic"><svg width="16" height="16"><use href="#i-chev"/></svg></span></button>
+      <button class="burger" type="button" aria-label="Menu openen" aria-expanded="false" aria-controls="mobmenu"><span class="burger__lijn"></span><span class="burger__lijn"></span></button>
     </div>
   </div>
 </header>
 
+<div class="mob" id="mobmenu" hidden>
+  <nav class="mob__links" aria-label="Mobiel menu">
+    <a href="#diensten" style="--i:0">Diensten</a>
+    <a href="#waarom" style="--i:1">Over ons</a>
+    <a href="#vragen" style="--i:2">Vragen</a>
+    <a href="#tips" style="--i:3">Tips</a>
+    <a href="#contact" style="--i:4">Contact</a>
+  </nav>
+  <div class="mob__cta">
+    <button class="knop knop--accent knop--vol" type="button" data-open-form>Gratis plaatsbezoek<span class="knop__ic"><svg width="16" height="16"><use href="#i-chev"/></svg></span></button>
+    <a class="knop knop--rand-wit knop--vol" href="tel:+32468359093"><svg width="18" height="18"><use href="#i-phone"/></svg>0468 35 90 93</a>
+  </div>
+</div>
+
 <main>
 
-<!-- HERO -->
+<!-- HERO: foto vol scherm, donkere laag, witte tekst -->
 <section class="hero">
-  <div class="wrap hero__grid">
-    <h1 class="hero__kop">Bouw en renovatie <span class="hero__kop2">naar uw wens</span></h1>
-    <div class="hero__opzij">
+  <picture class="hero__foto">
+    <source media="(max-width: 700px)" srcset="img/hero-vol-m.webp" type="image/webp">
+    <source media="(max-width: 700px)" srcset="img/hero-vol-m.jpg">
+    <source srcset="img/hero-vol.webp" type="image/webp">
+    <img src="img/hero-vol.jpg" width="1920" height="1280" alt="Lichte, afgewerkte leefruimte met zetels en een witte vloer" decoding="async" fetchpriority="high">
+  </picture>
+  <div class="hero__laag" aria-hidden="true"></div>
+  <div class="wrap hero__in">
+    <div class="hero__tekstblok" data-reveal>
+      <h1 class="hero__kop">Bouw en renovatie <span class="hero__kop2">naar uw wens</span></h1>
       <p class="hero__tekst">Wij nemen uw renovatie of nieuwbouw volledig aan, met het ontwerp en de coördinatie erbij.</p>
       <div class="hero__knoppen">
-        <button class="knop knop--accent" type="button" data-open-form>Plan een plaatsbezoek<svg width="18" height="18"><use href="#i-chev"/></svg></button>
-        <a class="knop knop--rand" href="#diensten">Bekijk de diensten<svg width="18" height="18"><use href="#i-chev"/></svg></a>
+        <button class="knop knop--accent" type="button" data-open-form>Plan een plaatsbezoek<span class="knop__ic"><svg width="16" height="16"><use href="#i-chev"/></svg></span></button>
+        <a class="knop knop--rand-wit" href="#diensten">Bekijk de diensten</a>
       </div>
     </div>
-  </div>
-  <div class="wrap">
-    <picture class="hero__foto">
-      <source srcset="img/hero.webp" type="image/webp">
-      <img src="img/hero.jpg" width="1920" height="770" alt="Lichte, gerenoveerde leefruimte met zetels en een witte vloer" decoding="async" fetchpriority="high">
-    </picture>
+    <a class="hero__verder" href="#waarom" aria-label="Verder naar de inhoud"><svg width="22" height="22"><use href="#i-down"/></svg></a>
   </div>
 </section>
 
 <!-- WAAROM -->
 <section class="waarom" id="waarom">
   <div class="wrap waarom__grid">
-    <div class="waarom__links">
+    <div class="waarom__links" data-reveal>
       <h2 class="h2">Uw werf loopt volgens plan</h2>
       <ul class="punten">
         <li class="punt">
@@ -100,7 +107,7 @@
           </div>
         </li>
         <li class="punt punt--accent">
-          <span class="punt__ic"><svg width="30" height="30"><use href="#i-helm"/></svg></span>
+          <span class="punt__ic"><svg width="26" height="26"><use href="#i-helm"/></svg></span>
           <div>
             <h3 class="punt__kop">Een projectleider vanaf de startvergadering</h3>
             <p class="punt__tekst">Hij regelt de afspraken met onze arbeiders en met de externe partners. Met vragen over planning of techniek kunt u altijd bij hem terecht.</p>
@@ -115,21 +122,25 @@
         </li>
       </ul>
     </div>
-    <div class="duo">
-      <picture class="duo__a">
-        <source srcset="img/waarom-1.webp" type="image/webp">
-        <img src="img/waarom-1.jpg" width="540" height="840" alt="Bouwplan met potlood en meetlat" loading="lazy" decoding="async">
-      </picture>
-      <picture class="duo__b">
-        <source srcset="img/waarom-2.webp" type="image/webp">
-        <img src="img/waarom-2.jpg" width="363" height="565" alt="Gele zetel en staanlamp in een afgewerkte kamer" loading="lazy" decoding="async">
-      </picture>
+    <div class="duo" data-reveal>
+      <div class="duo__a kader">
+        <picture>
+          <source srcset="img/waarom-1.webp" type="image/webp">
+          <img src="img/waarom-1.jpg" width="540" height="840" alt="Bouwplan met potlood en meetlat" loading="lazy" decoding="async">
+        </picture>
+      </div>
+      <div class="duo__b kader">
+        <picture>
+          <source srcset="img/waarom-2.webp" type="image/webp">
+          <img src="img/waarom-2.jpg" width="363" height="565" alt="Gele zetel en staanlamp in een afgewerkte kamer" loading="lazy" decoding="async">
+        </picture>
+      </div>
       <button class="stempel" type="button" data-open-form aria-label="Gratis plaatsbezoek aanvragen">
         <svg class="stempel__ring" viewBox="0 0 160 160" aria-hidden="true">
           <defs><path id="cirkel" d="M80 80m-58 0a58 58 0 1 1 116 0a58 58 0 1 1-116 0"/></defs>
           <text><textPath href="#cirkel" textLength="364">Gratis plaatsbezoek · Gratis plaatsbezoek ·</textPath></text>
         </svg>
-        <svg class="stempel__pijl" width="34" height="34" aria-hidden="true"><use href="#i-arrow"/></svg>
+        <svg class="stempel__pijl" width="32" height="32" aria-hidden="true"><use href="#i-arrow"/></svg>
       </button>
     </div>
   </div>
@@ -138,59 +149,79 @@
 <!-- DIENSTEN -->
 <section class="diensten" id="diensten">
   <div class="wrap">
-    <h2 class="h2 h2--wit h2--midden">Wat wij bouwen en verbouwen</h2>
-    <div class="podium">
+    <h2 class="h2 h2--wit h2--midden" data-reveal>Wat wij bouwen en verbouwen</h2>
+    <div class="podium" data-reveal>
       <div class="podium__panelen">
         <article class="paneel is-actief" id="paneel-1" role="tabpanel" aria-labelledby="tab-1">
-          <picture class="paneel__foto">
-            <source srcset="img/dienst-1.webp" type="image/webp">
-            <img src="img/dienst-1.jpg" width="1336" height="912" alt="Afgewerkte leefruimte na een totaalrenovatie" loading="lazy" decoding="async">
-          </picture>
+          <div class="paneel__foto kader kader--donker">
+            <picture>
+              <source srcset="img/dienst-1.webp" type="image/webp">
+              <img src="img/dienst-1.jpg" width="1336" height="912" alt="Afgewerkte leefruimte na een totaalrenovatie" loading="lazy" decoding="async">
+            </picture>
+          </div>
           <div class="paneel__kaart">
-            <h3 class="paneel__kop">Totaalprojecten</h3>
-            <p class="paneel__tekst">Een reeks aaneengesloten werken, aangenomen als één project. Elke stap sluit aan op de vorige, tot het geheel klopt.</p>
-            <button class="link" type="button" data-open-form>Bespreek uw project<svg width="18" height="18"><use href="#i-chev"/></svg></button>
+            <div class="paneel__kern">
+              <p class="paneel__nr">01</p>
+              <h3 class="paneel__kop">Totaalprojecten</h3>
+              <p class="paneel__tekst">Een reeks aaneengesloten werken, aangenomen als één project. Elke stap sluit aan op de vorige, tot het geheel klopt.</p>
+              <button class="link" type="button" data-open-form>Bespreek uw project<svg width="18" height="18"><use href="#i-chev"/></svg></button>
+            </div>
           </div>
         </article>
         <article class="paneel" id="paneel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
-          <picture class="paneel__foto">
-            <source srcset="img/dienst-2.webp" type="image/webp">
-            <img src="img/dienst-2.jpg" width="1336" height="912" alt="Lichte nieuwe ruimte met een lange tafel" loading="lazy" decoding="async">
-          </picture>
+          <div class="paneel__foto kader kader--donker">
+            <picture>
+              <source srcset="img/dienst-2.webp" type="image/webp">
+              <img src="img/dienst-2.jpg" width="1336" height="912" alt="Lichte nieuwe ruimte met een lange tafel" loading="lazy" decoding="async">
+            </picture>
+          </div>
           <div class="paneel__kaart">
-            <h3 class="paneel__kop">Uitbreiding</h3>
-            <p class="paneel__tekst">Wordt uw woning te klein, dan bouwen wij bij. De nieuwe ruimte sluit aan op wat er al staat.</p>
-            <button class="link" type="button" data-open-form>Bespreek uw project<svg width="18" height="18"><use href="#i-chev"/></svg></button>
+            <div class="paneel__kern">
+              <p class="paneel__nr">02</p>
+              <h3 class="paneel__kop">Uitbreiding</h3>
+              <p class="paneel__tekst">Wordt uw woning te klein, dan bouwen wij bij. De nieuwe ruimte sluit aan op wat er al staat.</p>
+              <button class="link" type="button" data-open-form>Bespreek uw project<svg width="18" height="18"><use href="#i-chev"/></svg></button>
+            </div>
           </div>
         </article>
         <article class="paneel" id="paneel-3" role="tabpanel" aria-labelledby="tab-3" hidden>
-          <picture class="paneel__foto">
-            <source srcset="img/dienst-3.webp" type="image/webp">
-            <img src="img/dienst-3.jpg" width="1336" height="912" alt="Hoge ruimte met hanglampen en daglicht" loading="lazy" decoding="async">
-          </picture>
+          <div class="paneel__foto kader kader--donker">
+            <picture>
+              <source srcset="img/dienst-3.webp" type="image/webp">
+              <img src="img/dienst-3.jpg" width="1336" height="912" alt="Hoge ruimte met hanglampen en daglicht" loading="lazy" decoding="async">
+            </picture>
+          </div>
           <div class="paneel__kaart">
-            <h3 class="paneel__kop">Nieuwbouw</h3>
-            <p class="paneel__tekst">We werken de plannen tot in de puntjes uit. Na uw bestelling ligt de planning vast en start de bouw.</p>
-            <button class="link" type="button" data-open-form>Bespreek uw project<svg width="18" height="18"><use href="#i-chev"/></svg></button>
+            <div class="paneel__kern">
+              <p class="paneel__nr">03</p>
+              <h3 class="paneel__kop">Nieuwbouw</h3>
+              <p class="paneel__tekst">We werken de plannen tot in de puntjes uit. Na uw bestelling ligt de planning vast en start de bouw.</p>
+              <button class="link" type="button" data-open-form>Bespreek uw project<svg width="18" height="18"><use href="#i-chev"/></svg></button>
+            </div>
           </div>
         </article>
         <article class="paneel" id="paneel-4" role="tabpanel" aria-labelledby="tab-4" hidden>
-          <picture class="paneel__foto">
-            <source srcset="img/dienst-4.webp" type="image/webp">
-            <img src="img/dienst-4.jpg" width="1336" height="912" alt="Ingerichte werk- en zithoek bij een groot raam" loading="lazy" decoding="async">
-          </picture>
+          <div class="paneel__foto kader kader--donker">
+            <picture>
+              <source srcset="img/dienst-4.webp" type="image/webp">
+              <img src="img/dienst-4.jpg" width="1336" height="912" alt="Ingerichte werk- en zithoek bij een groot raam" loading="lazy" decoding="async">
+            </picture>
+          </div>
           <div class="paneel__kaart">
-            <h3 class="paneel__kop">Interieur en kantoor</h3>
-            <p class="paneel__tekst">We bekijken elke ruimte die u wilt verbouwen en halen er het meeste uit. Ook een kantoor of thuiswerkplek richten we in.</p>
-            <button class="link" type="button" data-open-form>Bespreek uw project<svg width="18" height="18"><use href="#i-chev"/></svg></button>
+            <div class="paneel__kern">
+              <p class="paneel__nr">04</p>
+              <h3 class="paneel__kop">Interieur en kantoor</h3>
+              <p class="paneel__tekst">We bekijken elke ruimte die u wilt verbouwen en halen er het meeste uit. Ook een kantoor of thuiswerkplek richten we in.</p>
+              <button class="link" type="button" data-open-form>Bespreek uw project<svg width="18" height="18"><use href="#i-chev"/></svg></button>
+            </div>
           </div>
         </article>
       </div>
       <div class="tabs" role="tablist" aria-label="Diensten">
-        <button class="tab is-actief" id="tab-1" role="tab" aria-selected="true" aria-controls="paneel-1" title="Totaalprojecten">01</button>
-        <button class="tab" id="tab-2" role="tab" aria-selected="false" aria-controls="paneel-2" title="Uitbreiding" tabindex="-1">02</button>
-        <button class="tab" id="tab-3" role="tab" aria-selected="false" aria-controls="paneel-3" title="Nieuwbouw" tabindex="-1">03</button>
-        <button class="tab" id="tab-4" role="tab" aria-selected="false" aria-controls="paneel-4" title="Interieur en kantoor" tabindex="-1">04</button>
+        <button class="tab is-actief" id="tab-1" role="tab" aria-selected="true" aria-controls="paneel-1"><span class="tab__nr">01</span><span class="tab__naam">Totaalprojecten</span></button>
+        <button class="tab" id="tab-2" role="tab" aria-selected="false" aria-controls="paneel-2" tabindex="-1"><span class="tab__nr">02</span><span class="tab__naam">Uitbreiding</span></button>
+        <button class="tab" id="tab-3" role="tab" aria-selected="false" aria-controls="paneel-3" tabindex="-1"><span class="tab__nr">03</span><span class="tab__naam">Nieuwbouw</span></button>
+        <button class="tab" id="tab-4" role="tab" aria-selected="false" aria-controls="paneel-4" tabindex="-1"><span class="tab__nr">04</span><span class="tab__naam">Interieur en kantoor</span></button>
       </div>
     </div>
   </div>
@@ -199,26 +230,26 @@
 <!-- VRAGEN -->
 <section class="vragen" id="vragen">
   <div class="wrap">
-    <h2 class="h2 h2--midden">Veelgestelde vragen</h2>
-    <div class="acc">
+    <h2 class="h2 h2--midden" data-reveal>Veelgestelde vragen</h2>
+    <div class="acc" data-reveal>
       <div class="acc__item is-open">
-        <h3><button class="acc__vraag" type="button" aria-expanded="true" aria-controls="ant-1" id="vr-1">Is het eerste plaatsbezoek echt gratis?<svg width="20" height="20"><use href="#i-down"/></svg></button></h3>
+        <h3><button class="acc__vraag" type="button" aria-expanded="true" aria-controls="ant-1" id="vr-1">Is het eerste plaatsbezoek echt gratis?<span class="acc__ic"><svg width="18" height="18"><use href="#i-down"/></svg></span></button></h3>
         <div class="acc__antw" id="ant-1" role="region" aria-labelledby="vr-1"><p>Ja, het eerste bezoek is gratis en vrijblijvend. We bekijken ter plaatse wat u wilt laten doen.</p></div>
       </div>
       <div class="acc__item">
-        <h3><button class="acc__vraag" type="button" aria-expanded="false" aria-controls="ant-2" id="vr-2">Wie volgt mijn werf op?<svg width="20" height="20"><use href="#i-down"/></svg></button></h3>
+        <h3><button class="acc__vraag" type="button" aria-expanded="false" aria-controls="ant-2" id="vr-2">Wie volgt mijn werf op?<span class="acc__ic"><svg width="18" height="18"><use href="#i-down"/></svg></span></button></h3>
         <div class="acc__antw" id="ant-2" role="region" aria-labelledby="vr-2" hidden><p>Na uw bestelling begeleidt een projectleider uw project. Vanaf de startvergadering houdt hij de communicatie met alle betrokken partijen in handen.</p></div>
       </div>
       <div class="acc__item">
-        <h3><button class="acc__vraag" type="button" aria-expanded="false" aria-controls="ant-3" id="vr-3">Hoe weet ik hoe ver de werken staan?<svg width="20" height="20"><use href="#i-down"/></svg></button></h3>
+        <h3><button class="acc__vraag" type="button" aria-expanded="false" aria-controls="ant-3" id="vr-3">Hoe weet ik hoe ver de werken staan?<span class="acc__ic"><svg width="18" height="18"><use href="#i-down"/></svg></span></button></h3>
         <div class="acc__antw" id="ant-3" role="region" aria-labelledby="vr-3" hidden><p>In de vorderingsstaat die u elke week krijgt, staat wat er gedaan is en wat er volgt.</p></div>
       </div>
       <div class="acc__item">
-        <h3><button class="acc__vraag" type="button" aria-expanded="false" aria-controls="ant-4" id="vr-4">Doen jullie alle werken zelf?<svg width="20" height="20"><use href="#i-down"/></svg></button></h3>
+        <h3><button class="acc__vraag" type="button" aria-expanded="false" aria-controls="ant-4" id="vr-4">Doen jullie alle werken zelf?<span class="acc__ic"><svg width="18" height="18"><use href="#i-down"/></svg></span></button></h3>
         <div class="acc__antw" id="ant-4" role="region" aria-labelledby="vr-4" hidden><p>Het werk gebeurt door onze eigen arbeiders en door externe vakmensen. De projectleider stemt hun werk op elkaar af.</p></div>
       </div>
       <div class="acc__item">
-        <h3><button class="acc__vraag" type="button" aria-expanded="false" aria-controls="ant-5" id="vr-5">Wanneer zijn jullie bereikbaar?<svg width="20" height="20"><use href="#i-down"/></svg></button></h3>
+        <h3><button class="acc__vraag" type="button" aria-expanded="false" aria-controls="ant-5" id="vr-5">Wanneer zijn jullie bereikbaar?<span class="acc__ic"><svg width="18" height="18"><use href="#i-down"/></svg></span></button></h3>
         <div class="acc__antw" id="ant-5" role="region" aria-labelledby="vr-5" hidden><p>Maandag tot donderdag: 8.30 - 16.30 uur. Vrijdag: 9.00 - 15.30 uur. In het weekend zijn we gesloten.</p></div>
       </div>
     </div>
@@ -228,39 +259,45 @@
 <!-- TIPS -->
 <section class="tips" id="tips">
   <div class="wrap">
-    <h2 class="h2 h2--midden">Tips voor uw verbouwing</h2>
-    <div class="tips__rij">
-      <article class="tip">
-        <picture class="tip__foto">
-          <source srcset="img/tip-1.webp" type="image/webp">
-          <img src="img/tip-1.jpg" width="510" height="427" alt="Open keuken met eiland en hanglampen" loading="lazy" decoding="async">
-        </picture>
-        <div class="tip__body">
-          <p class="tip__meta"><span><svg width="16" height="16"><use href="#i-tag"/></svg>Renovatie</span><span><svg width="16" height="16"><use href="#i-user"/></svg>INzicht</span></p>
-          <h3 class="tip__kop">Renoveren of bijbouwen: wat past bij uw woning?</h3>
-          <a class="link" href="#tips">Lees meer<svg width="18" height="18"><use href="#i-chev"/></svg></a>
+    <h2 class="h2 h2--midden" data-reveal>Tips voor uw verbouwing</h2>
+    <div class="tips__rij" data-reveal>
+      <article class="tip kader">
+        <div class="tip__kern">
+          <picture class="tip__foto">
+            <source srcset="img/tip-1.webp" type="image/webp">
+            <img src="img/tip-1.jpg" width="510" height="427" alt="Open keuken met eiland en hanglampen" loading="lazy" decoding="async">
+          </picture>
+          <div class="tip__body">
+            <p class="tip__meta"><span><svg width="16" height="16"><use href="#i-tag"/></svg>Renovatie</span><span><svg width="16" height="16"><use href="#i-user"/></svg>INzicht</span></p>
+            <h3 class="tip__kop">Renoveren of bijbouwen: wat past bij uw woning?</h3>
+            <a class="link" href="#tips">Lees meer<svg width="18" height="18"><use href="#i-chev"/></svg></a>
+          </div>
         </div>
       </article>
-      <article class="tip">
-        <picture class="tip__foto">
-          <source srcset="img/tip-2.webp" type="image/webp">
-          <img src="img/tip-2.jpg" width="740" height="620" alt="Bouwplan met potlood" loading="lazy" decoding="async">
-        </picture>
-        <div class="tip__body">
-          <p class="tip__meta"><span><svg width="16" height="16"><use href="#i-tag"/></svg>Opvolging</span><span><svg width="16" height="16"><use href="#i-user"/></svg>INzicht</span></p>
-          <h3 class="tip__kop">Wat staat er in een vorderingsstaat?</h3>
-          <a class="link" href="#tips">Lees meer<svg width="18" height="18"><use href="#i-chev"/></svg></a>
+      <article class="tip kader">
+        <div class="tip__kern">
+          <picture class="tip__foto">
+            <source srcset="img/tip-2.webp" type="image/webp">
+            <img src="img/tip-2.jpg" width="740" height="620" alt="Bouwplan met potlood" loading="lazy" decoding="async">
+          </picture>
+          <div class="tip__body">
+            <p class="tip__meta"><span><svg width="16" height="16"><use href="#i-tag"/></svg>Opvolging</span><span><svg width="16" height="16"><use href="#i-user"/></svg>INzicht</span></p>
+            <h3 class="tip__kop">Wat staat er in een vorderingsstaat?</h3>
+            <a class="link" href="#tips">Lees meer<svg width="18" height="18"><use href="#i-chev"/></svg></a>
+          </div>
         </div>
       </article>
-      <article class="tip">
-        <picture class="tip__foto">
-          <source srcset="img/tip-3.webp" type="image/webp">
-          <img src="img/tip-3.jpg" width="740" height="620" alt="Rustige slaapkamer met houten bed" loading="lazy" decoding="async">
-        </picture>
-        <div class="tip__body">
-          <p class="tip__meta"><span><svg width="16" height="16"><use href="#i-tag"/></svg>Planning</span><span><svg width="16" height="16"><use href="#i-user"/></svg>INzicht</span></p>
-          <h3 class="tip__kop">Uw totaalproject plannen in vijf stappen</h3>
-          <a class="link" href="#tips">Lees meer<svg width="18" height="18"><use href="#i-chev"/></svg></a>
+      <article class="tip kader">
+        <div class="tip__kern">
+          <picture class="tip__foto">
+            <source srcset="img/tip-3.webp" type="image/webp">
+            <img src="img/tip-3.jpg" width="740" height="620" alt="Rustige slaapkamer met houten bed" loading="lazy" decoding="async">
+          </picture>
+          <div class="tip__body">
+            <p class="tip__meta"><span><svg width="16" height="16"><use href="#i-tag"/></svg>Planning</span><span><svg width="16" height="16"><use href="#i-user"/></svg>INzicht</span></p>
+            <h3 class="tip__kop">Uw totaalproject plannen in vijf stappen</h3>
+            <a class="link" href="#tips">Lees meer<svg width="18" height="18"><use href="#i-chev"/></svg></a>
+          </div>
         </div>
       </article>
     </div>
@@ -270,12 +307,12 @@
 <!-- CTA -->
 <section class="cta" id="contact">
   <div class="wrap">
-    <div class="cta__blok">
+    <div class="cta__blok" data-reveal>
       <div class="cta__tekst">
         <h2 class="h2">Plan uw gratis plaatsbezoek</h2>
         <p>Vertel ons wat u wilt bouwen of verbouwen. We komen langs voor een vrijblijvende offerte.</p>
         <div class="cta__knoppen">
-          <button class="knop knop--wit" type="button" data-open-form>Plaatsbezoek aanvragen<svg width="18" height="18"><use href="#i-chev"/></svg></button>
+          <button class="knop knop--ink" type="button" data-open-form>Plaatsbezoek aanvragen<span class="knop__ic"><svg width="16" height="16"><use href="#i-chev"/></svg></span></button>
           <a class="knop knop--rand" href="tel:+32468359093"><svg width="18" height="18"><use href="#i-phone"/></svg>0468 35 90 93</a>
         </div>
       </div>
@@ -339,7 +376,7 @@
 
 <dialog class="modal" id="aanvraag" aria-labelledby="modal-kop">
   <form class="modal__form" method="dialog" novalidate>
-    <button class="modal__sluit" type="button" data-close-form aria-label="Sluiten"><svg width="22" height="22"><use href="#i-x"/></svg></button>
+    <button class="modal__sluit" type="button" data-close-form aria-label="Sluiten"><svg width="20" height="20"><use href="#i-x"/></svg></button>
     <div class="modal__stap" data-stap="form">
       <h2 class="modal__kop" id="modal-kop">Gratis plaatsbezoek aanvragen</h2>
       <p class="modal__sub">We bellen u terug om een moment af te spreken.</p>
@@ -359,7 +396,7 @@
         </select>
       </div>
       <div class="veld"><label for="f-uitleg">Korte uitleg</label><textarea id="f-uitleg" name="uitleg" rows="3"></textarea></div>
-      <button class="knop knop--accent knop--vol" type="submit">Aanvraag versturen</button>
+      <button class="knop knop--accent knop--vol" type="submit">Aanvraag versturen<span class="knop__ic"><svg width="16" height="16"><use href="#i-chev"/></svg></span></button>
     </div>
     <div class="modal__stap" data-stap="bedankt" hidden>
       <h2 class="modal__kop">Bedankt voor uw aanvraag</h2>
@@ -369,6 +406,6 @@
   </form>
 </dialog>
 
-<script src="site.js?v=1" defer></script>
+<script src="site.js?v=4" defer></script>
 </body>
 </html>

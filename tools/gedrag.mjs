@@ -32,15 +32,16 @@ const n=await p.$$eval('[data-open-form]',a=>a.length);t('aanvraagknoppen',n>=8,
 // contrast
 const contrast=await p.evaluate(()=>{const L=c=>{const m=c.match(/\d+(\.\d+)?/g).map(Number);const f=v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4};return .2126*f(m[0])+.7152*f(m[1])+.0722*f(m[2])};
 const bg=e=>{while(e){const b=getComputedStyle(e).backgroundColor;if(!/rgba\(0, 0, 0, 0\)|transparent/.test(b))return b;e=e.parentElement}return 'rgb(255,255,255)'};
-const sel=['.hero__tekst','.hero__kop2','.punt__tekst','.knop--accent','.paneel__tekst','.tab.is-actief','.tab:not(.is-actief)','.acc__antw p','.tip__meta','.cta__tekst p','.voet__lijst a','.voet__onder p','.voet__uren dd','.h2--wit'];
+const sel=[".tab.is-actief .tab__nr",".paneel__nr",".acc__vraag",".nav__links a",'.hero__tekst','.hero__kop2','.punt__tekst','.knop--accent','.paneel__tekst','.tab.is-actief','.tab:not(.is-actief)','.acc__antw p','.tip__meta','.cta__tekst p','.voet__lijst a','.voet__onder p','.voet__uren dd','.h2--wit'];
 document.querySelector('#vr-1').click();
-return sel.map(s=>{const e=document.querySelector(s);if(!e)return [s,'nvt'];const cs=getComputedStyle(e);let fg=cs.color;const op=parseFloat(cs.opacity);const a=L(fg),b=L(bg(e));let r=(Math.max(a,b)+.05)/(Math.min(a,b)+.05);
+return sel.map(s=>{const e=document.querySelector(s);if(!e)return [s,'nvt'];const cs=getComputedStyle(e);let fg=cs.color;let op=parseFloat(cs.opacity);const al=fg.match(/rgba([^)]*,s*([d.]+))/);if(al)op*=parseFloat(al[1]);const a=L(fg),b=L(bg(e));let r=(Math.max(a,b)+.05)/(Math.min(a,b)+.05);
 if(op<1){const m=fg.match(/\d+/g).map(Number),n=bg(e).match(/\d+/g).map(Number);const mix=m.slice(0,3).map((v,i)=>Math.round(v*op+n[i]*(1-op)));r=(Math.max(L('rgb('+mix+')'),b)+.05)/(Math.min(L('rgb('+mix+')'),b)+.05)}
 return [s,r.toFixed(2),parseFloat(cs.fontSize)]})});
 for(const [s,r,fs] of contrast){const groot=fs>=24;t('contrast '+s,r==='nvt'||Number(r)>=(groot?3:4.5),r+':1 @'+fs+'px')}
 // mobiel
+await p.evaluate(()=>document.querySelectorAll('[data-reveal]').forEach(e=>e.classList.add('is-zichtbaar')));
 const m=await browser.newPage();await m.setViewport({width:390,height:844,isMobile:true,hasTouch:true});await m.goto(url,{waitUntil:'networkidle0'});
-await m.click('.nav__burger');t('mobiel menu open',await m.$eval('#mobmenu',e=>!e.hidden));
+await m.click('.burger');await new Promise(r=>setTimeout(r,300));t('mobiel menu open',await m.$eval('#mobmenu',e=>!e.hidden&&e.classList.contains('is-open')));
 await m.click('#mobmenu a[href="#vragen"]');t('menu sluit na klik',await m.$eval('#mobmenu',e=>e.hidden));
 const klein=await m.evaluate(()=>[...document.querySelectorAll('a,button,input,select,textarea')].filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&!e.closest('dialog,#mobmenu,[hidden]')&&(r.height<40)}).map(e=>(e.className||e.tagName)+':'+Math.round(e.getBoundingClientRect().height)+':'+(e.textContent||'').trim().slice(0,20)));
 t('aanraakdoelen >= 40px op 390',klein.length===0,klein.join(' | '));

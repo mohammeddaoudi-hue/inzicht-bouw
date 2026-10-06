@@ -1,25 +1,33 @@
-// INzicht – gedrag: menu, tabs diensten, vragen, aanvraagvenster (zonder verzending)
+// INzicht – gedrag: menu, tabs diensten, vragen, aanvraagvenster (zonder verzending), onthulling
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
-  // Nav: lijn onder de balk na scrollen
+  // Nav: doorzichtig op de hero, wit zodra de hero bijna uit beeld is
   const nav = $('.nav');
-  const opScroll = () => nav.classList.toggle('is-gescrold', window.scrollY > 8);
-  opScroll();
-  window.addEventListener('scroll', opScroll, { passive: true });
+  const hero = $('.hero');
+  const schakel = () => nav.classList.toggle('is-gescrold', window.scrollY > 24);
+  schakel();
+  window.addEventListener('scroll', schakel, { passive: true });
+  if ('IntersectionObserver' in window && hero) {
+    // als de hero helemaal weg is, blijft de balk wit (ook bij ankersprongen)
+    new IntersectionObserver(([e]) => { if (!e.isIntersecting) nav.classList.add('is-gescrold'); else schakel(); }, { threshold: 0 }).observe(hero);
+  }
 
   // Mobiel menu
-  const burger = $('.nav__burger');
+  const burger = $('.burger');
   const mob = $('#mobmenu');
   const zetMenu = (open) => {
-    mob.hidden = !open;
+    if (open) { mob.hidden = false; requestAnimationFrame(() => mob.classList.add('is-open')); }
+    else { mob.classList.remove('is-open'); mob.hidden = true; }
+    document.body.classList.toggle('menu-open', open);
     burger.setAttribute('aria-expanded', String(open));
     burger.setAttribute('aria-label', open ? 'Menu sluiten' : 'Menu openen');
   };
   burger.addEventListener('click', () => zetMenu(mob.hidden));
   $$('a', mob).forEach((a) => a.addEventListener('click', () => zetMenu(false)));
-  window.addEventListener('resize', () => { if (window.innerWidth > 1000) zetMenu(false); });
+  window.addEventListener('resize', () => { if (window.innerWidth > 1000 && !mob.hidden) zetMenu(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !mob.hidden) zetMenu(false); });
 
   // Tabs diensten (01-04)
   const tabs = $$('.tab');
@@ -75,7 +83,7 @@
     stap('form');
     form.reset();
     $$('[aria-invalid]', form).forEach((el) => el.removeAttribute('aria-invalid'));
-    zetMenu(false);
+    if (!mob.hidden) zetMenu(false);
     if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
     setTimeout(() => $('#f-naam').focus(), 30);
   };
@@ -94,4 +102,15 @@
     if (!ok) return;
     stap('bedankt');
   });
+
+  // Onthulling: alleen doorzichtigheid, via IntersectionObserver (geen scroll-listener)
+  const onthul = $$('[data-reveal]');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-zichtbaar'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+    onthul.forEach((el) => io.observe(el));
+  } else {
+    onthul.forEach((el) => el.classList.add('is-zichtbaar'));
+  }
 })();
