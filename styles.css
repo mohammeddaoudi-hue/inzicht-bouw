@@ -251,7 +251,7 @@ ul, ol { padding: 0; list-style: none; }
   /* donker waar de tekst staat (linksonder) en achter de balk, de rest van de foto blijft licht */
   background:
     radial-gradient(125% 95% at 8% 88%, rgba(8, 8, 8, 0.84) 0%, rgba(8, 8, 8, 0.62) 34%, rgba(8, 8, 8, 0.22) 60%, rgba(8, 8, 8, 0) 78%),
-    linear-gradient(180deg, rgba(8, 8, 8, 0.46) 0%, rgba(8, 8, 8, 0) 26%, rgba(8, 8, 8, 0) 62%, rgba(8, 8, 8, 0.5) 100%);
+    linear-gradient(180deg, rgba(8, 8, 8, 0.74) 0%, rgba(8, 8, 8, 0.52) 10%, rgba(8, 8, 8, 0.16) 22%, rgba(8, 8, 8, 0) 32%, rgba(8, 8, 8, 0) 62%, rgba(8, 8, 8, 0.5) 100%);
 }
 .hero__in { position: relative; padding-top: calc(var(--nav-h) + 40px); padding-bottom: 88px; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
 .hero__tekstblok { max-width: 980px; }
@@ -362,6 +362,7 @@ ul, ol { padding: 0; list-style: none; }
 .paneel__kern { background: var(--wit); border-radius: calc(var(--r-l) - 6px); padding: 42px 46px 44px; }
 .paneel__nr { font-size: 15px; font-weight: 600; color: var(--mute); }
 .paneel__kop { margin-top: 10px; font-size: 28px; line-height: 1.22; font-weight: 600; color: var(--ink); letter-spacing: -0.015em; }
+.paneel__kop a { display: inline-block; padding: 8px 0; }
 .paneel__kop a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; text-decoration-color: var(--accent); }
 .paneel__tekst { margin-top: 14px; font-size: 18px; line-height: 1.55; }
 .tabs { display: flex; flex-direction: column; gap: 12px; padding-top: 60px; }
@@ -474,7 +475,7 @@ ul, ol { padding: 0; list-style: none; }
 .artikel__noot svg { flex: none; margin-top: 2px; }
 .artikel__bron { margin-top: 18px; font-size: 15.5px; color: var(--mute); }
 .artikel__bron a { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
-.artikel__terug { margin-top: 44px; }
+.artikel__terug { margin-top: 44px; min-height: 44px; }
 .artikel__terug svg { order: -1; }
 
 /* ══ JURIDISCH ══ */
@@ -756,6 +757,8 @@ ul, ol { padding: 0; list-style: none; }
   .contact__grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .contact__form, .contact__gegevens { grid-column: auto; grid-row: auto; }
   .contact__gegevens { position: static; padding: 32px 24px; }
+  .contact__lijst a { display: inline-flex; align-items: center; min-height: 44px; }
+  .contact__lijst li { align-items: center; }
   .contact__formkern { padding: 30px 22px 26px; }
 
   .intro__grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
