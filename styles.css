@@ -218,7 +218,7 @@ ul, ol { padding: 0; list-style: none; }
 .mob[hidden] { display: none; }
 .mob {
   position: fixed; inset: 0; z-index: 30;
-  background: rgba(11, 11, 11, 0.97);
+  background: var(--donker);
   padding: calc(var(--nav-h) + 24px) var(--goot) 32px;
   display: flex; flex-direction: column; justify-content: space-between;
   overflow-y: auto;
@@ -388,6 +388,7 @@ ul, ol { padding: 0; list-style: none; }
 .sprong__lijst a:hover, .sprong__lijst a.is-actief { background: var(--chip); }
 .sprong__lijst a.is-actief span { color: var(--ink); }
 
+.sprongvak { position: relative; }
 .rijen { padding: 110px 0 40px; }
 .rij { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 80px; align-items: center; padding-bottom: 110px; }
 .rij--om .rij__beeld { order: 2; }

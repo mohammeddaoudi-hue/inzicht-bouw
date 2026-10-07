@@ -556,6 +556,7 @@ ${header(v, v)}
 <main id="inhoud">
 ${phero(v, { delen, kop: DIENSTEN_PAGINA.kop, lede: DIENSTEN_PAGINA.intro, beeld: 'diensten-hero', alt: 'Witte, gerenoveerde woning met garage en warmtepomp' })}
 
+<div class="sprongvak">
 <nav class="sprong" aria-label="Diensten op deze pagina">
   <div class="wrap">
     <ul class="sprong__lijst">
@@ -582,6 +583,7 @@ ${phero(v, { delen, kop: DIENSTEN_PAGINA.kop, lede: DIENSTEN_PAGINA.intro, beeld
     </article>`).join('\n    ')}
   </div>
 </section>
+</div>
 
 ${werkwijzeTegels('dw')}
 

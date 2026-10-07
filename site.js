@@ -224,7 +224,8 @@
         if (tekst) $('[data-klaar-tekst]', klaar).textContent = tekst;
         $('[data-stap="form"]', form).hidden = true;
         klaar.hidden = false;
-        klaar.focus();
+        klaar.focus({ preventScroll: true });
+        form.scrollIntoView({ behavior: scrollGedrag(), block: 'start' });
       };
 
       if (ENDPOINT) {
