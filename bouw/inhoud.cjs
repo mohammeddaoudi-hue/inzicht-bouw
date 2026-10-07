@@ -37,6 +37,8 @@ const KNOP = { plaatsbezoek: 'Gratis plaatsbezoek' };
 /* ── HOME ─────────────────────────────────────────────────────────────── */
 /* Alinea van Mohammed (7 okt 2026, avond). Zijn antwoord op de vraag waar ze hoort: "over ons, subheadline, en de eerste sectie onder hero".
    Daarom: subheadline in de hero van Over ons én tekst van de inleiding onder de hero op de home. Woordelijk. */
+/* Zijn titel (7 okt 2026, Over ons): ook kop van de inleiding op de home. */
+const OVER_TITEL = 'Dé totaalaannemer voor hoogwaardige bouwprojecten';
 const TOTAALAANNEMER = 'Een succesvol bouwproject begint bij een sterke fundering en een ijzersterke organisatie. Als totaalaannemer nemen we de volledige regie van uw project in handen. Of u nu een particuliere bouwheer bent met exclusieve woonplannen, of een ontwikkelaar die op zoek is naar een betrouwbare uitvoerder: wij bundelen alle disciplines om uw visie efficiënt en volgens de strengste normen te bouwen. Geen versnipperde verantwoordelijkheden, maar één partner die het overzicht bewaart.';
 
 const HOME = {
@@ -59,7 +61,8 @@ const HOME = {
   },
   /* Inleiding onder de hero: kop en knop van Claude; tekst = zijn vorige hero-tekst (woordelijk), sinds de alinea TOTAALAANNEMER in de hero staat (8 okt 2026). */
   intro: {
-    kop: 'Een bouwbedrijf uit Kampenhout',
+    // zijn titel uit de Over ons-copy: de positionering (totaalaannemer) op de voorgrond, niet de gemeente
+    kop: OVER_TITEL,
     lead: 'Wij nemen uw renovatie of nieuwbouw volledig aan, met het ontwerp en de coördinatie erbij. Geen stress over overlappende planningen met losse aannemers: wij regelen uw werf van A tot Z, met één vast aanspreekpunt.',
     knop: 'Lees ons verhaal',
   },

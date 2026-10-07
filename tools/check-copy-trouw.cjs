@@ -30,6 +30,7 @@ voeg('over-ons/', I.OVER.kop.join(' ')); voeg('over-ons/', I.OVER.sub); voeg('ov
 I.OVER.delen.forEach((d) => { voeg('over-ons/', d.kop); voeg('over-ons/', d.tekst); });
 voeg('', I.OVER.sub); // dezelfde alinea staat als subheadline in de home-hero
 voeg('', I.HOME.intro.lead); // zijn vorige hero-tekst, nu in de inleiding onder de hero
+voeg('', I.HOME.intro.kop); // zijn titel als kop van de inleiding
 voeg('vragen/', I.VRAGEN.kop); voeg('tips/', I.TIPS.kop.join(' '));
 I.BLOGS.forEach((b) => { const r = `tips/${b.slug}/`; voeg(r, b.titel); voeg(r, b.intro); b.punten.forEach((p) => { voeg(r, p.b); voeg(r, p.t); }); if (b.noot) voeg(r, b.noot); voeg('tips/', b.titel); });
 voeg('contact/', I.CONTACT.kop); voeg('contact/', I.CONTACT.tekst); voeg('contact/', I.CONTACT.gegevensKop); voeg('contact/', I.CONTACT.urenKop);
@@ -49,6 +50,7 @@ if (mist.length) { console.log(`ROOD ${mist.length} ontbreken:`); mist.forEach((
 const WEG = [
   ['7 okt 2026, Mohammed: "bij faq de vraag over prijs mag er ook uit"', 'Werken jullie met een vaste prijs'],
   ['7 okt 2026, zijn nieuwe dienstencopy: term "De zes pijlers" volledig verwijderd', 'zes pijlers'],
+  ['8 okt 2026, Mohammed: "Een bouwbedrijf uit Kampenhout is echt raar, ik heb toch gezegd wat op de voorgrond moet"', 'Een bouwbedrijf uit Kampenhout'],
 ];
 const ALLE = ['', 'diensten/', 'over-ons/', 'vragen/', 'tips/', ...I.BLOGS.map((b) => `tips/${b.slug}/`), 'contact/', 'privacy/'];
 const ruw = (r) => fs.readFileSync(path.join(root, r, 'index.html'), 'utf8');
