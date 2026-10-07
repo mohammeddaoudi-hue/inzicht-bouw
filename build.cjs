@@ -116,7 +116,7 @@ ${schemas.map((s) => `<script type="application/ld+json">${JSON.stringify(s)}</s
 }
 
 /* ── balk bovenaan ────────────────────────────────────────────────────── */
-function header(v, actief) {
+function header(v, actief, anker = '#plaatsbezoek') {
   const link = (n) => {
     const huidig = actief === n.pad ? ' aria-current="page"' : '';
     if (n.pad === 'diensten/') {
@@ -144,7 +144,7 @@ function header(v, actief) {
     </nav>
     <div class="nav__acties">
       <a class="nav__tel" href="${SITE.tel.href}">${ic('phone')}${esc(SITE.tel.toon)}</a>
-      <a class="knop knop--accent knop--klein" href="${rel(v, 'contact/')}" data-open-form>${esc(I.KNOP.plaatsbezoek)}${knopIc()}</a>
+      <a class="knop knop--accent knop--klein" href="${anker}" data-naar-form>${esc(I.KNOP.plaatsbezoek)}${knopIc()}</a>
       <button class="burger" type="button" aria-label="Menu openen" aria-expanded="false" aria-controls="mobmenu"><span class="burger__lijn"></span><span class="burger__lijn"></span></button>
     </div>
   </div>
@@ -154,31 +154,10 @@ function header(v, actief) {
     ${NAV.map((n, i) => `<a href="${rel(v, n.pad)}" style="--i:${i}"${actief === n.pad ? ' aria-current="page"' : ''}>${esc(n.label)}</a>`).join('\n    ')}
   </nav>
   <div class="mob__cta">
-    <a class="knop knop--accent knop--vol" href="${rel(v, 'contact/')}" data-open-form>${esc(I.KNOP.plaatsbezoek)}${knopIc()}</a>
+    <a class="knop knop--accent knop--vol" href="${anker}" data-naar-form>${esc(I.KNOP.plaatsbezoek)}${knopIc()}</a>
     <a class="knop knop--rand-wit knop--vol" href="${SITE.tel.href}">${ic('phone')}${esc(SITE.tel.toon)}</a>
   </div>
 </div>`;
-}
-
-/* ── slotblok (CTA) ───────────────────────────────────────────────────── */
-function cta(v) {
-  return `<section class="cta" aria-labelledby="cta-kop">
-  <div class="wrap">
-    <div class="cta__blok" data-reveal>
-      <div class="cta__tekst">
-        <h2 class="h2" id="cta-kop">${esc(HOME.cta.kop)}</h2>
-        <p>${esc(HOME.cta.tekst)}</p>
-        <div class="cta__knoppen">
-          <a class="knop knop--ink" href="${rel(v, 'contact/')}" data-open-form>${esc(HOME.cta.knop)}${knopIc()}</a>
-          <a class="knop knop--rand" href="${SITE.tel.href}">${ic('phone')}${esc(SITE.tel.toon)}</a>
-        </div>
-      </div>
-      <div class="cta__logo">
-        <img src="${rel(v, 'img/logo-tegel.png')}" width="640" height="439" alt="" loading="lazy" decoding="async">
-      </div>
-    </div>
-  </div>
-</section>`;
 }
 
 /* ── voet ─────────────────────────────────────────────────────────────── */
@@ -225,59 +204,129 @@ function footer(v) {
 <a class="fab" href="${SITE.tel.href}" aria-label="Bel ${attr(SITE.tel.toon)}">${ic('phone', 24)}</a>`;
 }
 
-/* ── formulier (contactpagina + venster) ──────────────────────────────── */
-function formulier(id, { kop = true } = {}) {
+/* ── formulier (onderaan elke pagina + contactpagina), vragen zoals op abgroep ── */
+function formulier(v, id, { kop = true, kopId = '' } = {}) {
   const F = FORM.velden;
-  const veld = (naam, label, type, auto, extra = '') => `<div class="veld">
-          <label for="${id}-${naam}">${esc(label)}</label>
-          <input id="${id}-${naam}" name="${naam}" type="${type}" autocomplete="${auto}"${extra}>
-          <p class="veld__fout" id="${id}-${naam}-fout" hidden></p>
-        </div>`;
+  const ster = '<span class="ster" aria-hidden="true">*</span>';
+  const veld = (naam, label, type, auto, { verplicht = false, extra = '' } = {}) => `<div class="veld">
+            <label for="${id}-${naam}">${esc(label)}${verplicht ? ster : ''}</label>
+            <input id="${id}-${naam}" name="${naam}" type="${type}" autocomplete="${auto}"${verplicht ? ' aria-required="true"' : ''}${extra} aria-describedby="${id}-${naam}-fout">
+            <p class="veld__fout" id="${id}-${naam}-fout" hidden></p>
+          </div>`;
   return `<form class="aanvraag" id="${id}" action="mailto:${SITE.mail}" method="post" enctype="text/plain" novalidate data-aanvraag>
-      <div class="aanvraag__stap" data-stap="form">
-        ${kop ? `<h2 class="aanvraag__kop">${esc(FORM.kop)}</h2>
-        <p class="aanvraag__sub">${esc(FORM.sub)}</p>` : ''}
-        ${veld('naam', F.naam, 'text', 'name', ' required aria-required="true"')}
-        <div class="veld-rij">
-          ${veld('mail', F.mail, 'email', 'email')}
-          ${veld('tel', F.tel, 'tel', 'tel')}
+        <div class="aanvraag__stap" data-stap="form">
+          ${kop ? `<h2 class="aanvraag__kop"${kopId ? ` id="${kopId}"` : ''}>${esc(FORM.kop)}</h2>
+          <p class="aanvraag__sub">${esc(FORM.sub)}</p>` : ''}
+          <p class="aanvraag__verplicht">Velden met een sterretje zijn verplicht.</p>
+          ${veld('naam', F.naam, 'text', 'name', { verplicht: true })}
+          <div class="veld-rij">
+            ${veld('tel', F.tel, 'tel', 'tel', { verplicht: true, extra: ' inputmode="tel"' })}
+            ${veld('mail', F.mail, 'email', 'email', { extra: ' inputmode="email"' })}
+          </div>
+          <div class="veld">
+            <label for="${id}-werk">${esc(F.werk)}${ster}</label>
+            <select id="${id}-werk" name="werk" aria-required="true" aria-describedby="${id}-werk-fout">
+              <option value="">${esc(F.werkLeeg)}</option>
+              ${DIENSTEN.map((d) => `<option>${esc(d.kortNaam)}</option>`).join('')}
+              <option>${esc(F.werkCombi)}</option>
+            </select>
+            <p class="veld__fout" id="${id}-werk-fout" hidden></p>
+          </div>
+          <div class="veld-rij">
+            ${veld('straat', F.straat, 'text', 'street-address')}
+            ${veld('gemeente', F.gemeente, 'text', 'address-level2')}
+          </div>
+          <div class="veld">
+            <label for="${id}-project">${esc(F.project)}</label>
+            <textarea id="${id}-project" name="project" rows="4" placeholder="${attr(F.projectHint)}"></textarea>
+          </div>
+          <p class="aanvraag__fout" role="alert" hidden></p>
+          <button class="knop knop--accent knop--vol" type="submit">${esc(FORM.knop)}${knopIc()}</button>
+          <p class="aanvraag__klein">${esc(FORM.privacy)} <a href="${rel(v, 'privacy/')}">${esc(FORM.privacyLink)}</a>.</p>
         </div>
-        <div class="veld-rij">
-          ${veld('straat', F.straat, 'text', 'street-address')}
-          ${veld('gemeente', F.gemeente, 'text', 'address-level2')}
+        <div class="aanvraag__stap aanvraag__klaar" data-stap="klaar" hidden tabindex="-1">
+          <span class="aanvraag__vink" aria-hidden="true">${ic('vink', 26)}</span>
+          <h2 class="aanvraag__kop" data-klaar-kop>Uw e-mail staat klaar</h2>
+          <p class="aanvraag__sub" role="status" data-klaar-tekst>Uw e-mailprogramma opent met uw aanvraag. Verstuur die e-mail om uw aanvraag af te ronden.</p>
+          <p class="aanvraag__uitweg">Opent er niets? Bel <a href="${SITE.tel.href}">${esc(SITE.tel.toon)}</a> of mail naar <a href="mailto:${SITE.mail}">${esc(SITE.mail)}</a>.</p>
         </div>
-        <div class="veld">
-          <label for="${id}-project">${esc(F.project)}</label>
-          <textarea id="${id}-project" name="project" rows="4" placeholder="${attr(F.projectHint)}"></textarea>
-        </div>
-        <p class="aanvraag__fout" role="alert" hidden></p>
-        <button class="knop knop--accent knop--vol" type="submit">${esc(FORM.knop)}${knopIc()}</button>
-      </div>
-      <div class="aanvraag__stap aanvraag__klaar" data-stap="klaar" hidden tabindex="-1">
-        <span class="aanvraag__vink" aria-hidden="true">${ic('vink', 26)}</span>
-        <h2 class="aanvraag__kop">Uw e-mail staat klaar</h2>
-        <p class="aanvraag__sub" role="status">Uw e-mailprogramma opent met uw aanvraag. Verstuur die e-mail om uw aanvraag af te ronden.</p>
-        <p class="aanvraag__uitweg">Opent er niets? Bel <a href="${SITE.tel.href}">${esc(SITE.tel.toon)}</a> of mail naar <a href="mailto:${SITE.mail}">${esc(SITE.mail)}</a>.</p>
-      </div>
-    </form>`;
+      </form>`;
 }
 
-function modal() {
-  return `<dialog class="modal" id="aanvraag-venster" aria-labelledby="venster-kop">
-  <div class="modal__kern">
-    <button class="modal__sluit" type="button" data-close-form aria-label="Sluiten">${ic('x', 20)}</button>
-    ${formulier('venster').replace(`<h2 class="aanvraag__kop">${esc(FORM.kop)}</h2>`, `<h2 class="aanvraag__kop" id="venster-kop">${esc(FORM.kop)}</h2>`)}
+/* ── plaatsbezoek onderaan elke pagina (abgroep-opbouw: tekst + gegevens links, formulier rechts) ── */
+function plaats(v) {
+  return `<section class="plaats" id="plaatsbezoek" aria-labelledby="plaats-kop">
+  <div class="wrap">
+    <div class="plaats__blok" data-reveal>
+      <div class="plaats__tekst">
+        <h2 class="h2" id="plaats-kop">${esc(HOME.cta.kop)}</h2>
+        <p class="plaats__lede">${esc(HOME.cta.tekst)}</p>
+        <ul class="plaats__info">
+          <li><span class="plaats__info-ic">${ic('phone', 20)}</span><span><b>Telefoon</b><a href="${SITE.tel.href}">${esc(SITE.tel.toon)}</a></span></li>
+          <li><span class="plaats__info-ic">${ic('pin', 20)}</span><span><b>Adres</b><span>${esc(SITE.adres.regel)}</span></span></li>
+          <li><span class="plaats__info-ic">${ic('klok', 20)}</span><span><b>Openingsuren</b><span>${SITE.uren.map(([d, u]) => `${esc(d)}: ${esc(u)}`).join('<br>')}</span></span></li>
+        </ul>
+        <img class="plaats__logo" src="${rel(v, 'img/logo-tegel.png')}" width="640" height="439" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="plaats__form kader">
+        <div class="plaats__formkern">
+          ${formulier(v, 'aanvraag-onder', { kop: false })}
+        </div>
+      </div>
+    </div>
   </div>
-</dialog>`;
+</section>`;
 }
 
 function slot(v, pagina, js = true) {
   return `${footer(v)}
-${modal()}
 ${js ? `<script src="${rel(v, 'site.js')}?v=${VERSIE}" defer></script>` : ''}
 </body>
 </html>
 `;
+}
+
+/* ── gedeelde secties ─────────────────────────────────────────────────── */
+function werkwijzeTegels(id, zacht = true) {
+  return `<section class="waarom${zacht ? ' waarom--zacht' : ''}" aria-labelledby="${id}-kop">
+  <div class="wrap">
+    <h2 class="h2 h2--midden" id="${id}-kop" data-reveal>${esc(HOME.werkwijze.kop)}</h2>
+    <ul class="tegels" data-reveal>
+      ${HOME.werkwijze.punten.map((pt, i) => `<li class="tegel${i === 1 ? ' tegel--accent' : ''}">
+        <span class="punt__ic">${ic(pt.ic, pt.ic === 'helm' ? 26 : 30)}</span>
+        <h3 class="tegel__kop">${esc(pt.titel)}</h3>
+        <p class="tegel__tekst">${esc(pt.tekst)}</p>
+      </li>`).join('\n      ')}
+    </ul>
+  </div>
+</section>`;
+}
+
+function railBediening(licht, label) {
+  return `<div class="rail-bediening${licht ? ' rail-bediening--licht' : ''}" data-bediening>
+      <button class="rail-knop" type="button" data-vorige aria-label="Vorige ${label}">${ic('terug', 20)}</button>
+      <span class="rail-balk" aria-hidden="true"><span class="rail-balk__vul"></span></span>
+      <button class="rail-knop" type="button" data-volgende aria-label="Volgende ${label}">${ic('chev', 20)}</button>
+    </div>`;
+}
+
+function dienstenStrook(v) {
+  return `<section class="strook" aria-labelledby="strook-kop">
+  <div class="wrap">
+    <h2 class="h2 h2--midden" id="strook-kop" data-reveal>${esc(HOME.diensten.kop)}</h2>
+    <div class="strook__rail" data-reveal>
+      <ul class="strook__rij" data-rail>
+        ${DIENSTEN.map((d) => `<li class="strook__item">
+          <a class="strook__kaart kader" href="${rel(v, 'diensten/')}#${d.slug}">
+            <span class="strook__foto">${pic(v, d.img, d.alt, { sizes: '(max-width: 1000px) 80vw, 380px' })}</span>
+            <span class="strook__body"><span class="strook__nr">${d.nr}</span><span class="strook__naam">${esc(d.kortNaam)}</span>${ic('chev', 20)}</span>
+          </a>
+        </li>`).join('\n        ')}
+      </ul>
+      ${railBediening(true, 'dienst')}
+    </div>
+  </div>
+</section>`;
 }
 
 /* ── kruimelpad + paginakoppen ────────────────────────────────────────── */
@@ -296,7 +345,7 @@ function phero(v, { delen, kop, lede, beeld, alt, knoppen = true }) {
       <h1 class="phero__kop">${kop2(kop, 'dim')}</h1>
       ${lede ? `<p class="phero__lede">${esc(lede)}</p>` : ''}
       ${knoppen ? `<div class="phero__knoppen">
-        <a class="knop knop--accent" href="${rel(v, 'contact/')}" data-open-form>${esc(HOME.hero.knop1)}${knopIc()}</a>
+        <a class="knop knop--accent" href="#plaatsbezoek" data-naar-form>${esc(HOME.hero.knop1)}${knopIc()}</a>
         <a class="knop knop--rand" href="${SITE.tel.href}">${ic('phone')}${esc(SITE.tel.toon)}</a>
       </div>` : ''}
     </div>
@@ -371,15 +420,62 @@ ${header(v, '')}
       <h1 class="hero__kop">${kop2(HOME.hero.kop, 'hero__kop2')}</h1>
       <p class="hero__tekst">${esc(HOME.hero.tekst)}</p>
       <div class="hero__knoppen">
-        <a class="knop knop--accent" href="contact/" data-open-form>${esc(HOME.hero.knop1)}${knopIc()}</a>
+        <a class="knop knop--accent" href="#plaatsbezoek" data-naar-form>${esc(HOME.hero.knop1)}${knopIc()}</a>
         <a class="knop knop--rand-wit" href="diensten/">${esc(HOME.hero.knop2)}</a>
       </div>
     </div>
-    <a class="hero__verder" href="#waarom" aria-label="Verder naar de inhoud">${ic('down', 22)}</a>
+    <a class="hero__verder" href="#over" aria-label="Verder naar de inhoud">${ic('down', 22)}</a>
   </div>
 </section>
 
-<section class="waarom" id="waarom" aria-labelledby="waarom-kop">
+<section class="intro" id="over" aria-labelledby="intro-kop">
+  <div class="wrap intro__grid">
+    <div class="intro__beeld kader" data-reveal>
+      ${pic(v, 'over-werf', 'Werf in een woning in verbouwing, met ladders en ruwe muren', { sizes: '(max-width: 1000px) 100vw, 560px' })}
+    </div>
+    <div class="intro__tekst" data-reveal>
+      <h2 class="h2" id="intro-kop">${esc(HOME.intro.kop)}</h2>
+      <p class="intro__lead">${esc(HOME.intro.lead)}</p>
+      <p class="intro__p">${esc(HOME.intro.tekst)}</p>
+      <a class="knop knop--rand" href="over-ons/">${esc(HOME.intro.knop)}</a>
+    </div>
+  </div>
+</section>
+
+<section class="diensten" id="diensten" aria-labelledby="diensten-kop">
+  <div class="wrap">
+    <h2 class="h2 h2--wit h2--midden" id="diensten-kop" data-reveal>${esc(HOME.diensten.kop)}</h2>
+    <div class="podium" data-reveal>
+      <div class="podium__panelen" data-rail>
+        ${DIENSTEN.map((d, i) => `<article class="paneel${i === 0 ? ' is-actief' : ''}" id="paneel-${i + 1}" role="tabpanel" aria-labelledby="tab-${i + 1}"${i === 0 ? '' : ' hidden'}>
+          <div class="paneel__foto kader kader--donker">
+            ${pic(v, d.img, d.alt, { sizes: '(max-width: 1000px) 100vw, 700px' })}
+          </div>
+          <div class="paneel__kaart">
+            <div class="paneel__kern">
+              <p class="paneel__nr">${d.nr}</p>
+              <h3 class="paneel__kop"><a href="diensten/#${d.slug}">${esc(d.kortNaam)}</a></h3>
+              <p class="paneel__tekst">${esc(d.kortTekst)}</p>
+            </div>
+          </div>
+        </article>`).join('\n        ')}
+      </div>
+      <div class="rail-bediening" data-bediening>
+        <button class="rail-knop" type="button" data-vorige aria-label="Vorige dienst">${ic('terug', 20)}</button>
+        <span class="rail-balk" aria-hidden="true"><span class="rail-balk__vul"></span></span>
+        <button class="rail-knop" type="button" data-volgende aria-label="Volgende dienst">${ic('chev', 20)}</button>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Diensten">
+        ${DIENSTEN.map((d, i) => `<button class="tab${i === 0 ? ' is-actief' : ''}" id="tab-${i + 1}" role="tab" aria-selected="${i === 0}" aria-controls="paneel-${i + 1}"${i === 0 ? '' : ' tabindex="-1"'}><span class="tab__nr">${d.nr}</span><span class="tab__naam">${esc(d.kortNaam)}</span></button>`).join('\n        ')}
+      </div>
+    </div>
+    <div class="diensten__meer" data-reveal>
+      <a class="knop knop--accent" href="diensten/">${esc(HOME.diensten.knop)}${knopIc()}</a>
+    </div>
+  </div>
+</section>
+
+<section class="waarom waarom--zacht" id="waarom" aria-labelledby="waarom-kop">
   <div class="wrap waarom__grid">
     <div class="waarom__links" data-reveal>
       <h2 class="h2" id="waarom-kop">${esc(W.kop)}</h2>
@@ -406,7 +502,7 @@ ${header(v, '')}
           <img src="img/waarom-2.jpg" width="363" height="565" alt="Gele zetel en staanlamp in een afgewerkte kamer" loading="lazy" decoding="async">
         </picture>
       </div>
-      <a class="stempel" href="contact/" data-open-form aria-label="Gratis plaatsbezoek aanvragen">
+      <a class="stempel" href="#plaatsbezoek" data-naar-form aria-label="Gratis plaatsbezoek aanvragen">
         <svg class="stempel__ring" viewBox="0 0 160 160" aria-hidden="true">
           <defs><path id="cirkel" d="M80 80m-58 0a58 58 0 1 1 116 0a58 58 0 1 1-116 0"/></defs>
           <text><textPath href="#cirkel" textLength="364">Gratis plaatsbezoek · Gratis plaatsbezoek ·</textPath></text>
@@ -417,30 +513,16 @@ ${header(v, '')}
   </div>
 </section>
 
-<section class="diensten" id="diensten" aria-labelledby="diensten-kop">
+
+
+<section class="tips" id="tips" aria-labelledby="tips-kop">
   <div class="wrap">
-    <h2 class="h2 h2--wit h2--midden" id="diensten-kop" data-reveal>${esc(HOME.diensten.kop)}</h2>
-    <div class="podium" data-reveal>
-      <div class="podium__panelen">
-        ${DIENSTEN.map((d, i) => `<article class="paneel${i === 0 ? ' is-actief' : ''}" id="paneel-${i + 1}" role="tabpanel" aria-labelledby="tab-${i + 1}"${i === 0 ? '' : ' hidden'}>
-          <div class="paneel__foto kader kader--donker">
-            ${pic(v, d.img, d.alt, { sizes: '(max-width: 1000px) 100vw, 700px' })}
-          </div>
-          <div class="paneel__kaart">
-            <div class="paneel__kern">
-              <p class="paneel__nr">${d.nr}</p>
-              <h3 class="paneel__kop"><a href="diensten/#${d.slug}">${esc(d.kortNaam)}</a></h3>
-              <p class="paneel__tekst">${esc(d.kortTekst)}</p>
-            </div>
-          </div>
-        </article>`).join('\n        ')}
+    <h2 class="h2 h2--midden" id="tips-kop" data-reveal>${esc(HOME.tipsKop)}</h2>
+    <div class="tips__rail" data-reveal>
+      <div class="tips__rij tips__rij--rail" data-rail>
+      ${BLOGS.map((b) => tipKaart(v, b)).join('\n      ')}
       </div>
-      <div class="tabs" role="tablist" aria-label="Diensten">
-        ${DIENSTEN.map((d, i) => `<button class="tab${i === 0 ? ' is-actief' : ''}" id="tab-${i + 1}" role="tab" aria-selected="${i === 0}" aria-controls="paneel-${i + 1}"${i === 0 ? '' : ' tabindex="-1"'}><span class="tab__nr">${d.nr}</span><span class="tab__naam">${esc(d.kortNaam)}</span></button>`).join('\n        ')}
-      </div>
-    </div>
-    <div class="diensten__meer" data-reveal>
-      <a class="knop knop--accent" href="diensten/">${esc(HOME.diensten.knop)}${knopIc()}</a>
+      ${railBediening(true, 'tip')}
     </div>
   </div>
 </section>
@@ -454,16 +536,9 @@ ${header(v, '')}
   </div>
 </section>
 
-<section class="tips" id="tips" aria-labelledby="tips-kop">
-  <div class="wrap">
-    <h2 class="h2 h2--midden" id="tips-kop" data-reveal>${esc(HOME.tipsKop)}</h2>
-    <div class="tips__rij" data-reveal>
-      ${BLOGS.map((b) => tipKaart(v, b)).join('\n      ')}
-    </div>
-  </div>
-</section>
 
-${cta(v)}
+
+${plaats(v)}
 
 </main>
 ${slot(v)}`;
@@ -502,13 +577,24 @@ ${phero(v, { delen, kop: DIENSTEN_PAGINA.kop, lede: DIENSTEN_PAGINA.intro, beeld
         <ul class="vinkjes">
           ${d.punten.map((pt) => `<li><span class="vinkjes__ic">${ic('vink', 14)}</span>${esc(pt)}</li>`).join('\n          ')}
         </ul>
-        <a class="knop knop--accent" href="${rel(v, 'contact/')}" data-open-form data-dienst="${attr(d.naam)}">${esc(HOME.hero.knop1)}${knopIc()}</a>
+        <a class="knop knop--accent" href="#plaatsbezoek" data-naar-form data-dienst="${attr(d.kortNaam)}">${esc(HOME.hero.knop1)}${knopIc()}</a>
       </div>
     </article>`).join('\n    ')}
   </div>
 </section>
 
-${cta(v)}
+${werkwijzeTegels('dw')}
+
+<section class="vragen vragen--wit" aria-labelledby="dv-kop">
+  <div class="wrap">
+    <h2 class="h2 h2--midden" id="dv-kop" data-reveal>${esc(VRAGEN.kop)}</h2>
+    <div data-reveal>
+    ${accordeon(VRAGEN.lijst, 'dv')}
+    </div>
+  </div>
+</section>
+
+${plaats(v)}
 </main>
 ${slot(v)}`;
 });
@@ -533,27 +619,18 @@ ${phero(v, { delen, kop: OVER.kop, lede: OVER.alineas[0], beeld: 'over-werf', al
     <div class="verhaal__tekst" data-reveal>
       ${OVER.alineas.slice(1).map((a, i) => `<p class="${i === 0 ? 'verhaal__lead' : ''}">${esc(a)}</p>`).join('\n      ')}
       <div class="verhaal__knoppen">
-        <a class="knop knop--accent" href="${rel(v, 'contact/')}" data-open-form>${esc(HOME.hero.knop1)}${knopIc()}</a>
+        <a class="knop knop--accent" href="#plaatsbezoek" data-naar-form>${esc(HOME.hero.knop1)}${knopIc()}</a>
         <a class="knop knop--rand" href="${rel(v, 'diensten/')}">${esc(HOME.hero.knop2)}</a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="waarom waarom--zacht" aria-labelledby="ow-kop">
-  <div class="wrap">
-    <h2 class="h2 h2--midden" id="ow-kop" data-reveal>${esc(HOME.werkwijze.kop)}</h2>
-    <ul class="tegels" data-reveal>
-      ${HOME.werkwijze.punten.map((pt, i) => `<li class="tegel${i === 1 ? ' tegel--accent' : ''}">
-        <span class="punt__ic">${ic(pt.ic, pt.ic === 'helm' ? 26 : 30)}</span>
-        <h3 class="tegel__kop">${esc(pt.titel)}</h3>
-        <p class="tegel__tekst">${esc(pt.tekst)}</p>
-      </li>`).join('\n      ')}
-    </ul>
-  </div>
-</section>
+${werkwijzeTegels('ow')}
 
-${cta(v)}
+${dienstenStrook(v)}
+
+${plaats(v)}
 </main>
 ${slot(v)}`;
 });
@@ -574,7 +651,7 @@ ${kopband(v, { delen, kop: VRAGEN.kop })}
     ${accordeon(VRAGEN.lijst, 'vp')}
   </div>
 </section>
-${cta(v)}
+${plaats(v)}
 </main>
 ${slot(v)}`;
 });
@@ -597,7 +674,7 @@ ${kopband(v, { delen, kop: TIPS.kop })}
     </div>
   </div>
 </section>
-${cta(v)}
+${plaats(v)}
 </main>
 ${slot(v)}`;
 });
@@ -645,7 +722,7 @@ ${header(v, 'tips/')}
     </div>
   </div>
 </section>
-${cta(v)}
+${plaats(v)}
 </main>
 ${slot(v)}`;
 }));
@@ -659,14 +736,14 @@ PAGINAS.push(() => {
   return `${head(p)}
 <body class="sub">
 ${SPRITE}
-${header(v, v)}
+${header(v, v, '#aanvraag-contact')}
 <main id="inhoud">
 ${kopband(v, { delen, kop: CONTACT.kop, lede: CONTACT.tekst })}
 <section class="contact" aria-label="Contactformulier en gegevens">
   <div class="wrap contact__grid">
     <div class="contact__form kader" data-reveal>
       <div class="contact__formkern">
-        ${formulier('contactformulier', { kop: false }).replace('data-stap="form">', 'data-stap="form">\n        <h2 class="aanvraag__kop">' + esc(FORM.kop) + '</h2>')}
+        ${formulier(v, 'aanvraag-contact', { kop: true })}
       </div>
     </div>
     <aside class="contact__gegevens" data-reveal aria-label="${attr(CONTACT.gegevensKop)}">
@@ -685,6 +762,14 @@ ${kopband(v, { delen, kop: CONTACT.kop, lede: CONTACT.tekst })}
     </aside>
   </div>
 </section>
+<section class="vragen" aria-labelledby="cv-kop">
+  <div class="wrap">
+    <h2 class="h2 h2--midden" id="cv-kop" data-reveal>${esc(VRAGEN.kop)}</h2>
+    <div data-reveal>
+    ${accordeon(VRAGEN.lijst, 'cv', false)}
+    </div>
+  </div>
+</section>
 </main>
 ${slot(v)}`;
 });
@@ -697,7 +782,7 @@ PAGINAS.push(() => {
   return `${head(p)}
 <body class="sub">
 ${SPRITE}
-${header(v, '')}
+${header(v, '', rel(v, 'contact/'))}
 <main id="inhoud">
 ${kopband(v, { delen, kop: PRIVACY.kop })}
 <section class="juridisch">
@@ -720,7 +805,7 @@ function pagina404() {
   const html = `${head(p)}
 <body class="sub">
 ${SPRITE}
-${header(v, '')}
+${header(v, '', rel(v, 'contact/'))}
 <main id="inhoud">
 <section class="kopband kopband--404">
   <div class="wrap kopband__in">

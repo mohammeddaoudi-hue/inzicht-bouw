@@ -53,6 +53,14 @@ const HOME = {
       { titel: 'Elke week een werfverslag', tekst: 'Tot de laatste afwerking ontvangt u elke week een gedetailleerde vorderingsstaat van uw werf. Zo volgt u de voortgang op de voet, zonder dat u zelf dagelijks aanwezig hoeft te zijn.', ic: 'verslag' },
     ],
   },
+  /* Inleiding: door Claude geschreven in de stijl van Mohammeds copy (7 okt 2026, op zijn vraag "eerst een sectie kort inleiding inzicht").
+     Inhoud komt uit zijn over-ons-tekst; geen nieuwe beloftes. */
+  intro: {
+    kop: 'Bouwen met heldere afspraken',
+    lead: 'INzicht bouw en renovatie is een bouwbedrijf uit Kampenhout. Het bedrijf is ontstaan vanuit een eenvoudige behoefte: duidelijke communicatie en betrouwbare afspraken met de bouwheer.',
+    tekst: 'Daarom werkt u bij ons met eigen vakmensen en een vaste projectleider. Hij houdt uw werf in handen, en elke week krijgt u een werfverslag met de stand van de werken.',
+    knop: 'Lees ons verhaal',
+  },
   diensten: { kop: 'Wat wij bouwen en verbouwen', knop: 'Ontdek alle diensten in detail' },
   vragenKop: 'Veelgestelde vragen',
   tipsKop: 'Tips & Inzichten voor uw verbouwing',
@@ -228,10 +236,15 @@ const FORM = {
     tel: 'Telefoonnummer',
     straat: 'Straat & Huisnummer',
     gemeente: 'Postcode & Gemeente',
+    werk: 'Om welk werk gaat het?',
+    werkLeeg: 'Maak een keuze',
+    werkCombi: 'Combinatie of weet ik nog niet',
     project: 'Beschrijf kort uw project',
     projectHint: 'Type werken, gewenste startdatum, etc.',
   },
   knop: 'Verzenden',
+  privacy: 'We gebruiken uw gegevens enkel om uw aanvraag te behandelen. Lees ons',
+  privacyLink: 'privacybeleid',
 };
 
 /* ── PRIVACY ──────────────────────────────────────────────────────────── */
