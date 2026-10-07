@@ -200,17 +200,18 @@ const BLOGS = [
   {
     slug: 'renovatiepremies-dak-gevel', label: 'Premies',
     titel: 'Welke renovatiepremies kunt u nog aanvragen voor dak of gevel?',
-    // GECORRIGEERD: de dakpremie bestaat alleen nog in inkomenscategorie 3 en 4
-    intro: 'Een dak dat warmte binnenhoudt of een strak geïsoleerde gevel zijn de meest rendabele investeringen in uw woning. Om de kosten van uw dak te verzachten, kunt u in Vlaanderen afhankelijk van uw inkomen nog rekenen op de Mijn VerbouwPremie.',
+    intro: 'Een dak dat warmte binnenhoudt of een strak geïsoleerde gevel zijn de meest rendabele investeringen in uw woning. Om deze kosten te verzachten, kunt u in Vlaanderen rekenen op de Mijn VerbouwPremie.',
     punten: [
       { b: 'Dakwerken en dakisolatie:', t: 'De premie geldt niet enkel voor de isolatie, maar vaak ook voor werken eromheen: het afbreken van de oude bedekking, een nieuw onderdak, pannen, leien en soms zelfs de draagstructuur. Ook dakramen kunnen in aanmerking komen.' },
-      // GECORRIGEERD: geen premie meer voor de buitenmuur, in geen enkele categorie
-      { b: 'Buitenmuur en gevelrenovatie:', t: 'Sinds 1 maart 2026 is er voor eigenaar-bewoners in geen enkele inkomenscategorie nog een Mijn VerbouwPremie voor de isolatie van de buitenmuur.' },
-      // GECORRIGEERD: bedragen en categorieën volgens vlaanderen.be
-      { b: 'Hoeveel krijgt u terug?', t: 'Dit hangt af van uw inkomenscategorie. In categorie 4 krijgt u voor uw dak tot 50% van de factuur zonder btw terug, met een maximum van 5.750 euro. In categorie 3 is dat 35%, met een maximum van 4.025 euro. Voor de categorieën 1 en 2 is er sinds 1 maart 2026 geen dakpremie meer.' },
+      { b: 'Buitenmuur en gevelrenovatie:', t: 'Plaatst u isolatie langs de buitenzijde, afgewerkt met crepi of steenstrips? Dan kunt u via Mijn VerbouwPremie een aanzienlijk deel recupereren.' },
+      // GECORRIGEERD (vlaanderen.be, ruwe pagina's dak en buitenmuur gelezen op 7 okt 2026): categorie 1 en 2 krijgen sinds 1 maart 2026 niets meer; bedragen per categorie
+      { b: 'Hoeveel krijgt u terug?', t: 'Dit hangt af van uw inkomenscategorie. Voor de hoogste inkomens (categorie 1 en 2) is er sinds 1 maart 2026 geen premie meer voor dak of buitenmuur. Voor middelste en lagere inkomens kan dit oplopen tot 35% (categorie 3) of 50% (categorie 4) van het factuurbedrag zonder btw. Het maximum is 4.025 of 5.750 euro voor het dak en 3.500 of 5.000 euro voor de buitenmuur.' },
     ],
-    noot: 'Let op: enkel werken die een aannemer uitvoert, komen in aanmerking.',
-    bron: { label: 'Mijn VerbouwPremie voor dak op vlaanderen.be', href: 'https://www.vlaanderen.be/premies-voor-renovatie/mijn-verbouwpremie/mijn-verbouwpremie-voor-dak' },
+    noot: 'Let op: werken moeten altijd uitgevoerd worden door een aannemer.',
+    bron: [
+      { label: 'Mijn VerbouwPremie voor dak', href: 'https://www.vlaanderen.be/premies-voor-renovatie/mijn-verbouwpremie/mijn-verbouwpremie-voor-dak' },
+      { label: 'Mijn VerbouwPremie voor buitenmuur', href: 'https://www.vlaanderen.be/premies-voor-renovatie/mijn-verbouwpremie/mijn-verbouwpremie-voor-buitenmuur' },
+    ],
     img: 'd-eco-2', alt: 'Zolder met nieuwe isolatie en dakramen',
   },
 ];
@@ -265,8 +266,7 @@ const PRIVACY = {
 
 /* Wat er van de aangeleverde copy is afgeweken, en waarom (gemeld aan Mohammed op 7 okt 2026). */
 const CORRECTIES = [
-  'Blog premies: buitenmuur/gevel heeft sinds 1 maart 2026 in geen enkele inkomenscategorie nog Mijn VerbouwPremie (vlaanderen.be).',
-  'Blog premies: dak = cat. 4 50% (max 5.750 euro), cat. 3 35% (max 4.025 euro), cat. 1 en 2 geen premie meer; "erkende aannemer" werd "een aannemer" (vlaanderen.be, 7 okt 2026).',
+  'Blog premies (7 okt, na keuring tegen de ruwe paginas van vlaanderen.be): de zinnen van Mohammed over dak en buitenmuur kloppen voor categorie 3 en 4 en staan er weer. Alleen "hoogste inkomens: vast bedrag per vierkante meter" was fout: categorie 1 en 2 krijgen sinds 1 maart 2026 niets meer. Bedragen: dak 35% max 4.025 / 50% max 5.750, buitenmuur 35% max 3.500 / 50% max 5.000. "erkende aannemer" werd "aannemer".',
   'Blog vergunning: meldingsplicht voor aangebouwde bijgebouwen is sinds 1 maart 2026 afgeschaft (wijziging Vrijstellingsbesluit); de cijfers 4 meter en 2 tot 3 meter zijn weg.',
 ];
 

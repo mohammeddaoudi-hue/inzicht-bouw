@@ -714,7 +714,7 @@ ${header(v, 'tips/')}
       ${b.punten.map((pt) => `<li><strong>${esc(pt.b)}</strong> ${esc(pt.t)}</li>`).join('\n      ')}
     </ul>
     ${b.noot ? `<p class="artikel__noot">${ic('info', 20)}<span>${esc(b.noot)}</span></p>` : ''}
-    ${b.bron ? `<p class="artikel__bron">Bron: <a href="${attr(b.bron.href)}" rel="noopener" target="_blank">${esc(b.bron.label)}</a></p>` : ''}
+    ${b.bron ? `<p class="artikel__bron">Bron: ${[].concat(b.bron).map((x) => `<a href="${attr(x.href)}" rel="noopener" target="_blank">${esc(x.label)}</a>`).join(' en ')}, op vlaanderen.be.</p>` : ''}
     <a class="link artikel__terug" href="${rel(v, 'tips/')}">${ic('terug')}Alle tips</a>
   </div>
 </article>
