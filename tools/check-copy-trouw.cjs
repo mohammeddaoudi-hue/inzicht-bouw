@@ -28,7 +28,8 @@ voeg('diensten/', I.DIENSTEN_PAGINA.kop.join(' ')); voeg('diensten/', I.DIENSTEN
 I.DIENSTEN.forEach((d) => { voeg('diensten/', d.naam); voeg('diensten/', d.tekst); d.punten.forEach((p) => voeg('diensten/', p)); });
 voeg('over-ons/', I.OVER.kop.join(' ')); voeg('over-ons/', I.OVER.sub); voeg('over-ons/', I.OVER.intro);
 I.OVER.delen.forEach((d) => { voeg('over-ons/', d.kop); voeg('over-ons/', d.tekst); });
-voeg('', I.OVER.sub); // dezelfde alinea staat als inleiding op de home
+voeg('', I.OVER.sub); // dezelfde alinea staat als subheadline in de home-hero
+voeg('', I.HOME.intro.lead); // zijn vorige hero-tekst, nu in de inleiding onder de hero
 voeg('vragen/', I.VRAGEN.kop); voeg('tips/', I.TIPS.kop.join(' '));
 I.BLOGS.forEach((b) => { const r = `tips/${b.slug}/`; voeg(r, b.titel); voeg(r, b.intro); b.punten.forEach((p) => { voeg(r, p.b); voeg(r, p.t); }); if (b.noot) voeg(r, b.noot); voeg('tips/', b.titel); });
 voeg('contact/', I.CONTACT.kop); voeg('contact/', I.CONTACT.tekst); voeg('contact/', I.CONTACT.gegevensKop); voeg('contact/', I.CONTACT.urenKop);

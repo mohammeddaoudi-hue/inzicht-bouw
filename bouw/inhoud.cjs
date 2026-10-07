@@ -44,7 +44,8 @@ const HOME = {
   beschrijving: 'Wij nemen uw renovatie of nieuwbouw volledig aan, met het ontwerp en de coördinatie erbij. Gratis plaatsbezoek in de ruime regio rond Kampenhout.',
   hero: {
     kop: ['Bouw en renovatie', 'naar uw wens'],
-    tekst: 'Wij nemen uw renovatie of nieuwbouw volledig aan, met het ontwerp en de coördinatie erbij. Geen stress over overlappende planningen met losse aannemers: wij regelen uw werf van A tot Z, met één vast aanspreekpunt.',
+    // subheadline = zijn alinea TOTAALAANNEMER (8 okt 2026: "nee, en de subheadline van de hero")
+    tekst: TOTAALAANNEMER,
     knop1: 'Plan uw gratis plaatsbezoek',
     knop2: 'Bekijk de diensten',
   },
@@ -56,10 +57,10 @@ const HOME = {
       { titel: 'Elke week een werfverslag', tekst: 'Tot de laatste afwerking ontvangt u elke week een gedetailleerde vorderingsstaat van uw werf. Zo volgt u de voortgang op de voet, zonder dat u zelf dagelijks aanwezig hoeft te zijn.', ic: 'verslag' },
     ],
   },
-  /* Inleiding onder de hero: kop en knop van Claude, tekst = zijn alinea TOTAALAANNEMER (7 okt 2026). */
+  /* Inleiding onder de hero: kop en knop van Claude; tekst = zijn vorige hero-tekst (woordelijk), sinds de alinea TOTAALAANNEMER in de hero staat (8 okt 2026). */
   intro: {
     kop: 'Een bouwbedrijf uit Kampenhout',
-    lead: TOTAALAANNEMER,
+    lead: 'Wij nemen uw renovatie of nieuwbouw volledig aan, met het ontwerp en de coördinatie erbij. Geen stress over overlappende planningen met losse aannemers: wij regelen uw werf van A tot Z, met één vast aanspreekpunt.',
     knop: 'Lees ons verhaal',
   },
   diensten: { kop: 'Wat wij bouwen en verbouwen', knop: 'Ontdek alle diensten in detail' },
