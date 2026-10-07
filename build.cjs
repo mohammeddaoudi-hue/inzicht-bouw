@@ -366,25 +366,33 @@ function kruimel(v, delen) {
     : `<li><a href="${rel(v, d.pad)}">${esc(d.label)}</a></li>`).join('')}</ol></nav>`;
 }
 
-/* split-hero (abgroep-opbouw): tekst links, foto rechts */
-function phero(v, { delen, kop, lede, beeld, alt, knoppen = true, knop = HOME.hero.knop1 }) {
-  return `<section class="phero">
-  <div class="phero__tekst">
-    <div class="phero__in">
+/* brede fotokop voor subpagina's, zelfde beeldtaal als de home: foto over de volle breedte, tekst onderaan links
+   (8 okt 2026, Mohammed over de gesplitste kop: "super lelijk ... zelfde visueel design bij abgroep.BE ... niet clean") */
+function banner(v, { delen, kop, lede, beeld, alt, knop = HOME.hero.knop1 }) {
+  const b = (ext, w) => rel(v, `img/${beeld}-${w}.${ext}`);
+  return `<section class="banner">
+  <picture class="banner__foto">
+    <source media="(max-width: 700px)" srcset="${b('webp', 'm')}" type="image/webp">
+    <source media="(max-width: 700px)" srcset="${b('jpg', 'm')}">
+    <source srcset="${b('webp', 1200)} 1200w, ${b('webp', 1920)} 1920w" sizes="100vw" type="image/webp">
+    <img src="${b('jpg', 1200)}" srcset="${b('jpg', 1200)} 1200w, ${b('jpg', 1920)} 1920w" sizes="100vw" width="1920" height="960" alt="${attr(alt)}" fetchpriority="high" decoding="async">
+  </picture>
+  <div class="banner__laag" aria-hidden="true"></div>
+  <div class="wrap banner__in">
+    <div class="banner__tekst">
       ${kruimel(v, delen)}
-      <h1 class="phero__kop">${kop2(kop, 'dim')}</h1>
-      ${lede ? `<p class="phero__lede">${esc(lede)}</p>` : ''}
-      ${knoppen ? `<div class="phero__knoppen">
+      <h1 class="banner__kop">${kop2(kop, 'dim')}</h1>
+      ${lede ? `<p class="banner__lede">${esc(lede)}</p>` : ''}
+      <div class="banner__knoppen">
         <a class="knop knop--accent" href="#plaatsbezoek" data-naar-form>${esc(knop)}${knopIc()}</a>
-        <a class="knop knop--rand" href="${SITE.tel.href}">${ic('phone')}${esc(SITE.tel.toon)}</a>
-      </div>` : ''}
+        <a class="knop knop--rand-wit" href="${SITE.tel.href}">${ic('phone')}${esc(SITE.tel.toon)}</a>
+      </div>
     </div>
-  </div>
-  <div class="phero__beeld">
-    ${pic(v, beeld, alt, { eager: true, sizes: '(max-width: 1000px) 100vw, 50vw' })}
   </div>
 </section>`;
 }
+/* voorladen van het fotokopbeeld: breed vanaf 701 px, staand daaronder */
+const bannerPreload = (v, beeld) => `<link rel="preload" as="image" type="image/webp" imagesrcset="${rel(v, `img/${beeld}-1200.webp`)} 1200w, ${rel(v, `img/${beeld}-1920.webp`)} 1920w" imagesizes="100vw" media="(min-width: 701px)">\n<link rel="preload" as="image" type="image/webp" href="${rel(v, `img/${beeld}-m.webp`)}" media="(max-width: 700px)">\n`;
 
 /* compacte kop zonder foto */
 function kopband(v, { delen, kop, lede }) {
@@ -567,13 +575,13 @@ ${slot(v)}`;
 PAGINAS.push(() => {
   const v = 'diensten/';
   const delen = [{ label: 'Diensten', pad: v }];
-  const p = { pad: v, titel: DIENSTEN_PAGINA.titel, beschrijving: DIENSTEN_PAGINA.beschrijving, kruimel: [{ label: 'Home', pad: '' }, ...delen] };
+  const p = { pad: v, titel: DIENSTEN_PAGINA.titel, beschrijving: DIENSTEN_PAGINA.beschrijving, kruimel: [{ label: 'Home', pad: '' }, ...delen], preload: bannerPreload(v, 'banner-diensten') };
   return `${head(p)}
 <body class="sub">
 ${SPRITE}
 ${header(v, v)}
 <main id="inhoud">
-${phero(v, { delen, kop: DIENSTEN_PAGINA.kop, lede: DIENSTEN_PAGINA.intro, knop: DIENSTEN_PAGINA.knop, beeld: 'd-totaal-2', alt: 'Afgewerkte, lichte leefruimte met een witte zetel en kleurrijke kussens' })}
+${banner(v, { delen, kop: DIENSTEN_PAGINA.kop, lede: DIENSTEN_PAGINA.intro, knop: DIENSTEN_PAGINA.knop, beeld: 'banner-diensten', alt: 'Lichte kamer met een geel kunstwerk, een staande lamp en een witte zetel met kussens' })}
 
 <div class="sprongvak">
 <nav class="sprong" aria-label="Diensten op deze pagina">
@@ -625,13 +633,13 @@ ${slot(v)}`;
 PAGINAS.push(() => {
   const v = 'over-ons/';
   const delen = [{ label: 'Over ons', pad: v }];
-  const p = { pad: v, titel: OVER.titel, beschrijving: OVER.beschrijving, kruimel: [{ label: 'Home', pad: '' }, ...delen] };
+  const p = { pad: v, titel: OVER.titel, beschrijving: OVER.beschrijving, kruimel: [{ label: 'Home', pad: '' }, ...delen], preload: bannerPreload(v, 'banner-over') };
   return `${head(p)}
 <body class="sub">
 ${SPRITE}
 ${header(v, v)}
 <main id="inhoud">
-${phero(v, { delen, kop: OVER.kop, lede: OVER.sub, beeld: 'over-werf', alt: 'Ruwbouw van een woning in verbouwing, met een stelling, stempels en planken' })}
+${banner(v, { delen, kop: OVER.kop, lede: OVER.sub, beeld: 'banner-over', alt: 'Lichte, afgewerkte leefruimte met een zetel, een houten balk en een haard' })}
 
 <div class="ovintro">
   <div class="wrap wrap--smal">
@@ -838,7 +846,7 @@ ${header(v, '', rel(v, 'contact/'))}
   <div class="wrap kopband__in">
     <h1 class="kopband__kop">Pagina niet gevonden</h1>
     <p class="kopband__lede">Deze pagina is verhuisd of het adres bevat een tikfout. Via de knoppen hieronder vindt u alles terug.</p>
-    <div class="phero__knoppen kopband__knoppen">
+    <div class="banner__knoppen kopband__knoppen">
       <a class="knop knop--accent" href="${rel(v, '')}">Naar de homepage${knopIc()}</a>
       <a class="knop knop--rand" href="${rel(v, 'diensten/')}">${esc(HOME.hero.knop2)}</a>
     </div>

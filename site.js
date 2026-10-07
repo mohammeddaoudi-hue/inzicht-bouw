@@ -411,7 +411,7 @@
       entries.forEach((e) => (e.isIntersecting ? zichtbaar.add(e.target) : zichtbaar.delete(e.target)));
       fab.classList.toggle('is-verborgen', zichtbaar.size > 0);
     }, { threshold: 0.05 });
-    $$('#plaatsbezoek, .contact__bel, .contact__form, .voet, .hero, .phero__knoppen').forEach((el) => io.observe(el));
+    $$('#plaatsbezoek, .contact__bel, .contact__form, .voet, .hero, .banner__knoppen').forEach((el) => io.observe(el));
   }
 
   window.__inzicht = true;

@@ -279,11 +279,11 @@ for (const route of ['', 'diensten/', 'over-ons/', 'vragen/', 'tips/', 'tips/aan
   const p = await open(route);
   const fouten = await p.evaluate(() => {
     const L = (c) => { const m = c.match(/[\d.]+/g).map(Number); const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; return [0.2126 * f(m[0]) + 0.7152 * f(m[1]) + 0.0722 * f(m[2]), m[3] === undefined ? 1 : m[3]]; };
-    const bg = (e) => { while (e) { const b = getComputedStyle(e).backgroundColor; const a = (b.match(/[\d.]+/g) || [])[3]; if (b !== 'rgba(0, 0, 0, 0)' && (a === undefined || Number(a) > 0.6)) return b; if (e.classList && (e.classList.contains('hero') || e.classList.contains('phero__beeld'))) return null; e = e.parentElement; } return 'rgb(255, 255, 255)'; };
+    const bg = (e) => { while (e) { const b = getComputedStyle(e).backgroundColor; const a = (b.match(/[\d.]+/g) || [])[3]; if (b !== 'rgba(0, 0, 0, 0)' && (a === undefined || Number(a) > 0.6)) return b; if (e.classList && (e.classList.contains('hero') || e.classList.contains('banner'))) return null; e = e.parentElement; } return 'rgb(255, 255, 255)'; };
     const uit = [];
     document.querySelectorAll('h1, h2, h3, p, li, a, button, label, dt, dd, span').forEach((e) => {
       // menu boven de herofoto: gemeten op echte pixels in tools/nav-contrast.mjs
-      if (e.closest('[hidden], .mob, svg, .hero, .skip') || !e.offsetParent || (document.body.classList.contains('is-home') && e.closest('.nav') && !e.closest('.nav.is-gescrold'))) return;
+      if (e.closest('[hidden], .mob, svg, .hero, .banner, .skip') || !e.offsetParent || (document.body.classList.contains('is-home') && e.closest('.nav') && !e.closest('.nav.is-gescrold'))) return;
       if (![...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) return;
       const cs = getComputedStyle(e); const b = bg(e); if (!b) return;
       const [lf, af] = L(cs.color); const [lb] = L(b);

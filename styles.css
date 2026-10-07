@@ -72,7 +72,7 @@ h1, h2, h3, p, ul, ol, dl, dd { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
 [id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 6px; }
-.diensten :focus-visible, .hero :focus-visible, .mob :focus-visible, .contact__gegevens :focus-visible, .is-home .nav:not(.is-gescrold) :focus-visible { outline-color: var(--accent); }
+.diensten :focus-visible, .hero :focus-visible, .banner :focus-visible, .mob :focus-visible, .contact__gegevens :focus-visible, .is-home .nav:not(.is-gescrold) :focus-visible { outline-color: var(--accent); }
 /* witte vlakken binnen die zones krijgen weer een donkere ring: geel op wit haalt geen 3:1 */
 .diensten .paneel__kern :focus-visible, .is-home .nav .drop__menu :focus-visible, .is-home.menu-open .nav :focus-visible { outline-color: var(--ink); }
 .nw { white-space: nowrap; }
@@ -280,16 +280,27 @@ ul, ol { padding: 0; list-style: none; }
 .hero__verder:hover { background: var(--wit); color: var(--ink); border-color: var(--wit); }
 
 /* ══ SUBPAGINA: split-hero (tekst links, foto rechts) ══ */
-.phero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 640px; background: var(--zacht); container-type: inline-size; }
-/* tekst op dezelfde lijn als logo en inhoud: (breedte - 1200) / 2; 100cqw telt de schuifbalk niet mee */
-.phero__tekst { display: flex; align-items: center; padding: calc(var(--nav-h) + 56px) 64px 72px max(var(--goot), calc((100vw - var(--wrap)) / 2)); padding-left: max(var(--goot), calc((100cqw - var(--wrap)) / 2)); }
-.phero__in { max-width: 560px; }
-.phero__kop { margin-top: 18px; font-size: clamp(42px, 4.6vw, 64px); line-height: 1.04; font-weight: 700; letter-spacing: -0.035em; color: var(--ink); text-wrap: balance; }
-.phero__kop .dim { display: block; }
-.phero__lede { margin-top: 22px; font-size: 18px; line-height: 1.6; max-width: 520px; }
-.phero__knoppen { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
-.phero__beeld { position: relative; min-height: 100%; }
-.phero__beeld picture, .phero__beeld img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.banner { position: relative; display: flex; align-items: flex-end; min-height: clamp(560px, 74vh, 720px); margin-top: var(--nav-h); background: var(--donker); color: var(--wit); overflow: hidden; }
+.banner__foto { position: absolute; inset: 0; }
+.banner__foto img { width: 100%; height: 100%; object-fit: cover; object-position: center 60%; }
+/* donker waar de tekst staat (linksonder), de rest van de foto blijft licht */
+.banner__laag {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, rgba(8, 8, 8, 0.86) 0%, rgba(8, 8, 8, 0.8) 40%, rgba(8, 8, 8, 0.5) 62%, rgba(8, 8, 8, 0) 82%),
+    linear-gradient(180deg, rgba(8, 8, 8, 0.25) 0%, rgba(8, 8, 8, 0) 40%, rgba(8, 8, 8, 0.35) 100%);
+}
+.banner__in { position: relative; width: 100%; padding-top: 72px; padding-bottom: 72px; }
+.banner__tekst { max-width: min(820px, 58vw); }
+.banner .kruimel ol { color: rgba(255, 255, 255, 0.8); }
+.banner .kruimel li + li::before { color: rgba(255, 255, 255, 0.72); }
+.banner .kruimel a { color: rgba(255, 255, 255, 0.9); }
+.banner .kruimel a:hover { color: var(--wit); }
+.banner .kruimel [aria-current="page"] { color: var(--wit); }
+.banner__kop { margin-top: 16px; font-size: clamp(44px, 5vw, 72px); line-height: 1.02; font-weight: 700; letter-spacing: -0.035em; color: var(--wit); text-wrap: balance; }
+.banner__kop .dim { display: block; color: rgba(255, 255, 255, 0.74); }
+.banner__lede { margin-top: 22px; max-width: 620px; font-size: 19px; line-height: 1.55; color: rgba(255, 255, 255, 0.9); }
+.banner__knoppen { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
 
 /* compacte kop zonder foto */
 .kopband { background: var(--zacht); padding: calc(var(--nav-h) + 64px) 0 76px; }
@@ -714,7 +725,7 @@ main:has(> section:last-child:is(.vragen:not(.vragen--wit), .kopband)) + .voet {
 }
 /* één belknop per schermformaat: vanaf 1001 px het nummer in de balk, daaronder de ronde knop */
 @media (min-width: 1001px) {
-  .phero__knoppen a[href^="tel:"], .contact__bel { display: none; }
+  .banner__knoppen a[href^="tel:"], .contact__bel { display: none; }
 }
 
 @media (hover: none) {
@@ -741,10 +752,13 @@ main:has(> section:last-child:is(.vragen:not(.vragen--wit), .kopband)) + .voet {
   .hero__knoppen { margin-top: 26px; width: 100%; }
   .hero__verder { display: none; }
 
-  .phero { grid-template-columns: minmax(0, 1fr); min-height: 0; }
-  .phero__tekst { padding: calc(var(--nav-h) + 34px) var(--goot) 40px; }
-  .phero__in { max-width: none; }
-  .phero__beeld { aspect-ratio: 4 / 3; min-height: 0; }
+  .banner { min-height: calc(92svh - var(--nav-h)); }
+  .banner__in { padding-top: 48px; padding-bottom: 40px; }
+  .banner__kop { font-size: clamp(36px, 9.6vw, 56px); }
+  .banner__lede { margin-top: 18px; font-size: 17px; }
+  .banner__foto img { object-position: center 40%; }
+  .banner__tekst { max-width: none; }
+  .banner__laag { background: linear-gradient(180deg, rgba(8, 8, 8, 0.58) 0%, rgba(8, 8, 8, 0.68) 30%, rgba(8, 8, 8, 0.8) 60%, rgba(8, 8, 8, 0.94) 100%); }
   .kopband { padding: calc(var(--nav-h) + 40px) 0 52px; }
   .kopband__in { text-align: left; align-items: flex-start; }
   .kopband__knoppen { justify-content: flex-start; }
@@ -869,14 +883,14 @@ main:has(> section:last-child:is(.vragen:not(.vragen--wit), .kopband)) + .voet {
 }
 
 @media (max-width: 560px) {
-  .hero__knoppen .knop, .phero__knoppen .knop, .kopband__knoppen .knop, .rij .knop, .intro .knop, .diensten__meer .knop { width: 100%; }
+  .hero__knoppen .knop, .banner__knoppen .knop, .kopband__knoppen .knop, .rij .knop, .intro .knop, .diensten__meer .knop { width: 100%; }
   .veld-rij { grid-template-columns: minmax(0, 1fr); gap: 0; }
 }
 
 /* lange woorden in koppen breken af in plaats van uit het scherm te lopen (320 px, 400 % zoom) */
-.hero__kop, .phero__kop, .kopband__kop, .artikel__titel, .rij__kop, .h2 { overflow-wrap: break-word; }
+.hero__kop, .banner__kop, .kopband__kop, .artikel__titel, .rij__kop, .h2 { overflow-wrap: break-word; }
 @media (max-width: 359px) {
-  .phero__kop, .kopband__kop, .artikel__titel, .rij__kop { hyphens: auto; }
+  .banner__kop, .kopband__kop, .artikel__titel, .rij__kop { hyphens: auto; }
 }
 
 /* Windows-contrastthema: menuknop en gekozen tab blijven zichtbaar */
@@ -896,5 +910,5 @@ main:has(> section:last-child:is(.vragen:not(.vragen--wit), .kopband)) + .voet {
 @media print {
   .nav, .mob, .fab, .plaats, .sprong, .skip { display: none !important; }
   .js [data-reveal] { opacity: 1 !important; }
-  .phero, .kopband, .artikel__kop { padding-top: 24px; }
+  .banner, .kopband, .artikel__kop { padding-top: 24px; }
 }
