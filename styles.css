@@ -537,6 +537,7 @@ ul, ol { padding: 0; list-style: none; }
   background-size: 6px 6px, 6px 6px; background-repeat: no-repeat;
 }
 .veld textarea { resize: vertical; min-height: 120px; line-height: 1.5; }
+.veld input[name="postcode"] { max-width: 200px; }
 .veld__optioneel { font-weight: 400; color: var(--mute); }
 /* upload: het systeemveld, met een knop in de stijl van de site */
 .veld input[type="file"] { padding: 9px 12px; min-height: 52px; cursor: pointer; font-size: 15px; color: var(--body); }

@@ -68,7 +68,7 @@ const HOME = {
     lead: 'Wij nemen uw renovatie of nieuwbouw volledig aan, met het ontwerp en de coördinatie erbij. Voor de hele werf heeft u één vast aanspreekpunt.',
     knop: 'Lees ons verhaal',
   },
-  diensten: { kop: 'Wat wij bouwen en verbouwen', knop: 'Ontdek alle diensten in detail' },
+  diensten: { kop: 'Wat wij bouwen en verbouwen', knop: 'Ontdek alle diensten' },
   vragenKop: 'Veelgestelde vragen',
   tipsKop: 'Tips & Inzichten voor uw verbouwing',
   cta: {
@@ -281,7 +281,7 @@ const BLOGS = [
       { b: 'Dakwerken en dakisolatie:', t: 'De premie geldt voor de isolatie en vaak ook voor werken eromheen: het afbreken van de oude bedekking, een nieuw onderdak, pannen, leien en soms zelfs de draagstructuur. Ook dakramen kunnen in aanmerking komen.' },
       { b: 'Buitenmuur en gevelrenovatie:', t: 'Plaatst u isolatie langs de buitenzijde, afgewerkt met crepi of steenstrips? Dan kunt u via Mijn VerbouwPremie een aanzienlijk deel recupereren.' },
       // GECORRIGEERD (vlaanderen.be, ruwe pagina's dak en buitenmuur gelezen op 7 okt 2026): categorie 1 en 2 krijgen sinds 1 maart 2026 niets meer; bedragen per categorie
-      { b: 'Hoeveel krijgt u terug?', t: 'Dit hangt af van uw inkomenscategorie. Voor de hoogste en middelste inkomens (categorie 1 en 2) is er sinds 1 maart 2026 geen premie meer voor dak of buitenmuur. Voor de laagste inkomens kan dit oplopen tot 35% (categorie 3) of 50% (categorie 4) van het factuurbedrag zonder btw. Het maximum is 4.025 of 5.750 euro voor het dak en 3.500 of 5.000 euro voor de buitenmuur.' },
+      { b: 'Hoeveel krijgt u terug?', t: 'Dit hangt af van uw inkomenscategorie. Voor de hoogste en middelste inkomens (categorie 1 en 2) is de premie voor dak en buitenmuur sinds 1 maart 2026 afgeschaft. Voor de laagste inkomens kan dit oplopen tot 35% (categorie 3) of 50% (categorie 4) van het factuurbedrag exclusief btw. Het maximum is 4.025 of 5.750 euro voor het dak en 3.500 of 5.000 euro voor de buitenmuur.' },
     ],
     noot: 'Let op: werken moeten altijd uitgevoerd worden door een aannemer.',
     bron: [
@@ -312,11 +312,10 @@ const FORM = {
     naam: 'Voornaam & Naam',
     mail: 'E-mailadres',
     tel: 'Telefoonnummer',
-    straat: 'Straat & Huisnummer',
-    gemeente: 'Postcode & Gemeente',
+    postcode: 'Postcode',
     werk: 'Om welk werk gaat het?',
     werkLeeg: 'Maak een keuze',
-    werkCombi: 'Combinatie of weet ik nog niet',
+    werkCombi: 'Combinatie of nog te bepalen',
     project: 'Beschrijf kort uw project',
     projectHint: 'Type werken, gewenste startdatum, etc.',
   },
@@ -336,8 +335,8 @@ const PRIVACY = {
     { kop: '2. Welke gegevens we verzamelen', p: ['Wij verzamelen enkel de gegevens die u vrijwillig aan ons verstrekt via het contactformulier, per e-mail of telefonisch. Dit omvat: uw voor- en achternaam, adresgegevens, telefoonnummer, e-mailadres en de projectomschrijving.'] },
     { kop: '3. Waarom we deze gegevens verzamelen', p: ['Wij verwerken uw persoonsgegevens uitsluitend voor de volgende doeleinden:'], lijst: ['Het inplannen van een plaatsbezoek en het opmaken van een correcte offerte.', 'De communicatie en administratieve afhandeling tijdens de uitvoering van uw bouwproject.', 'Wettelijke verplichtingen (zoals facturatie en boekhouding).'] },
     { kop: '4. Delen met derden', p: ['Uw gegevens worden nooit verkocht aan derden. Wij delen uw gegevens enkel met externe partners (zoals onderaannemers of een architect) indien dit strikt noodzakelijk is voor de uitvoering van uw project, en altijd in overleg met u.'] },
-    { kop: '5. Bewaartermijn', p: ['Wij bewaren uw gegevens niet langer dan noodzakelijk is voor de doelen waarvoor ze zijn verzameld, of zolang de wet ons verplicht deze te bewaren (bijvoorbeeld de wettelijke termijn voor de tienjarige aansprakelijkheid in de bouw).'] },
-    { kop: '6. Uw rechten', p: ['U heeft het recht om op elk moment inzage te vragen in uw persoonsgegevens. Daarnaast heeft u het recht om deze te laten corrigeren of te laten verwijderen uit ons systeem, mits dit niet in strijd is met onze wettelijke bewaarplichten. Neem hiervoor contact op via inzicht.bouw@gmail.com.'] },
+    { kop: '5. Bewaartermijn', p: ['Wij bewaren uw gegevens zolang dat nodig is voor de doelen waarvoor ze zijn verzameld, of zolang de wet ons verplicht deze te bewaren (bijvoorbeeld de wettelijke termijn voor de tienjarige aansprakelijkheid in de bouw).'] },
+    { kop: '6. Uw rechten', p: ['U heeft het recht om op elk moment inzage te vragen in uw persoonsgegevens. Daarnaast heeft u het recht om deze te laten corrigeren of te laten verwijderen uit ons systeem, binnen de grenzen van onze wettelijke bewaarplichten. Neem hiervoor contact op via inzicht.bouw@gmail.com.'] },
   ],
 };
 

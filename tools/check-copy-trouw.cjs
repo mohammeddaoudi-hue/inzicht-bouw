@@ -78,7 +78,6 @@ const SLOP = [
   ['gedachtestreepje', /[–—]/],
 ];
 const TOEGESTAAN = new Set([
-  'Voor de hoogste en middelste inkomens (categorie 1 en 2) is er sinds 1 maart 2026 geen premie meer voor dak of buitenmuur.',
   'Uw gegevens worden nooit verkocht aan derden.',
 ]);
 const slop = [];

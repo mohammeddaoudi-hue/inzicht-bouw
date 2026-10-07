@@ -24,7 +24,7 @@
 <link rel="preload" href="fonts/pjs-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" href="img/hero-vol.webp" type="image/webp" media="(min-width: 701px)">
 <link rel="preload" as="image" href="img/hero-vol-m.webp" type="image/webp" media="(max-width: 700px)">
-<link rel="stylesheet" href="styles.css?v=muyplu98">
+<link rel="stylesheet" href="styles.css?v=muyputfl">
 <script>document.documentElement.className='js';setTimeout(function(){if(!window.__inzicht)document.documentElement.classList.add('reveal-klaar')},1500)</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"GeneralContractor","name":"INzicht bouw en renovatie","url":"https://mohammeddaoudi-hue.github.io/inzicht-bouw/","image":"https://mohammeddaoudi-hue.github.io/inzicht-bouw/img/og.jpg","logo":"https://mohammeddaoudi-hue.github.io/inzicht-bouw/img/logo-ink.png","telephone":"+32468359093","email":"inzicht.bouw@gmail.com","address":{"@type":"PostalAddress","streetAddress":"Tiendeschuurstraat 134","postalCode":"1910","addressLocality":"Kampenhout","addressCountry":"BE"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],"opens":"08:30","closes":"16:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday"],"opens":"09:00","closes":"15:30"}],"areaServed":"Kampenhout en omgeving"}</script>
 </head>
@@ -247,7 +247,7 @@
       </div>
     </div>
     <div class="diensten__meer" data-reveal>
-      <a class="knop knop--accent" href="diensten/">Ontdek alle diensten in detail<span class="knop__ic"><svg width="16" height="16" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></span></a>
+      <a class="knop knop--accent" href="diensten/">Ontdek alle diensten<span class="knop__ic"><svg width="16" height="16" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></span></a>
     </div>
   </div>
 </section>
@@ -375,21 +375,14 @@
             <label for="aanvraag-onder-werk">Om welk werk gaat het?<span class="ster" aria-hidden="true">*</span></label>
             <select id="aanvraag-onder-werk" name="werk" aria-required="true" aria-describedby="aanvraag-onder-werk-fout">
               <option value="">Maak een keuze</option>
-              <option>Totaalrenovatie en nieuwbouw</option><option>Energetisch en ecologisch</option><option>Dakwerken</option><option>Gevelrenovatie</option><option>Badkamer en sanitair</option><option>Interieur en binnenschrijnwerk</option><option>Combinatie of weet ik nog niet</option>
+              <option>Totaalrenovatie en nieuwbouw</option><option>Energetisch en ecologisch</option><option>Dakwerken</option><option>Gevelrenovatie</option><option>Badkamer en sanitair</option><option>Interieur en binnenschrijnwerk</option><option>Combinatie of nog te bepalen</option>
             </select>
             <p class="veld__fout" id="aanvraag-onder-werk-fout" hidden></p>
           </div>
-          <div class="veld-rij">
-            <div class="veld">
-            <label for="aanvraag-onder-straat">Straat &amp; Huisnummer</label>
-            <input id="aanvraag-onder-straat" name="straat" type="text" autocomplete="address-line1" aria-describedby="aanvraag-onder-straat-fout">
-            <p class="veld__fout" id="aanvraag-onder-straat-fout" hidden></p>
-          </div>
-            <div class="veld">
-            <label for="aanvraag-onder-gemeente">Postcode &amp; Gemeente</label>
-            <input id="aanvraag-onder-gemeente" name="gemeente" type="text" autocomplete="address-level2" aria-describedby="aanvraag-onder-gemeente-fout">
-            <p class="veld__fout" id="aanvraag-onder-gemeente-fout" hidden></p>
-          </div>
+          <div class="veld">
+            <label for="aanvraag-onder-postcode">Postcode</label>
+            <input id="aanvraag-onder-postcode" name="postcode" type="text" autocomplete="postal-code" inputmode="numeric" maxlength="4" data-label="Postcode" aria-describedby="aanvraag-onder-postcode-fout">
+            <p class="veld__fout" id="aanvraag-onder-postcode-fout" hidden></p>
           </div>
           <div class="veld">
             <label for="aanvraag-onder-project">Beschrijf kort uw project</label>
@@ -403,7 +396,7 @@
           <span class="aanvraag__vink" aria-hidden="true"><svg width="26" height="26" aria-hidden="true" focusable="false"><use href="#i-vink"/></svg></span>
           <h2 class="aanvraag__kop" data-klaar-kop>Uw e-mail staat klaar</h2>
           <p class="aanvraag__sub" role="status" data-klaar-tekst>Uw e-mailprogramma opent met uw aanvraag. Verstuur die e-mail om uw aanvraag af te ronden.</p>
-          <p class="aanvraag__uitweg">Opent er niets? Bel <a href="tel:+32468359093">0468 35 90 93</a> of mail naar <a href="mailto:inzicht.bouw@gmail.com">inzicht.bouw@gmail.com</a>.</p>
+          <p class="aanvraag__uitweg">Rechtstreeks contact kan altijd: <a href="tel:+32468359093">0468 35 90 93</a> of <a href="mailto:inzicht.bouw@gmail.com">inzicht.bouw@gmail.com</a>.</p>
           <div class="aanvraag__acties">
             <button class="knop knop--rand" type="button" data-kopieer>Kopieer uw aanvraag</button>
             <button class="knop knop--rand" type="button" data-terug>Terug naar uw aanvraag</button>
@@ -469,6 +462,6 @@
   </div>
   <a class="fab" href="tel:+32468359093" aria-label="Bel 0468 35 90 93"><svg width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></a>
 </footer>
-<script src="site.js?v=muyplu98" defer></script>
+<script src="site.js?v=muyputfl" defer></script>
 </body>
 </html>

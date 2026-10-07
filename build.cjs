@@ -237,7 +237,7 @@ function formulier(v, id, { kop = true, kopId = '', sub = true, knop = FORM.knop
             ${veld('tel', F.tel, 'tel', 'tel', { verplicht: true, extra: ' inputmode="tel"' })}
             ${veld('mail', F.mail, 'email', 'email', { verplicht: true, extra: ' inputmode="email"' })}
           </div>
-          ${veld('gemeente', F.werf, 'text', 'address-level2', { verplicht: true })}
+          ${veld('gemeente', F.werf, 'text', 'address-level2', { verplicht: true, extra: ' data-label="Werf"' })}
           ${keuze(F.type, F.typeLeeg, F.typeOpties, false)}
           <div class="veld">
             <label for="${id}-project">${esc(F.plannen)}</label>
@@ -253,10 +253,7 @@ function formulier(v, id, { kop = true, kopId = '', sub = true, knop = FORM.knop
             ${veld('mail', F.mail, 'email', 'email', { extra: ' inputmode="email"' })}
           </div>
           ${keuze(F.werk, F.werkLeeg, [...DIENSTEN.map((d) => d.kortNaam), F.werkCombi], true)}
-          <div class="veld-rij">
-            ${veld('straat', F.straat, 'text', 'address-line1')}
-            ${veld('gemeente', F.gemeente, 'text', 'address-level2')}
-          </div>
+          ${veld('postcode', F.postcode, 'text', 'postal-code', { extra: ' inputmode="numeric" maxlength="4" data-label="Postcode"' })}
           <div class="veld">
             <label for="${id}-project">${esc(F.project)}</label>
             <textarea id="${id}-project" name="project" rows="4" maxlength="1000" placeholder="${attr(F.projectHint)}"></textarea>
@@ -275,7 +272,7 @@ function formulier(v, id, { kop = true, kopId = '', sub = true, knop = FORM.knop
           <span class="aanvraag__vink" aria-hidden="true">${ic('vink', 26)}</span>
           <h2 class="aanvraag__kop" data-klaar-kop>Uw e-mail staat klaar</h2>
           <p class="aanvraag__sub" role="status" data-klaar-tekst>Uw e-mailprogramma opent met uw aanvraag. Verstuur die e-mail om uw aanvraag af te ronden.</p>
-          <p class="aanvraag__uitweg">Opent er niets? Bel <a href="${SITE.tel.href}">${esc(SITE.tel.toon)}</a> of mail naar <a href="mailto:${SITE.mail}">${esc(SITE.mail)}</a>.</p>
+          <p class="aanvraag__uitweg">Rechtstreeks contact kan altijd: <a href="${SITE.tel.href}">${esc(SITE.tel.toon)}</a> of <a href="mailto:${SITE.mail}">${esc(SITE.mail)}</a>.</p>
           <div class="aanvraag__acties">
             <button class="knop knop--rand" type="button" data-kopieer>Kopieer uw aanvraag</button>
             <button class="knop knop--rand" type="button" data-terug>Terug naar uw aanvraag</button>
@@ -840,7 +837,7 @@ ${header(v, '', rel(v, 'contact/'))}
 <section class="kopband kopband--404">
   <div class="wrap kopband__in">
     <h1 class="kopband__kop">Pagina niet gevonden</h1>
-    <p class="kopband__lede">Het adres klopt niet of de pagina is verhuisd.</p>
+    <p class="kopband__lede">Deze pagina is verhuisd of het adres bevat een tikfout. Via de knoppen hieronder vindt u alles terug.</p>
     <div class="phero__knoppen kopband__knoppen">
       <a class="knop knop--accent" href="${rel(v, '')}">Naar de homepage${knopIc()}</a>
       <a class="knop knop--rand" href="${rel(v, 'diensten/')}">${esc(HOME.hero.knop2)}</a>

@@ -22,7 +22,7 @@
 <link rel="icon" href="../../img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="../../img/apple-touch-icon.png">
 <link rel="preload" href="../../fonts/pjs-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../styles.css?v=muyplu98">
+<link rel="stylesheet" href="../../styles.css?v=muyputfl">
 <script>document.documentElement.className='js';setTimeout(function(){if(!window.__inzicht)document.documentElement.classList.add('reveal-klaar')},1500)</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mohammeddaoudi-hue.github.io/inzicht-bouw/"},{"@type":"ListItem","position":2,"name":"Tips","item":"https://mohammeddaoudi-hue.github.io/inzicht-bouw/tips/"},{"@type":"ListItem","position":3,"name":"Welke renovatiepremies kunt u nog aanvragen voor dak of gevel?","item":"https://mohammeddaoudi-hue.github.io/inzicht-bouw/tips/renovatiepremies-dak-gevel/"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Welke renovatiepremies kunt u nog aanvragen voor dak of gevel?","inLanguage":"nl-BE","image":"https://mohammeddaoudi-hue.github.io/inzicht-bouw/img/d-eco-2-1600.jpg","datePublished":"2026-10-07","dateModified":"2026-10-07","author":{"@type":"Organization","name":"INzicht bouw en renovatie","url":"https://mohammeddaoudi-hue.github.io/inzicht-bouw/"},"publisher":{"@type":"Organization","name":"INzicht bouw en renovatie","logo":{"@type":"ImageObject","url":"https://mohammeddaoudi-hue.github.io/inzicht-bouw/img/logo-ink.png"}},"mainEntityOfPage":"https://mohammeddaoudi-hue.github.io/inzicht-bouw/tips/renovatiepremies-dak-gevel/"}</script>
@@ -116,7 +116,7 @@
     <ul class="artikel__lijst">
       <li><strong>Dakwerken en dakisolatie:</strong> De premie geldt voor de isolatie en vaak ook voor werken eromheen: het afbreken van de oude bedekking, een nieuw onderdak, pannen, leien en soms zelfs de draagstructuur. Ook dakramen kunnen in aanmerking komen.</li>
       <li><strong>Buitenmuur en gevelrenovatie:</strong> Plaatst u isolatie langs de buitenzijde, afgewerkt met crepi of steenstrips? Dan kunt u via Mijn VerbouwPremie een aanzienlijk deel recupereren.</li>
-      <li><strong>Hoeveel krijgt u terug?</strong> Dit hangt af van uw inkomenscategorie. Voor de hoogste en middelste inkomens (categorie 1 en 2) is er sinds 1 maart 2026 geen premie meer voor dak of buitenmuur. Voor de laagste inkomens kan dit oplopen tot 35% (categorie 3) of 50% (categorie 4) van het factuurbedrag zonder btw. Het maximum is 4.025 of 5.750 euro voor het dak en 3.500 of 5.000 euro voor de buitenmuur.</li>
+      <li><strong>Hoeveel krijgt u terug?</strong> Dit hangt af van uw inkomenscategorie. Voor de hoogste en middelste inkomens (categorie 1 en 2) is de premie voor dak en buitenmuur sinds 1 maart 2026 afgeschaft. Voor de laagste inkomens kan dit oplopen tot 35% (categorie 3) of 50% (categorie 4) van het factuurbedrag exclusief btw. Het maximum is 4.025 of 5.750 euro voor het dak en 3.500 of 5.000 euro voor de buitenmuur.</li>
     </ul>
     <p class="artikel__noot"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-info"/></svg><span>Let op: werken moeten altijd uitgevoerd worden door een aannemer.</span></p>
     <p class="artikel__bron">Bron: <a href="https://www.vlaanderen.be/premies-voor-renovatie/mijn-verbouwpremie/mijn-verbouwpremie-voor-dak" rel="noopener" target="_blank">Mijn VerbouwPremie voor dak</a> en <a href="https://www.vlaanderen.be/premies-voor-renovatie/mijn-verbouwpremie/mijn-verbouwpremie-voor-buitenmuur" rel="noopener" target="_blank">Mijn VerbouwPremie voor buitenmuur</a>, op vlaanderen.be.</p>
@@ -196,21 +196,14 @@
             <label for="aanvraag-onder-werk">Om welk werk gaat het?<span class="ster" aria-hidden="true">*</span></label>
             <select id="aanvraag-onder-werk" name="werk" aria-required="true" aria-describedby="aanvraag-onder-werk-fout">
               <option value="">Maak een keuze</option>
-              <option>Totaalrenovatie en nieuwbouw</option><option>Energetisch en ecologisch</option><option>Dakwerken</option><option>Gevelrenovatie</option><option>Badkamer en sanitair</option><option>Interieur en binnenschrijnwerk</option><option>Combinatie of weet ik nog niet</option>
+              <option>Totaalrenovatie en nieuwbouw</option><option>Energetisch en ecologisch</option><option>Dakwerken</option><option>Gevelrenovatie</option><option>Badkamer en sanitair</option><option>Interieur en binnenschrijnwerk</option><option>Combinatie of nog te bepalen</option>
             </select>
             <p class="veld__fout" id="aanvraag-onder-werk-fout" hidden></p>
           </div>
-          <div class="veld-rij">
-            <div class="veld">
-            <label for="aanvraag-onder-straat">Straat &amp; Huisnummer</label>
-            <input id="aanvraag-onder-straat" name="straat" type="text" autocomplete="address-line1" aria-describedby="aanvraag-onder-straat-fout">
-            <p class="veld__fout" id="aanvraag-onder-straat-fout" hidden></p>
-          </div>
-            <div class="veld">
-            <label for="aanvraag-onder-gemeente">Postcode &amp; Gemeente</label>
-            <input id="aanvraag-onder-gemeente" name="gemeente" type="text" autocomplete="address-level2" aria-describedby="aanvraag-onder-gemeente-fout">
-            <p class="veld__fout" id="aanvraag-onder-gemeente-fout" hidden></p>
-          </div>
+          <div class="veld">
+            <label for="aanvraag-onder-postcode">Postcode</label>
+            <input id="aanvraag-onder-postcode" name="postcode" type="text" autocomplete="postal-code" inputmode="numeric" maxlength="4" data-label="Postcode" aria-describedby="aanvraag-onder-postcode-fout">
+            <p class="veld__fout" id="aanvraag-onder-postcode-fout" hidden></p>
           </div>
           <div class="veld">
             <label for="aanvraag-onder-project">Beschrijf kort uw project</label>
@@ -224,7 +217,7 @@
           <span class="aanvraag__vink" aria-hidden="true"><svg width="26" height="26" aria-hidden="true" focusable="false"><use href="#i-vink"/></svg></span>
           <h2 class="aanvraag__kop" data-klaar-kop>Uw e-mail staat klaar</h2>
           <p class="aanvraag__sub" role="status" data-klaar-tekst>Uw e-mailprogramma opent met uw aanvraag. Verstuur die e-mail om uw aanvraag af te ronden.</p>
-          <p class="aanvraag__uitweg">Opent er niets? Bel <a href="tel:+32468359093">0468 35 90 93</a> of mail naar <a href="mailto:inzicht.bouw@gmail.com">inzicht.bouw@gmail.com</a>.</p>
+          <p class="aanvraag__uitweg">Rechtstreeks contact kan altijd: <a href="tel:+32468359093">0468 35 90 93</a> of <a href="mailto:inzicht.bouw@gmail.com">inzicht.bouw@gmail.com</a>.</p>
           <div class="aanvraag__acties">
             <button class="knop knop--rand" type="button" data-kopieer>Kopieer uw aanvraag</button>
             <button class="knop knop--rand" type="button" data-terug>Terug naar uw aanvraag</button>
@@ -289,6 +282,6 @@
   </div>
   <a class="fab" href="tel:+32468359093" aria-label="Bel 0468 35 90 93"><svg width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></a>
 </footer>
-<script src="../../site.js?v=muyplu98" defer></script>
+<script src="../../site.js?v=muyputfl" defer></script>
 </body>
 </html>

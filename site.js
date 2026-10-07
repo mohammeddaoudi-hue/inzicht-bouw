@@ -266,7 +266,7 @@
       el.setAttribute('aria-invalid', tekst ? 'true' : 'false');
       if (p) { p.textContent = tekst || ''; p.hidden = !tekst; }
     };
-    ['naam', 'tel', 'mail', 'werk', 'gemeente', 'bijlagen'].forEach((n) => {
+    ['naam', 'tel', 'mail', 'werk', 'gemeente', 'postcode', 'bijlagen'].forEach((n) => {
       const el = veld(n);
       if (el) el.addEventListener(el.tagName === 'SELECT' || el.type === 'file' ? 'change' : 'input', () => { if (el.getAttribute('aria-invalid') === 'true') zetFout(el, ''); });
     });
@@ -322,10 +322,12 @@
       check(tel, cijfers(tel.value).length >= 8, 'Vul uw telefoonnummer in (minstens 8 cijfers).');
       if (mail) {
         const m = mail.value.trim();
-        check(mail, m ? mailOk(m) : !verplicht(mail), m ? 'Dit e-mailadres klopt niet.' : 'Vul uw e-mailadres in.');
+        check(mail, m ? mailOk(m) : !verplicht(mail), m ? 'Vul een geldig e-mailadres in.' : 'Vul uw e-mailadres in.');
       }
       if (verplicht(werk)) check(werk, !!werk.value, 'Kies om welk werk het gaat.');
       if (verplicht(gemeente)) check(gemeente, gemeente.value.trim().length > 1, 'Vul de postcode en gemeente van de werf in.');
+      const postcode = veld('postcode');
+      if (postcode && postcode.value.trim()) check(postcode, /^\d{4}$/.test(postcode.value.trim()), 'Vul een postcode van 4 cijfers in.');
       if (ENDPOINT && bijlagenVeld) check(bijlagenVeld, bestanden.reduce((s, f) => s + f.size, 0) <= MAX_BIJLAGEN, 'Uw bestanden zijn samen groter dan 10 MB. Kies minder of kleinere bestanden.');
       if (fouten.length) {
         // melding bij de knop, en het eerste foute veld midden in beeld (ook op gsm, waar het ver boven de knop staat)
@@ -339,7 +341,7 @@
       const waarde = (n) => (veld(n) ? veld(n).value.trim() : '');
       const gegevens = {
         naam: waarde('naam'), telefoon: waarde('tel'), email: waarde('mail'), werk: werk ? werk.value : '',
-        straat: waarde('straat'), gemeente: waarde('gemeente'), project: waarde('project'),
+        postcode: waarde('postcode'), gemeente: waarde('gemeente'), project: waarde('project'),
         bijlagen: bestanden.map((f) => f.name).join(', '),
         pagina: location.pathname, verstuurd: new Date().toISOString(),
       };
@@ -370,13 +372,15 @@
 
       // Zonder koppeling: de aanvraag gaat als e-mail vanuit het e-mailprogramma van de bezoeker.
       // Bestanden kunnen niet mee in een mailto-link: de bezoeker voegt ze zelf toe als bijlage.
-      const plaatsLabel = veld('straat') ? 'Adres' : 'Werf';
+      const plaatsVeld = veld('postcode') || veld('gemeente');
+      const plaatsLabel = (plaatsVeld && plaatsVeld.dataset.label) || 'Plaats';
+      const plaats = gegevens.postcode || gegevens.gemeente;
       const regels = [
         'Aanvraag gratis plaatsbezoek via de website', '',
         `Naam: ${gegevens.naam}`, `Telefoon: ${gegevens.telefoon}`,
         gegevens.email ? `E-mail: ${gegevens.email}` : null,
-        gegevens.werk ? `${veld('straat') ? 'Werk' : 'Type project'}: ${gegevens.werk}` : null,
-        gegevens.straat || gegevens.gemeente ? `${plaatsLabel}: ${[gegevens.straat, gegevens.gemeente].filter(Boolean).join(', ')}` : null,
+        gegevens.werk ? `${veld('postcode') ? 'Werk' : 'Type project'}: ${gegevens.werk}` : null,
+        plaats ? `${plaatsLabel}: ${plaats}` : null,
         bestanden.length ? `Bijlagen (zelf toevoegen aan deze e-mail): ${gegevens.bijlagen}` : null,
         ...(gegevens.project ? ['', 'Project:', gegevens.project] : []),
       ].filter((r) => r !== null);

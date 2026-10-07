@@ -235,9 +235,14 @@ const open = async (route, w = 1440, h = 900) => {
   await mb.close();
   // e-mailmodus: na Verzenden kan de bezoeker terug naar zijn ingevulde aanvraag
   const m = await open('contact/');
+  t('plaatsbezoekformulier: postcode aanwezig, straat en huisnummer weg', await m.evaluate(() => !!document.querySelector('#aanvraag-contact-postcode') && !document.querySelector('#aanvraag-contact [name="straat"]')));
   await m.type('#aanvraag-contact-naam', 'Test Persoon'); await m.type('#aanvraag-contact-tel', '0470 12 34 56'); await m.select('#aanvraag-contact-werk', 'Dakwerken');
+  await m.type('#aanvraag-contact-postcode', '19'); await m.click('#aanvraag-contact button[type=submit]'); await wacht(200);
+  t('plaatsbezoekformulier: postcode van 2 cijfers geweigerd', await m.$eval('#aanvraag-contact-postcode-fout', (e) => !e.hidden));
+  await m.type('#aanvraag-contact-postcode', '10');
   await m.click('#aanvraag-contact button[type=submit]'); await wacht(400);
   const mail = await m.evaluate(() => window.__laatsteMail || '');
+  t('plaatsbezoekformulier: postcode staat in de mail', /Postcode: 1910/.test(decodeURIComponent(mail)), decodeURIComponent(mail).slice(0, 160));
   t('e-mailmodus: mail klaargezet zonder e-mailprogramma te openen', mail.startsWith('mailto:inzicht.bouw@gmail.com?subject=') && !/%0A%0A%0A/.test(mail) && mail.length <= 2000, mail.slice(0, 90));
   t('e-mailmodus: bevestiging met terugknop', await m.$eval('#aanvraag-contact [data-terug]', (e) => getComputedStyle(e).display !== 'none' && !e.closest('[hidden]')));
   await browser.defaultBrowserContext().overridePermissions(ORIGIN, ['clipboard-read', 'clipboard-write']); await m.bringToFront();
