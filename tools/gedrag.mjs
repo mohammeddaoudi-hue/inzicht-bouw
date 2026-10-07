@@ -23,6 +23,8 @@ const t = (naam, ok, info = '') => { ok ? pass++ : fail++; console.log(`${ok ? '
 const wacht = (ms) => new Promise((r) => setTimeout(r, ms));
 const open = async (route, w = 1440, h = 900) => {
   const p = await browser.newPage();
+  // e-mailmodus: de mailto-link opvangen, nooit het e-mailprogramma van de pc openen
+  await p.evaluateOnNewDocument(() => { window.__inzichtOpenMail = (h) => { window.__laatsteMail = h; }; });
   p.on('pageerror', (e) => t(`geen JS-fout op /${route}`, false, e.message));
   await p.setViewport({ width: w, height: h, isMobile: w < 600, hasTouch: w < 600 });
   await p.goto(BASE + route, { waitUntil: 'networkidle0' });
@@ -182,6 +184,7 @@ const open = async (route, w = 1440, h = 900) => {
   t('fout e-mailadres geweigerd', await p.$eval('#aanvraag-contact-mail-fout', (e) => !e.hidden));
   await p.close();
   const q = await browser.newPage();
+  await q.evaluateOnNewDocument(() => { window.__inzichtOpenMail = (h) => { window.__laatsteMail = h; }; });
   await q.setViewport({ width: 1440, height: 900 });
   await q.evaluateOnNewDocument((u) => { document.addEventListener('readystatechange', () => { if (document.readyState === 'interactive') document.documentElement.setAttribute('data-form-endpoint', u); }); }, ORIGIN + '/test-endpoint');
   await q.goto(BASE + 'diensten/', { waitUntil: 'networkidle0' });
@@ -207,6 +210,8 @@ const open = async (route, w = 1440, h = 900) => {
   const m = await open('contact/');
   await m.type('#aanvraag-contact-naam', 'Test Persoon'); await m.type('#aanvraag-contact-tel', '0470 12 34 56'); await m.select('#aanvraag-contact-werk', 'Dakwerken');
   await m.click('#aanvraag-contact button[type=submit]'); await wacht(400);
+  const mail = await m.evaluate(() => window.__laatsteMail || '');
+  t('e-mailmodus: mail klaargezet zonder e-mailprogramma te openen', mail.startsWith('mailto:inzicht.bouw@gmail.com?subject=') && !/%0A%0A%0A/.test(mail) && mail.length <= 2000, mail.slice(0, 90));
   t('e-mailmodus: bevestiging met terugknop', await m.$eval('#aanvraag-contact [data-terug]', (e) => getComputedStyle(e).display !== 'none' && !e.closest('[hidden]')));
   await browser.defaultBrowserContext().overridePermissions(ORIGIN, ['clipboard-read', 'clipboard-write']); await m.bringToFront();
   await m.click('#aanvraag-contact [data-kopieer]'); await wacht(300);

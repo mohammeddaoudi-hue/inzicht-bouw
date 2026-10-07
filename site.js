@@ -356,7 +356,9 @@
       }
       mailTekst = [`Aan: ${MAIL}`, `Onderwerp: Aanvraag plaatsbezoek: ${gegevens.werk}`, '', ...regels].join('\n');
       toonKlaar();
-      window.location.href = href;
+      // testhaak: alleen de testsuite zet window.__inzichtOpenMail klaar; dan opent er geen e-mailprogramma op de pc
+      if (typeof window.__inzichtOpenMail === 'function') window.__inzichtOpenMail(href);
+      else window.location.href = href;
     });
   });
 

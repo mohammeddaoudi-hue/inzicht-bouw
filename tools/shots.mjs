@@ -59,6 +59,7 @@ for (const route of ROUTES) {
 const toestand = async (naam, route, [w, h], doe, uitleg) => {
   const p = await browser.newPage();
   await p.setViewport({ width: w, height: h, isMobile: w < 600, hasTouch: w < 600 });
+  await p.evaluateOnNewDocument(() => { window.__inzichtOpenMail = () => {}; }); // nooit het e-mailprogramma openen
   await p.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
   await p.goto(BASE + route, { waitUntil: 'networkidle0' });
   await klaarZetten(p);
