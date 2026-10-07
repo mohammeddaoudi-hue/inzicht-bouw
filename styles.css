@@ -255,7 +255,7 @@ ul, ol { padding: 0; list-style: none; }
   position: absolute; inset: 0;
   /* donker waar de tekst staat (linksonder) en achter de balk, de rest van de foto blijft licht */
   background:
-    radial-gradient(140% 125% at 8% 90%, rgba(8, 8, 8, 0.86) 0%, rgba(8, 8, 8, 0.72) 40%, rgba(8, 8, 8, 0.42) 64%, rgba(8, 8, 8, 0) 86%),
+    radial-gradient(130% 100% at 8% 88%, rgba(8, 8, 8, 0.84) 0%, rgba(8, 8, 8, 0.68) 36%, rgba(8, 8, 8, 0.36) 60%, rgba(8, 8, 8, 0) 82%),
     linear-gradient(180deg, rgba(8, 8, 8, 0.74) 0%, rgba(8, 8, 8, 0.52) 10%, rgba(8, 8, 8, 0.16) 22%, rgba(8, 8, 8, 0) 32%, rgba(8, 8, 8, 0) 62%, rgba(8, 8, 8, 0.5) 100%);
 }
 .hero__in { position: relative; padding-top: calc(var(--nav-h) + 40px); padding-bottom: 88px; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
@@ -733,7 +733,7 @@ main:has(> section:last-child:is(.vragen:not(.vragen--wit), .kopband)) + .voet {
   .h2 { font-size: clamp(34px, 8.4vw, 44px); }
 
   .hero__in { padding-top: calc(var(--nav-h) + 24px); padding-bottom: 44px; flex-direction: column; align-items: flex-start; gap: 28px; }
-  .hero__laag { background: linear-gradient(180deg, rgba(8, 8, 8, 0.62) 0%, rgba(8, 8, 8, 0.58) 18%, rgba(8, 8, 8, 0.72) 45%, rgba(8, 8, 8, 0.92) 100%); }
+  .hero__laag { background: linear-gradient(180deg, rgba(8, 8, 8, 0.5) 0%, rgba(8, 8, 8, 0.18) 28%, rgba(8, 8, 8, 0.55) 58%, rgba(8, 8, 8, 0.9) 100%); }
   .hero__foto img { object-position: center 40%; }
   .hero__kop { font-size: clamp(40px, 11vw, 64px); }
   .hero__tekst { font-size: 17px; margin-top: 20px; }

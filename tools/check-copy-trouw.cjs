@@ -59,4 +59,9 @@ if (!ruw('vragen/').includes(I.VRAGEN.lijst[0].v)) { console.error('ONGELDIGE ME
 const terug = [];
 for (const [waarom, zin] of WEG) for (const r of ALLE) if (ruw(r).toLowerCase().includes(zin.toLowerCase())) terug.push(`  /${r}: "${zin}" (${waarom})`);
 if (terug.length) { console.log(`ROOD ${terug.length} verwijderde zin(nen) staan er nog:`); terug.forEach((x) => console.log(x)); process.exit(1); }
+// subheadline van de hero: max 2 zinnen en 30 woorden (8 okt 2026, Mohammed: "er is veel te veel text in de subheadline")
+for (const [waar, tekst] of [['home-hero', I.HOME.hero.tekst], ['Over ons-hero', I.OVER.sub]]) {
+  const zinnen = tekst.split(/(?<=[.!?])\s+/).filter(Boolean).length; const woorden = tekst.split(/\s+/).length;
+  if (zinnen > 2 || woorden > 30) { console.log(`ROOD subheadline ${waar} te lang: ${zinnen} zinnen, ${woorden} woorden (max 2 en 30)`); process.exit(1); }
+}
 console.log('GROEN alle copy staat woordelijk op de juiste pagina');

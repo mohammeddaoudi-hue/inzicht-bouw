@@ -39,7 +39,9 @@ const KNOP = { plaatsbezoek: 'Gratis plaatsbezoek' };
    Daarom: subheadline in de hero van Over ons én tekst van de inleiding onder de hero op de home. Woordelijk. */
 /* Zijn titel (7 okt 2026, Over ons): ook kop van de inleiding op de home. */
 const OVER_TITEL = 'Dé totaalaannemer voor hoogwaardige bouwprojecten';
-const TOTAALAANNEMER = 'Een succesvol bouwproject begint bij een sterke fundering en een ijzersterke organisatie. Als totaalaannemer nemen we de volledige regie van uw project in handen. Of u nu een particuliere bouwheer bent met exclusieve woonplannen, of een ontwikkelaar die op zoek is naar een betrouwbare uitvoerder: wij bundelen alle disciplines om uw visie efficiënt en volgens de strengste normen te bouwen. Geen versnipperde verantwoordelijkheden, maar één partner die het overzicht bewaart.';
+/* 8 okt 2026: "er is veel te veel text in de subheadline" → alleen zijn zinnen 1 en 2 (woordelijk). Geschrapt: "Of u nu een particuliere bouwheer ..."
+   en "Geen versnipperde verantwoordelijkheden, maar één partner die het overzicht bewaart." */
+const TOTAALAANNEMER = 'Een succesvol bouwproject begint bij een sterke fundering en een ijzersterke organisatie. Als totaalaannemer nemen we de volledige regie van uw project in handen.';
 
 const HOME = {
   titel: 'INzicht bouw en renovatie · Kampenhout',
