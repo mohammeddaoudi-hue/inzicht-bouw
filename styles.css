@@ -168,6 +168,8 @@ ul, ol { padding: 0; list-style: none; }
 .nav__logo { display: block; position: relative; flex: none; }
 .nav__logo img { height: 66px; width: auto; transition: opacity var(--snel) var(--ease); }
 .nav__logo-ink { position: absolute; left: 0; top: 0; opacity: 0; }
+/* het witte logo staat alleen op de home; op subpagina's draagt het donkere logo de maat */
+.sub .nav__logo-ink { position: static; }
 .nav.is-gescrold .nav__logo-wit, .sub .nav__logo-wit { opacity: 0; }
 .nav.is-gescrold .nav__logo-ink, .sub .nav__logo-ink { opacity: 1; }
 .nav__links { display: flex; align-items: center; gap: 30px; }
@@ -253,7 +255,7 @@ ul, ol { padding: 0; list-style: none; }
   position: absolute; inset: 0;
   /* donker waar de tekst staat (linksonder) en achter de balk, de rest van de foto blijft licht */
   background:
-    radial-gradient(125% 95% at 8% 88%, rgba(8, 8, 8, 0.84) 0%, rgba(8, 8, 8, 0.62) 34%, rgba(8, 8, 8, 0.22) 60%, rgba(8, 8, 8, 0) 78%),
+    radial-gradient(130% 100% at 8% 88%, rgba(8, 8, 8, 0.84) 0%, rgba(8, 8, 8, 0.68) 36%, rgba(8, 8, 8, 0.36) 60%, rgba(8, 8, 8, 0) 82%),
     linear-gradient(180deg, rgba(8, 8, 8, 0.74) 0%, rgba(8, 8, 8, 0.52) 10%, rgba(8, 8, 8, 0.16) 22%, rgba(8, 8, 8, 0) 32%, rgba(8, 8, 8, 0) 62%, rgba(8, 8, 8, 0.5) 100%);
 }
 .hero__in { position: relative; padding-top: calc(var(--nav-h) + 40px); padding-bottom: 88px; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
@@ -376,6 +378,8 @@ ul, ol { padding: 0; list-style: none; }
 .paneel__kop { margin-top: 10px; font-size: 28px; line-height: 1.22; font-weight: 600; color: var(--ink); letter-spacing: -0.015em; }
 .paneel__kop a { display: inline-block; padding: 8px 0; }
 .paneel__kop a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; text-decoration-color: var(--accent); }
+.paneel__kop svg { margin-left: 8px; vertical-align: -3px; transition: transform var(--snel) var(--ease); }
+.paneel:hover .paneel__kop svg { transform: translateX(3px); }
 .paneel__tekst { margin-top: 14px; font-size: 18px; line-height: 1.55; }
 .tabs { display: flex; flex-direction: column; gap: 12px; padding-top: 60px; }
 .tab { position: relative; display: flex; align-items: center; height: 60px; border-radius: var(--r-pil); color: rgba(255, 255, 255, 0.8); transition: color var(--snel) var(--ease); }
@@ -409,6 +413,7 @@ ul, ol { padding: 0; list-style: none; }
 .sprong__lijst a span { font-size: 13px; font-weight: 600; color: var(--mute); }
 .sprong__lijst a:hover, .sprong__lijst a.is-actief { background: var(--chip); }
 .sprong__lijst a.is-actief span { color: var(--ink); }
+.sprong__lijst a:focus-visible { outline-offset: -3px; }
 
 .sprongvak { position: relative; }
 /* ankers naar een dienst landen onder de vaste balk én onder de sprongbalk (69 px) */
@@ -446,7 +451,7 @@ ul, ol { padding: 0; list-style: none; }
   box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.07);
   transition: background-color var(--snel) var(--ease), box-shadow var(--snel) var(--ease);
 }
-.acc__item.is-open { background: var(--accent); box-shadow: 0 24px 48px -32px rgba(249, 173, 74, 0.7); }
+.acc__item.is-open { background: var(--accent); box-shadow: none; }
 .acc__item h2, .acc__item h3 { font-size: inherit; font-weight: inherit; line-height: inherit; letter-spacing: inherit; }
 .acc__vraag {
   width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px;
@@ -475,8 +480,7 @@ ul, ol { padding: 0; list-style: none; }
 .tip__foto img { width: 100%; height: 280px; object-fit: cover; border-radius: 0; transition: transform 0.9s cubic-bezier(0.32, 0.72, 0, 1); }
 .tip:hover .tip__foto img { transform: scale(1.02); }
 .tip__body { padding: 26px 28px 30px; display: flex; flex-direction: column; flex: 1; }
-.tip__meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 15.5px; color: var(--mute); }
-.tip__meta > span { display: inline-flex; align-items: center; gap: 6px; }
+
 .tip__kop { font-size: 21px; line-height: 1.36; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; text-wrap: balance; }
 .tip .link { margin-top: auto; padding-top: 24px; }
 .tip__kern:hover .tip__kop { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 5px; }
@@ -545,7 +549,7 @@ ul, ol { padding: 0; list-style: none; }
 .aanvraag__klaar { text-align: left; padding: 8px 0; }
 .aanvraag__klaar:focus, .aanvraag:focus { outline: none; }
 .aanvraag [hidden] { display: none !important; }
-.aanvraag__terug { margin-top: 22px; }
+.aanvraag__acties { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
 .aanvraag__vink { width: 56px; height: 56px; border-radius: 50%; background: var(--accent); color: var(--ink); display: grid; place-items: center; margin-bottom: 18px; }
 .aanvraag__uitweg { margin-top: 14px; font-size: 15.5px; color: var(--body); }
 .aanvraag__uitweg a { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
@@ -601,7 +605,7 @@ ul, ol { padding: 0; list-style: none; }
 .intro__beeld img { width: 100%; aspect-ratio: 4 / 3; height: auto; object-fit: cover; }
 .intro__tekst { max-width: 560px; }
 .intro__lead { margin-top: 26px; font-size: 21px; line-height: 1.55; color: var(--ink); font-weight: 500; letter-spacing: -0.005em; }
-.intro__p { margin-top: 18px; }
+
 .intro .knop { margin-top: 34px; }
 
 /* ══ DIENSTENSTROOK (over ons) ══ */
@@ -828,7 +832,7 @@ main:has(> section:last-child:is(.vragen:not(.vragen--wit), .kopband)) + .voet {
   .is-rail::-webkit-scrollbar { display: none; }
   .is-rail > * { flex: 0 0 84%; scroll-snap-align: start; }
   .is-rail + .rail-bediening, .rail-bediening.is-aan { display: flex; }
-  .podium__panelen.is-rail > .paneel[hidden] { display: block; }
+  .podium__panelen.is-rail > .paneel[hidden] { display: flex; }
   .podium__panelen.is-rail .paneel { min-height: 0; animation: none; }
   .podium__panelen.is-rail .paneel { display: flex; flex-direction: column; }
   .podium__panelen.is-rail .paneel__kaart { margin: -48px 10px 0; flex: 1; display: flex; flex-direction: column; }

@@ -55,9 +55,8 @@ const HOME = {
   /* Inleiding: door Claude geschreven in de stijl van Mohammeds copy (7 okt 2026, op zijn vraag "eerst een sectie kort inleiding inzicht").
      Inhoud komt uit zijn over-ons-tekst; geen nieuwe beloftes. */
   intro: {
-    kop: 'Bouwen met heldere afspraken',
-    lead: 'INzicht bouw en renovatie is een bouwbedrijf uit Kampenhout. Het bedrijf is ontstaan vanuit een eenvoudige behoefte: duidelijke communicatie en betrouwbare afspraken met de bouwheer.',
-    tekst: 'Daarom werkt u bij ons met eigen vakmensen en een vaste projectleider. Hij houdt uw werf in handen, en elke week krijgt u een werfverslag met de stand van de werken.',
+    kop: 'Een bouwbedrijf uit Kampenhout',
+    lead: 'INzicht bouw en renovatie is ontstaan vanuit een eenvoudige behoefte: duidelijke communicatie en vaste afspraken met de bouwheer.',
     knop: 'Lees ons verhaal',
   },
   diensten: { kop: 'Wat wij bouwen en verbouwen', knop: 'Ontdek alle diensten in detail' },
@@ -190,7 +189,7 @@ const BLOGS = [
     intro: 'Een stuk aanbouwen voor een leefkeuken of thuiskantoor is een populaire manier om meer uit uw woning te halen. Maar mag u zomaar beginnen bouwen?',
     punten: [
       // GECORRIGEERD (zie CORRECTIES): de meldingsplicht voor aangebouwde bijgebouwen is sinds 1 maart 2026 afgeschaft
-      { b: 'De meldingsplicht is afgeschaft:', t: 'Voor een aangebouwd bijgebouw gold vroeger vaak een meldingsplicht. Sinds 1 maart 2026 valt een aanbouw aan uw woning terug onder de vergunningsplicht. Alleen vrijstaande bijgebouwen blijven onder strikte voorwaarden vrijgesteld, tot samen maximaal 40 vierkante meter per woning.' },
+      { b: 'De meldingsplicht is afgeschaft:', t: 'Voor een aangebouwd bijgebouw gold vroeger vaak een meldingsplicht. Alleen vrijstaande bijgebouwen blijven onder strikte voorwaarden vrijgesteld, tot samen maximaal 40 vierkante meter per woning.' },
       { b: 'Wanneer is een omgevingsvergunning nodig?', t: 'Voor een aanbouw of uitbreiding aan uw woning heeft u sinds 1 maart 2026 in de regel een omgevingsvergunning nodig. Kijk de voorwaarden na op het Omgevingsloket of bij uw gemeente voor u plannen laat tekenen.' },
       { b: 'Heeft u een architect nodig?', t: 'Zodra we voor uw aanbouw een gat maken in een dragende buitenmuur, raakt dit aan de stabiliteit van de woning. Op dat moment eist de wetgever altijd de tussenkomst van een architect.' },
     ],
@@ -211,7 +210,7 @@ const BLOGS = [
       { b: 'Dakwerken en dakisolatie:', t: 'De premie geldt niet enkel voor de isolatie, maar vaak ook voor werken eromheen: het afbreken van de oude bedekking, een nieuw onderdak, pannen, leien en soms zelfs de draagstructuur. Ook dakramen kunnen in aanmerking komen.' },
       { b: 'Buitenmuur en gevelrenovatie:', t: 'Plaatst u isolatie langs de buitenzijde, afgewerkt met crepi of steenstrips? Dan kunt u via Mijn VerbouwPremie een aanzienlijk deel recupereren.' },
       // GECORRIGEERD (vlaanderen.be, ruwe pagina's dak en buitenmuur gelezen op 7 okt 2026): categorie 1 en 2 krijgen sinds 1 maart 2026 niets meer; bedragen per categorie
-      { b: 'Hoeveel krijgt u terug?', t: 'Dit hangt af van uw inkomenscategorie. Voor de hoogste inkomens (categorie 1 en 2) is er sinds 1 maart 2026 geen premie meer voor dak of buitenmuur. Voor middelste en lagere inkomens kan dit oplopen tot 35% (categorie 3) of 50% (categorie 4) van het factuurbedrag zonder btw. Het maximum is 4.025 of 5.750 euro voor het dak en 3.500 of 5.000 euro voor de buitenmuur.' },
+      { b: 'Hoeveel krijgt u terug?', t: 'Dit hangt af van uw inkomenscategorie. Voor de hoogste en middelste inkomens (categorie 1 en 2) is er sinds 1 maart 2026 geen premie meer voor dak of buitenmuur. Voor de laagste inkomens kan dit oplopen tot 35% (categorie 3) of 50% (categorie 4) van het factuurbedrag zonder btw. Het maximum is 4.025 of 5.750 euro voor het dak en 3.500 of 5.000 euro voor de buitenmuur.' },
     ],
     noot: 'Let op: werken moeten altijd uitgevoerd worden door een aannemer.',
     bron: [
@@ -273,7 +272,7 @@ const PRIVACY = {
 
 /* Wat er van de aangeleverde copy is afgeweken, en waarom (gemeld aan Mohammed op 7 okt 2026). */
 const CORRECTIES = [
-  'Blog premies (7 okt, na keuring tegen de ruwe paginas van vlaanderen.be): de zinnen van Mohammed over dak en buitenmuur kloppen voor categorie 3 en 4 en staan er weer. Alleen "hoogste inkomens: vast bedrag per vierkante meter" was fout: categorie 1 en 2 krijgen sinds 1 maart 2026 niets meer. Bedragen: dak 35% max 4.025 / 50% max 5.750, buitenmuur 35% max 3.500 / 50% max 5.000. "erkende aannemer" werd "aannemer".',
+  'Blog premies (7 okt, na keuring tegen de ruwe paginas van vlaanderen.be): de zinnen van Mohammed over dak en buitenmuur kloppen voor categorie 3 en 4 en staan er weer. Alleen "hoogste inkomens: vast bedrag per vierkante meter" was fout: categorie 1 en 2 krijgen sinds 1 maart 2026 niets meer. Benaming volgens vlaanderen.be: categorie 1 = hoogste, categorie 2 = middelste, categorie 3 en 4 = laagste inkomens. Bedragen: dak 35% max 4.025 / 50% max 5.750, buitenmuur 35% max 3.500 / 50% max 5.000. "erkende aannemer" werd "aannemer".',
   'Blog vergunning: meldingsplicht voor aangebouwde bijgebouwen is sinds 1 maart 2026 afgeschaft (wijziging Vrijstellingsbesluit); de cijfers 4 meter en 2 tot 3 meter zijn weg.',
 ];
 

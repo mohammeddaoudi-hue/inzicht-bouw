@@ -258,13 +258,31 @@
       if (kop) $('[data-klaar-kop]', klaar).textContent = kop;
       if (tekst) $('[data-klaar-tekst]', klaar).textContent = tekst;
       // na een echte verzending opent er geen e-mailprogramma: geen uitwegregel en geen terugknop
-      $$('.aanvraag__uitweg, [data-terug]', klaar).forEach((el) => { el.hidden = verzonden; });
+      $$('.aanvraag__uitweg, .aanvraag__acties', klaar).forEach((el) => { el.hidden = verzonden; });
       stapForm.hidden = true;
       klaar.hidden = false;
       klaar.focus({ preventScroll: true });
       form.scrollIntoView({ behavior: scrollGedrag(), block: 'start' });
     };
-    // e-mailmodus: opent er geen e-mailprogramma, dan kan de bezoeker terug naar zijn ingevulde aanvraag
+    // e-mailmodus: opent er geen e-mailprogramma, dan kan de bezoeker zijn aanvraag kopiëren
+    // (en zelf mailen vanuit zijn webmail) of terug naar zijn ingevulde aanvraag
+    let mailTekst = '';
+    const kopieer = $('[data-kopieer]', form);
+    if (kopieer) {
+      const label = kopieer.textContent;
+      kopieer.addEventListener('click', async () => {
+        let ok = false;
+        try { await navigator.clipboard.writeText(mailTekst); ok = true; } catch (err) {
+          const vak = document.createElement('textarea');
+          vak.value = mailTekst; vak.setAttribute('readonly', ''); vak.style.position = 'fixed'; vak.style.opacity = '0';
+          document.body.appendChild(vak); vak.select();
+          try { ok = document.execCommand('copy'); } catch (e2) { ok = false; }
+          vak.remove();
+        }
+        kopieer.textContent = ok ? 'Gekopieerd' : 'Kopiëren lukte niet';
+        setTimeout(() => { kopieer.textContent = label; }, 2500);
+      });
+    }
     const terug = $('[data-terug]', form);
     if (terug) {
       terug.addEventListener('click', () => {
@@ -336,6 +354,7 @@
           href = maakHref([...regels.slice(0, -1), `${tekst} [ingekort]`]);
         }
       }
+      mailTekst = [`Aan: ${MAIL}`, `Onderwerp: Aanvraag plaatsbezoek: ${gegevens.werk}`, '', ...regels].join('\n');
       toonKlaar();
       window.location.href = href;
     });

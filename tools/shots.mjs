@@ -39,6 +39,7 @@ for (const route of ROUTES) {
   for (const [w, h] of BREEDTES) {
     const p = await browser.newPage();
     await p.setViewport({ width: w, height: h, isMobile: w < 600, hasTouch: w < 600, deviceScaleFactor: 1 });
+    await p.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]); // scrollen zonder animatie: elk beeld is af
     await p.goto(BASE + route, { waitUntil: 'networkidle0' });
     await klaarZetten(p);
     const buf = await p.screenshot({ fullPage: true });
@@ -58,6 +59,7 @@ for (const route of ROUTES) {
 const toestand = async (naam, route, [w, h], doe, uitleg) => {
   const p = await browser.newPage();
   await p.setViewport({ width: w, height: h, isMobile: w < 600, hasTouch: w < 600 });
+  await p.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
   await p.goto(BASE + route, { waitUntil: 'networkidle0' });
   await klaarZetten(p);
   await doe(p);

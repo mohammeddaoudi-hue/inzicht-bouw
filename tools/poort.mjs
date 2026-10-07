@@ -7,9 +7,10 @@ const snel = process.argv.includes('--snel');
 const stappen = [
   ['bouwen', 'node', [path.join(T, '..', 'build.cjs')]],
   ['copy-trouw', 'node', [path.join(T, 'check-copy-trouw.cjs')]],
-  ['keuring pagina\'s', 'node', [path.join(T, 'keur.mjs'), path.join(os.tmpdir(), 'inzicht-poort-shots'), '1440,1024,390']],
+  ['keuring pagina\'s', 'node', [path.join(T, 'keur.mjs'), path.join(os.tmpdir(), 'inzicht-poort-shots'), '1440,1100,1024,1001,768,390']],
   ['gedrag', 'node', [path.join(T, 'gedrag.mjs')]],
   ['menucontrast', 'node', [path.join(T, 'nav-contrast.mjs')]],
+  ['herocontrast', 'node', [path.join(T, 'hero-contrast.mjs')]],
   ...(snel ? [] : [['prestaties', 'node', [path.join(T, 'prestaties.mjs')]]]),
   // positieve controle: POORT_TEST_FOUT=1 voegt een stap toe die altijd faalt, de poort moet dan dichtgaan
   ...(process.env.POORT_TEST_FOUT ? [['test-fout', 'node', ['-e', 'process.exit(1)']]] : []),

@@ -126,7 +126,7 @@ ${schemas.map((s) => `<script type="application/ld+json">${JSON.stringify(s)}</s
 }
 
 /* ── balk bovenaan ────────────────────────────────────────────────────── */
-function header(v, actief, anker = '#plaatsbezoek') {
+function header(v, actief, anker = '#plaatsbezoek', home = false) {
   const link = (n) => {
     const huidig = actief === n.pad ? ' aria-current="page"' : '';
     if (n.pad === 'diensten/') {
@@ -146,8 +146,7 @@ function header(v, actief, anker = '#plaatsbezoek') {
 <header class="nav" id="top">
   <div class="wrap nav__in">
     <a class="nav__logo" href="${rel(v, '')}" aria-label="${attr(SITE.volledig)}, naar de homepage">
-      <img class="nav__logo-wit" src="${rel(v, 'img/logo-wit.png')}" width="227" height="140" alt="${attr(SITE.volledig)}">
-      <img class="nav__logo-ink" src="${rel(v, 'img/logo-ink.png')}" width="227" height="140" alt="">
+      ${home ? `<img class="nav__logo-wit" src="${rel(v, 'img/logo-wit.png')}" width="227" height="140" alt="">\n      ` : ''}<img class="nav__logo-ink" src="${rel(v, 'img/logo-ink.png')}" width="227" height="140" alt="">
     </a>
     <nav class="nav__links" aria-label="Hoofdmenu">
       ${NAV.map(link).join('\n      ')}
@@ -215,7 +214,7 @@ function footer(v) {
 }
 
 /* ── formulier (onderaan elke pagina + contactpagina), vragen zoals op abgroep ── */
-function formulier(v, id, { kop = true, kopId = '', sub = true } = {}) {
+function formulier(v, id, { kop = true, kopId = '', sub = true, knop = FORM.knop } = {}) {
   const F = FORM.velden;
   const ster = '<span class="ster" aria-hidden="true">*</span>';
   const veld = (naam, label, type, auto, { verplicht = false, extra = '' } = {}) => `<div class="veld">
@@ -251,7 +250,7 @@ function formulier(v, id, { kop = true, kopId = '', sub = true } = {}) {
             <textarea id="${id}-project" name="project" rows="4" maxlength="1000" placeholder="${attr(F.projectHint)}"></textarea>
           </div>
           <p class="aanvraag__fout" role="alert" hidden></p>
-          <button class="knop knop--accent knop--vol" type="submit">${esc(FORM.knop)}${knopIc()}</button>
+          <button class="knop knop--accent knop--vol" type="submit">${esc(knop)}${knopIc()}</button>
           <p class="aanvraag__klein">${esc(FORM.privacy)} <a href="${rel(v, 'privacy/')}">${esc(FORM.privacyLink)}</a>.</p>
         </div>
         <div class="aanvraag__stap aanvraag__klaar" data-stap="klaar" hidden tabindex="-1">
@@ -259,7 +258,10 @@ function formulier(v, id, { kop = true, kopId = '', sub = true } = {}) {
           <h2 class="aanvraag__kop" data-klaar-kop>Uw e-mail staat klaar</h2>
           <p class="aanvraag__sub" role="status" data-klaar-tekst>Uw e-mailprogramma opent met uw aanvraag. Verstuur die e-mail om uw aanvraag af te ronden.</p>
           <p class="aanvraag__uitweg">Opent er niets? Bel <a href="${SITE.tel.href}">${esc(SITE.tel.toon)}</a> of mail naar <a href="mailto:${SITE.mail}">${esc(SITE.mail)}</a>.</p>
-          <button class="knop knop--rand aanvraag__terug" type="button" data-terug>Terug naar uw aanvraag</button>
+          <div class="aanvraag__acties">
+            <button class="knop knop--rand" type="button" data-kopieer>Kopieer uw aanvraag</button>
+            <button class="knop knop--rand" type="button" data-terug>Terug naar uw aanvraag</button>
+          </div>
         </div>
       </form>`;
 }
@@ -281,7 +283,7 @@ function plaats(v) {
       </div>
       <div class="plaats__form kader">
         <div class="plaats__formkern">
-          ${formulier(v, 'aanvraag-onder', { kop: false })}
+          ${formulier(v, 'aanvraag-onder', { kop: false, knop: HOME.cta.knop })}
         </div>
       </div>
     </div>
@@ -396,7 +398,7 @@ function tipKaart(v, b, kopNiveau = 'h3', beeld = {}) {
           <div class="tip__foto">${pic(v, b.img, b.alt, { sizes: '(max-width: 1000px) 100vw, 33vw', ...beeld })}</div>
           <div class="tip__body">
             <${kopNiveau} class="tip__kop">${esc(b.titel)}</${kopNiveau}>
-            <span class="tip__meta"><span>${ic('tag', 16)}${esc(b.label)}</span></span>
+
             <span class="link">Lees meer${ic('chev')}</span>
           </div>
         </a>
@@ -415,7 +417,7 @@ PAGINAS.push(() => {
   return `${head(p)}
 <body class="is-home">
 ${SPRITE}
-${header(v, '')}
+${header(v, '', '#plaatsbezoek', true)}
 <main id="inhoud">
 
 <section class="hero">
@@ -447,7 +449,7 @@ ${header(v, '')}
     <div class="intro__tekst" data-reveal>
       <h2 class="h2" id="intro-kop">${esc(HOME.intro.kop)}</h2>
       <p class="intro__lead">${esc(HOME.intro.lead)}</p>
-      <p class="intro__p">${esc(HOME.intro.tekst)}</p>
+
       <a class="knop knop--rand" href="over-ons/">${esc(HOME.intro.knop)}</a>
     </div>
   </div>
@@ -468,7 +470,7 @@ ${header(v, '')}
           <div class="paneel__kaart">
             <div class="paneel__kern">
               <p class="paneel__nr">${d.nr}</p>
-              <h3 class="paneel__kop"><a href="diensten/#${d.slug}">${esc(d.kortNaam)}</a></h3>
+              <h3 class="paneel__kop"><a href="diensten/#${d.slug}">${esc(d.kortNaam)}${ic('chev', 20)}</a></h3>
               <p class="paneel__tekst">${esc(d.kortTekst)}</p>
             </div>
           </div>
@@ -526,17 +528,6 @@ ${header(v, '')}
 
 
 
-<section class="tips" id="tips" aria-labelledby="tips-kop">
-  <div class="wrap">
-    <h2 class="h2 h2--midden" id="tips-kop" data-reveal>${esc(HOME.tipsKop)}</h2>
-    <div class="tips__rail" data-reveal>
-      <div class="tips__rij tips__rij--rail" data-rail>
-      ${BLOGS.map((b) => tipKaart(v, b)).join('\n      ')}
-      </div>
-      ${railBediening(true, 'tip')}
-    </div>
-  </div>
-</section>
 
 <section class="vragen vragen--wit" id="vragen" aria-labelledby="vragen-kop">
   <div class="wrap">
@@ -565,7 +556,7 @@ PAGINAS.push(() => {
 ${SPRITE}
 ${header(v, v)}
 <main id="inhoud">
-${phero(v, { delen, kop: DIENSTEN_PAGINA.kop, lede: DIENSTEN_PAGINA.intro, beeld: 'diensten-hero', alt: 'Witte, gerenoveerde woning met garage en warmtepomp' })}
+${phero(v, { delen, kop: DIENSTEN_PAGINA.kop, lede: DIENSTEN_PAGINA.intro, beeld: 'd-totaal-2', alt: 'Afgewerkte, lichte leefruimte met een witte zetel en kleurrijke kussens' })}
 
 <div class="sprongvak">
 <nav class="sprong" aria-label="Diensten op deze pagina">

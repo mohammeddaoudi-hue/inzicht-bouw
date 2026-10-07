@@ -14,7 +14,7 @@ const voeg = (route, t) => verwacht.push([route, t]);
 voeg('', I.HOME.hero.kop.join(' ')); voeg('', I.HOME.hero.tekst); voeg('', I.HOME.hero.knop1); voeg('', I.HOME.hero.knop2);
 voeg('', I.HOME.werkwijze.kop); I.HOME.werkwijze.punten.forEach((p) => { voeg('', p.titel); voeg('', p.tekst); });
 voeg('', I.HOME.diensten.kop); voeg('', I.HOME.diensten.knop); I.DIENSTEN.forEach((d) => { voeg('', d.kortNaam); voeg('', d.kortTekst); });
-voeg('', I.HOME.cta.kop); voeg('', I.HOME.cta.tekst); voeg('', I.HOME.vragenKop);
+voeg('', I.HOME.cta.kop); voeg('', I.HOME.cta.tekst); voeg('', I.HOME.cta.knop); voeg('diensten/', I.HOME.cta.knop); voeg('', I.HOME.vragenKop);
 I.VRAGEN.lijst.forEach((f) => { voeg('', f.v); voeg('', f.a); voeg('vragen/', f.v); voeg('vragen/', f.a); });
 voeg('diensten/', I.DIENSTEN_PAGINA.kop.join(' ')); voeg('diensten/', I.DIENSTEN_PAGINA.intro);
 I.DIENSTEN.forEach((d) => { voeg('diensten/', d.naam); voeg('diensten/', d.tekst); d.punten.forEach((p) => voeg('diensten/', p)); });

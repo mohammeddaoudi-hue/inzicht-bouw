@@ -104,13 +104,14 @@ const open = async (route, w = 1440, h = 900) => {
   t('gsm rail: focus blijft op de knop aan het einde', await p.evaluate(() => document.activeElement.matches('#diensten [data-volgende]')));
   const kaartH = await p.$$eval('.podium__panelen .paneel__kern', (ks) => ks.map((k) => Math.round(k.getBoundingClientRect().bottom - k.closest('.paneel').getBoundingClientRect().top)));
   t('gsm rail: alle dienstkaarten even hoog', new Set(kaartH).size === 1, kaartH.join(','));
-  t('gsm tips: rail actief', await p.$eval('.tips__rij--rail', (e) => e.classList.contains('is-rail')));
+  t('home: volgorde hero, inleiding, diensten, werf, vragen, plaatsbezoek', (await p.$$eval('main > section', (ss) => ss.map((s) => s.id || s.className.split(' ')[0]).join(','))) === 'hero,over,diensten,waarom,vragen,plaatsbezoek');
   // menu
   await p.evaluate(() => window.scrollTo(0, 0));
   await p.click('.burger'); await wacht(200);
   t('gsm menu opent', await p.$eval('#mobmenu', (e) => !e.hidden));
   t('gsm menu: body scrollt niet', await p.evaluate(() => document.body.classList.contains('menu-open')));
   t('gsm menu: pagina onder het menu is onbereikbaar (inert)', await p.evaluate(() => document.querySelector('main').inert === true && document.querySelector('.voet').inert === true));
+  t('gsm menu: ronde belknop zit in de voet en is dus mee inert', await p.evaluate(() => !!document.querySelector('.fab').closest('.voet')));
   await p.keyboard.press('Escape'); await wacht(100);
   t('gsm menu sluit met Escape', await p.$eval('#mobmenu', (e) => e.hidden));
   t('gsm menu dicht: pagina weer bereikbaar', await p.evaluate(() => document.querySelector('main').inert === false));
@@ -196,7 +197,7 @@ const open = async (route, w = 1440, h = 900) => {
   await q.waitForFunction(() => !document.querySelector('#aanvraag-onder [data-stap="klaar"]').hidden, { timeout: 10000 }).catch(() => {});
   await wacht(600);
   t('dubbele verzending geeft één aanvraag', aantalPosts === 1, `${aantalPosts} POST(s)`);
-  t('endpoint-modus: geen uitwegregel en geen terugknop', (await q.$eval('#aanvraag-onder .aanvraag__uitweg', (e) => e.hidden)) && (await q.$eval('#aanvraag-onder [data-terug]', (e) => getComputedStyle(e).display === 'none')));
+  t('endpoint-modus: geen uitwegregel en geen terugknop', (await q.$eval('#aanvraag-onder .aanvraag__uitweg', (e) => e.hidden)) && (await q.$eval('#aanvraag-onder [data-terug]', (e) => e.closest('[hidden]') !== null && e.offsetParent === null)));
   t('verzonden naar endpoint', !!laatstePost, laatstePost ? JSON.stringify(laatstePost).slice(0, 160) : 'niets ontvangen');
   t('payload bevat dienst uit de knop', laatstePost && laatstePost.werk === 'Gevelrenovatie');
   t('na verzenden bevestiging zichtbaar', await q.$eval('#aanvraag-onder [data-stap="klaar"]', (e) => !e.hidden));
@@ -207,6 +208,10 @@ const open = async (route, w = 1440, h = 900) => {
   await m.type('#aanvraag-contact-naam', 'Test Persoon'); await m.type('#aanvraag-contact-tel', '0470 12 34 56'); await m.select('#aanvraag-contact-werk', 'Dakwerken');
   await m.click('#aanvraag-contact button[type=submit]'); await wacht(400);
   t('e-mailmodus: bevestiging met terugknop', await m.$eval('#aanvraag-contact [data-terug]', (e) => getComputedStyle(e).display !== 'none' && !e.closest('[hidden]')));
+  await browser.defaultBrowserContext().overridePermissions(ORIGIN, ['clipboard-read', 'clipboard-write']); await m.bringToFront();
+  await m.click('#aanvraag-contact [data-kopieer]'); await wacht(300);
+  const gekopieerd = await m.evaluate(() => navigator.clipboard.readText()).catch((e) => 'FOUT ' + e.message);
+  t('e-mailmodus: kopieerknop zet de volledige aanvraag klaar', /Aan: inzicht\.bouw@gmail\.com/.test(gekopieerd) && /Naam: Test Persoon/.test(gekopieerd) && /Werk: Dakwerken/.test(gekopieerd), gekopieerd.slice(0, 80).replace(/\n/g, ' | '));
   await m.click('#aanvraag-contact [data-terug]'); await wacht(300);
   t('e-mailmodus: terug naar de ingevulde aanvraag', await m.$eval('#aanvraag-contact-naam', (e) => e.value === 'Test Persoon' && e.offsetParent !== null));
   await m.close();
