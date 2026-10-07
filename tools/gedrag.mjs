@@ -152,10 +152,15 @@ const open = async (route, w = 1440, h = 900) => {
   await q.setViewport({ width: 1440, height: 900 });
   await q.evaluateOnNewDocument((u) => { document.addEventListener('readystatechange', () => { if (document.readyState === 'interactive') document.documentElement.setAttribute('data-form-endpoint', u); }); }, ORIGIN + '/test-endpoint');
   await q.goto(BASE + 'diensten/', { waitUntil: 'networkidle0' });
-  await q.click('#gevelrenovatie [data-naar-form]'); await wacht(400);
-  await q.type('#aanvraag-onder-naam', 'Test Persoon'); await q.type('#aanvraag-onder-tel', '0470 12 34 56'); await q.type('#aanvraag-onder-mail', 'test@voorbeeld.be');
+  await q.click('#gevelrenovatie [data-naar-form]');
+  // typ meteen in een ander veld: de uitgestelde focus mag de cursor niet meer wegtrekken
+  await q.click('#aanvraag-onder-tel'); await q.type('#aanvraag-onder-tel', '0470 12 34 56'); await wacht(900);
+  t('uitgestelde focus trekt de cursor niet weg', (await q.$eval('#aanvraag-onder-tel', (e) => e.value)) === '0470 12 34 56' && (await q.evaluate(() => document.activeElement.id)) === 'aanvraag-onder-tel');
+  await q.type('#aanvraag-onder-naam', 'Test Persoon'); await q.type('#aanvraag-onder-mail', 'test@voorbeeld.be');
   await q.type('#aanvraag-onder-gemeente', '1910 Kampenhout'); await q.type('#aanvraag-onder-project', 'Gevel van 80 m2');
-  await q.click('#aanvraag-onder button[type=submit]'); await wacht(800);
+  await q.click('#aanvraag-onder button[type=submit]');
+  for (let i = 0; i < 100 && !laatstePost; i++) await wacht(100);
+  await q.waitForFunction(() => !document.querySelector('#aanvraag-onder [data-stap="klaar"]').hidden, { timeout: 10000 }).catch(() => {});
   t('verzonden naar endpoint', !!laatstePost, laatstePost ? JSON.stringify(laatstePost).slice(0, 160) : 'niets ontvangen');
   t('payload bevat dienst uit de knop', laatstePost && laatstePost.werk === 'Gevelrenovatie');
   t('na verzenden bevestiging zichtbaar', await q.$eval('#aanvraag-onder [data-stap="klaar"]', (e) => !e.hidden));

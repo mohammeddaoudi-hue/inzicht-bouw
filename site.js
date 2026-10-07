@@ -181,7 +181,8 @@
       doel.scrollIntoView({ behavior: scrollGedrag(), block: 'start' });
       history.replaceState(null, '', href);
       const eerste = form && form.querySelector('input, select, textarea');
-      if (eerste) setTimeout(() => eerste.focus({ preventScroll: true }), rustig.matches ? 0 : 650);
+      // alleen focussen als de bezoeker intussen nog geen ander veld koos
+      if (eerste) setTimeout(() => { if (!form.contains(document.activeElement)) eerste.focus({ preventScroll: true }); }, rustig.matches ? 0 : 650);
     });
   });
 
