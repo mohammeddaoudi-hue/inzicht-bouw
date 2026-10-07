@@ -80,11 +80,13 @@ const open = async (route, w = 1440, h = 900) => {
   t('uitklapmenu sluit als de muis weggaat', await p.$eval('.drop__menu', (e) => getComputedStyle(e).visibility === 'hidden'));
   // vragen
   const open1 = () => p.$$eval('#vragen .acc__item', (xs) => xs.map((x) => x.classList.contains('is-open') && !x.querySelector('.acc__antw').hidden));
-  t('home: eerste vraag open', JSON.stringify(await open1()) === JSON.stringify([true, false, false, false, false]));
+  const nVragen = (await open1()).length; const alleen = (k) => JSON.stringify(Array.from({ length: nVragen }, (_, j) => j === k));
+  t('home: vragen aanwezig (4 na het schrappen van de prijsvraag)', nVragen === 4, String(nVragen));
+  t('home: eerste vraag open', JSON.stringify(await open1()) === alleen(0));
   await p.click('#hv-v2');
-  t('home: klik vraag 3 → alleen 3 open', JSON.stringify(await open1()) === JSON.stringify([false, false, true, false, false]));
+  t('home: klik vraag 3 → alleen 3 open', JSON.stringify(await open1()) === alleen(2));
   await p.click('#hv-v2');
-  t('home: nogmaals → alles dicht', JSON.stringify(await open1()) === JSON.stringify([false, false, false, false, false]));
+  t('home: nogmaals → alles dicht', JSON.stringify(await open1()) === alleen(-1));
   await p.close();
 }
 

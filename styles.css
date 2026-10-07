@@ -432,14 +432,10 @@ ul, ol { padding: 0; list-style: none; }
 .vinkjes li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; align-items: start; color: var(--ink); font-weight: 500; }
 .vinkjes__ic { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--ink); display: grid; place-items: center; margin-top: 0; }
 
-/* ══ OVER ONS ══ */
-.verhaal { padding: var(--sectie) 0; }
-.verhaal__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 80px; align-items: center; }
-.verhaal__beeld img { width: 100%; aspect-ratio: 4 / 3; height: auto; object-fit: cover; }
-.verhaal__tekst { max-width: 560px; }
-.verhaal__tekst p + p { margin-top: 20px; }
-.verhaal__lead { font-size: 21px; line-height: 1.55; color: var(--ink); font-weight: 500; letter-spacing: -0.005em; }
-.verhaal__knoppen { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+/* ══ OVER ONS: inleiding onder de hero, daarna drie secties met foto (zelfde opbouw als de dienstrijen) ══ */
+.ovintro { padding: var(--sectie) 0 0; }
+.ovintro__tekst { font-size: clamp(21px, 2vw, 27px); line-height: 1.5; font-weight: 500; color: var(--ink); letter-spacing: -0.012em; text-wrap: pretty; }
+.rijen--over { padding: 100px 0 10px; }
 
 /* ══ VRAGEN ══ */
 .vragen { background: var(--zacht); padding: var(--sectie) 0; }
@@ -780,10 +776,7 @@ main:has(> section:last-child:is(.vragen:not(.vragen--wit), .kopband)) + .voet {
   .rij__tekst { max-width: none; }
   .rij__p { max-width: 640px; }
 
-  .verhaal__grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
-  .verhaal__beeld { order: 2; }
-  .verhaal__tekst { max-width: none; }
-  .verhaal__lead { font-size: 19px; }
+  .rijen--over { padding: 60px 0 0; }
 
   .acc { margin-top: 36px; gap: 12px; }
   .acc__vraag { font-size: 18px; padding: 18px 16px 18px 20px; min-height: 68px; }
@@ -857,7 +850,7 @@ main:has(> section:last-child:is(.vragen:not(.vragen--wit), .kopband)) + .voet {
 }
 
 @media (max-width: 560px) {
-  .hero__knoppen .knop, .phero__knoppen .knop, .verhaal__knoppen .knop, .kopband__knoppen .knop, .rij .knop, .intro .knop, .diensten__meer .knop { width: 100%; }
+  .hero__knoppen .knop, .phero__knoppen .knop, .kopband__knoppen .knop, .rij .knop, .intro .knop, .diensten__meer .knop { width: 100%; }
   .veld-rij { grid-template-columns: minmax(0, 1fr); gap: 0; }
 }
 

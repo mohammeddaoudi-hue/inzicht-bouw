@@ -614,23 +614,27 @@ PAGINAS.push(() => {
 ${SPRITE}
 ${header(v, v)}
 <main id="inhoud">
-${phero(v, { delen, kop: OVER.kop, lede: OVER.alineas[0], beeld: 'over-werf', alt: 'Ruwbouw van een woning in verbouwing, met een stelling, stempels en planken' })}
+${phero(v, { delen, kop: OVER.kop, lede: OVER.sub, beeld: 'over-werf', alt: 'Ruwbouw van een woning in verbouwing, met een stelling, stempels en planken' })}
 
-<section class="verhaal" aria-labelledby="verhaal-kop">
-  <h2 class="vh" id="verhaal-kop">Ons verhaal</h2>
-  <div class="wrap verhaal__grid">
-    <div class="verhaal__beeld kader" data-reveal>
-      ${pic(v, 'd-totaal-2', 'Afgewerkte, lichte leefruimte', { sizes: '(max-width: 1000px) calc(100vw - 60px), 548px' })}
-    </div>
-    <div class="verhaal__tekst" data-reveal>
-      ${OVER.alineas.slice(1).map((a, i) => `<p class="${i === 0 ? 'verhaal__lead' : ''}">${esc(a)}</p>`).join('\n      ')}
-      <div class="verhaal__knoppen">
-        <a class="knop knop--accent" href="#plaatsbezoek" data-naar-form>${esc(HOME.hero.knop1)}${knopIc()}</a>
-        <a class="knop knop--rand" href="${rel(v, 'diensten/')}">${esc(HOME.hero.knop2)}</a>
-      </div>
-    </div>
+<div class="ovintro">
+  <div class="wrap wrap--smal">
+    <p class="ovintro__tekst" data-reveal>${esc(OVER.intro)}</p>
   </div>
-</section>
+</div>
+
+<div class="rijen rijen--over">
+  <div class="wrap">
+    ${OVER.delen.map((d, i) => `<section class="rij${i % 2 ? ' rij--om' : ''}" aria-labelledby="ov-${i + 1}-kop" data-reveal>
+      <div class="rij__beeld kader">
+        ${pic(v, d.img, d.alt, { sizes: '(max-width: 1000px) calc(100vw - 60px), 548px' })}
+      </div>
+      <div class="rij__tekst">
+        <h2 class="rij__kop" id="ov-${i + 1}-kop">${esc(d.kop)}</h2>
+        <p class="rij__p">${esc(d.tekst)}</p>
+      </div>
+    </section>`).join('\n    ')}
+  </div>
+</div>
 
 ${werkwijzeTegels('ow')}
 

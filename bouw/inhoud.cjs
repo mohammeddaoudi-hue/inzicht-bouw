@@ -35,6 +35,10 @@ const FOOTER_MENU = [...NAV, { label: 'Privacybeleid', pad: 'privacy/' }];
 const KNOP = { plaatsbezoek: 'Gratis plaatsbezoek' };
 
 /* ── HOME ─────────────────────────────────────────────────────────────── */
+/* Alinea van Mohammed (7 okt 2026, avond). Zijn antwoord op de vraag waar ze hoort: "over ons, subheadline, en de eerste sectie onder hero".
+   Daarom: subheadline in de hero van Over ons én tekst van de inleiding onder de hero op de home. Woordelijk. */
+const TOTAALAANNEMER = 'Een succesvol bouwproject begint bij een sterke fundering en een ijzersterke organisatie. Als totaalaannemer nemen we de volledige regie van uw project in handen. Of u nu een particuliere bouwheer bent met exclusieve woonplannen, of een ontwikkelaar die op zoek is naar een betrouwbare uitvoerder: wij bundelen alle disciplines om uw visie efficiënt en volgens de strengste normen te bouwen. Geen versnipperde verantwoordelijkheden, maar één partner die het overzicht bewaart.';
+
 const HOME = {
   titel: 'INzicht bouw en renovatie · Kampenhout',
   beschrijving: 'Wij nemen uw renovatie of nieuwbouw volledig aan, met het ontwerp en de coördinatie erbij. Gratis plaatsbezoek in de ruime regio rond Kampenhout.',
@@ -52,11 +56,10 @@ const HOME = {
       { titel: 'Elke week een werfverslag', tekst: 'Tot de laatste afwerking ontvangt u elke week een gedetailleerde vorderingsstaat van uw werf. Zo volgt u de voortgang op de voet, zonder dat u zelf dagelijks aanwezig hoeft te zijn.', ic: 'verslag' },
     ],
   },
-  /* Inleiding: door Claude geschreven in de stijl van Mohammeds copy (7 okt 2026, op zijn vraag "eerst een sectie kort inleiding inzicht").
-     Inhoud komt uit zijn over-ons-tekst; geen nieuwe beloftes. */
+  /* Inleiding onder de hero: kop en knop van Claude, tekst = zijn alinea TOTAALAANNEMER (7 okt 2026). */
   intro: {
     kop: 'Een bouwbedrijf uit Kampenhout',
-    lead: 'INzicht bouw en renovatie is ontstaan vanuit een eenvoudige behoefte: duidelijke communicatie en vaste afspraken met de bouwheer.',
+    lead: TOTAALAANNEMER,
     knop: 'Lees ons verhaal',
   },
   diensten: { kop: 'Wat wij bouwen en verbouwen', knop: 'Ontdek alle diensten in detail' },
@@ -137,24 +140,39 @@ const DIENSTEN = [
 ];
 
 /* ── OVER ONS ─────────────────────────────────────────────────────────── */
+/* Volledige Over ons-pagina: copy van Mohammed (7 okt 2026, "3. Volledige 'Over ons' Pagina"), woordelijk.
+   Alleen titel (paginatitel) en beschrijving (meta) zijn van Claude. */
 const OVER = {
   titel: 'Over ons · INzicht bouw en renovatie',
-  beschrijving: 'INzicht bouw en renovatie uit Kampenhout: heldere communicatie, betrouwbare afspraken en een strak gecoördineerde werf.',
-  kop: ['Bouwen met', 'gezond verstand'],
-  alineas: [
-    'INzicht bouw en renovatie is ontstaan vanuit een simpele, maar cruciale behoefte in de bouwsector: heldere communicatie en betrouwbare afspraken.',
-    'Bouwen of verbouwen is voor de meeste mensen een van de grootste investeringen in hun leven. Toch horen we te vaak verhalen over aannemers die niet komen opdagen, offertes die halverwege het project ontploffen, en bouwheer en vakman die langs elkaar heen praten.',
-    'Vanuit onze uitvalsbasis in Kampenhout doen wij het anders. Wij geloven dat een strak gecoördineerde werf rust geeft. Door te werken met eigen, gespecialiseerde vakmensen en een vaste projectleider, halen we de ruis van de lijn. We luisteren, we ontwerpen, we begroten eerlijk, en we voeren uit wat we beloven. Nuchter, professioneel en altijd volgens plan.',
+  beschrijving: 'INzicht bouw en renovatie is totaalaannemer: één partner met de volledige regie over uw bouwproject.',
+  kop: ['Dé totaalaannemer', 'voor hoogwaardige bouwprojecten'],
+  sub: TOTAALAANNEMER,
+  intro: 'Bouwen is vooruitkijken. Of het nu gaat om een complexe totaalrenovatie, een exclusieve nieuwbouw of een grootschalig ontwikkelingsproject: u investeert in de toekomst. Bij INzicht staan we garant voor een bouwproces dat even solide is als het eindresultaat. Geen loze beloftes, wel daadkracht en doordacht projectmanagement.',
+  delen: [
+    {
+      kop: 'De kracht van totaalaanneming',
+      tekst: 'Wij nemen de volledige verantwoordelijkheid voor uw project. Door alle bouwfases naadloos op elkaar af te stemmen – van de fundering en ruwbouw tot de meest verfijnde interieurafwerking – elimineren we de typische wachttijden en faalkosten van de klassieke bouw. Wij overzien het grotere plaatje én bewaken de kleinste details. Het resultaat? Een aanzienlijk vlotter traject en een afwerkingsgraad van het hoogste niveau.',
+      img: 'd-totaal-2', alt: 'Afgewerkte, lichte leefruimte met een witte zetel en kleurrijke kussens',
+    },
+    {
+      kop: 'Partner voor bouwheren, architecten en ontwikkelaars',
+      tekst: 'Elk bouwproject vraagt een specifieke aanpak. Hebt u al een architect en een volledig uitgewerkt dossier? Dan treden wij op als de uitvoerende kracht die het ontwerp met de grootste precisie tot leven brengt. Hebt u enkel nog maar een visie of een bouwgrond? We denken proactief met u mee en adviseren u over de technische haalbaarheid en materiaalkeuzes, nog voor de eerste steen gelegd wordt.',
+      img: 'werkwijze-hero', alt: 'Handen die een bouwplan tekenen op een houten tafel',
+    },
+    {
+      kop: 'Absolute controle en transparantie',
+      tekst: 'Een premium project vereist een waterdicht financieel en operationeel beheer. Wij werken uitsluitend met gedetailleerde meetstaten, reële inschattingen en een strakke centrale werfcoördinatie. U wordt continu op de hoogte gehouden van de voortgang, zonder dat u zich hoeft te verdiepen in de operationele details. Geen onverwachte verrassingen, maar een transparante samenwerking waarbij budget en timing strikt gerespecteerd worden.',
+      img: 'meetstaat', alt: 'Bouwplannen op tafel met een rekenmachine en een potlood',
+    },
   ],
 };
 
 /* ── VRAGEN ───────────────────────────────────────────────────────────── */
 const VRAGEN = {
   titel: 'Veelgestelde vragen · INzicht bouw en renovatie',
-  beschrijving: 'Antwoorden op de vragen die we het vaakst krijgen: prijsafspraken, architect en vergunning, planning, opvolging van de werf en het gratis plaatsbezoek.',
+  beschrijving: 'Antwoorden op de vragen die bouwheren ons het vaakst stellen over hun bouw- of renovatieproject.',
   kop: 'Veelgestelde vragen',
   lijst: [
-    { v: 'Werken jullie met een vaste prijs, of komen er achteraf kosten bij?', a: 'We maken vooraf heldere afspraken. U krijgt een gedetailleerde offerte en wat daarin staat, is de prijs die u betaalt. Wilt u tijdens de werken toch nog iets wijzigen? Dan bespreken we altijd eerst de impact op het budget voordat we uitvoeren. Geen verrassingsfacturen achteraf.' },
     { v: 'Moet ik zelf een architect of bouwvergunning regelen?', a: 'Dat mag, maar hoeft niet. Heeft u nog geen architect, dan brengen we u in contact met onze vaste partners. We begeleiden u ook bij het aanvragen van de nodige vergunningen of meldingen voor uw project.' },
     { v: 'Wanneer neem ik het best contact op voor een renovatie?', a: 'Een goed voorbereid project vraagt tijd. Voor totaalrenovaties of een uitbreiding neemt u best 3 tot 6 maanden voor de gewenste startdatum contact met ons op. Zo kunnen we het ontwerp, de materialen en de planning grondig voorbereiden.' },
     { v: 'Wie volgt mijn werf op?', a: 'U krijgt een vaste projectleider toegewezen. Hij is verantwoordelijk voor de planning, de werfvergaderingen en de aansturing van alle vakmensen op de werf. U hoeft dus niet zelf achter aannemers aan te bellen.' },
