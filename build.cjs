@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const I = require('./bouw/inhoud.cjs');
-const { SITE, NAV, FOOTER_MENU, HOME, DIENSTEN_PAGINA, DIENSTEN, OVER, VRAGEN, TIPS, BLOGS, CONTACT, FORM, PRIVACY } = I;
+const { SITE, NAV, FOOTER_MENU, HOME, DIENSTEN_PAGINA, DIENSTEN, FORM_DIENSTEN, OVER, VRAGEN, TIPS, BLOGS, CONTACT, FORM, PRIVACY } = I;
 
 const ROOT = __dirname;
 const VERSIE = Date.now().toString(36);
@@ -213,34 +213,48 @@ function footer(v) {
 </footer>`;
 }
 
-/* ── formulier (onderaan elke pagina + contactpagina), vragen zoals op abgroep ── */
-function formulier(v, id, { kop = true, kopId = '', sub = true, knop = FORM.knop } = {}) {
-  const F = FORM.velden;
+/* ── formulier (onderaan elke pagina + contactpagina), vragen zoals op abgroep;
+      variant 'diensten': velden uit zijn dienstencopy van 7 okt 2026 (e-mail en werfgemeente verplicht, type project vrij, upload) ── */
+function formulier(v, id, { kop = true, kopId = '', sub = true, knop = FORM.knop, variant = 'standaard' } = {}) {
+  const D = variant === 'diensten';
+  const F = D ? FORM_DIENSTEN.velden : FORM.velden;
   const ster = '<span class="ster" aria-hidden="true">*</span>';
   const veld = (naam, label, type, auto, { verplicht = false, extra = '' } = {}) => `<div class="veld">
             <label for="${id}-${naam}">${esc(label)}${verplicht ? ster : ''}</label>
             <input id="${id}-${naam}" name="${naam}" type="${type}" autocomplete="${auto}"${verplicht ? ' aria-required="true"' : ''}${extra} aria-describedby="${id}-${naam}-fout">
             <p class="veld__fout" id="${id}-${naam}-fout" hidden></p>
           </div>`;
-  return `<form class="aanvraag" id="${id}" action="mailto:${SITE.mail}" method="post" enctype="text/plain" novalidate data-aanvraag>
-        <div class="aanvraag__stap" data-stap="form">
-          ${kop ? `<h2 class="aanvraag__kop"${kopId ? ` id="${kopId}"` : ''}>${esc(FORM.kop)}</h2>
-          ${sub ? `<p class="aanvraag__sub">${esc(FORM.sub)}</p>` : ''}` : ''}
-          <p class="aanvraag__verplicht">Velden met een sterretje zijn verplicht.</p>
-          ${veld('naam', F.naam, 'text', 'name', { verplicht: true })}
+  const keuze = (label, leeg, opties, verplicht) => `<div class="veld">
+            <label for="${id}-werk">${esc(label)}${verplicht ? ster : ''}</label>
+            <select id="${id}-werk" name="werk"${verplicht ? ' aria-required="true"' : ''} aria-describedby="${id}-werk-fout">
+              <option value="">${esc(leeg)}</option>
+              ${opties.map((o) => `<option>${esc(o)}</option>`).join('')}
+            </select>
+            <p class="veld__fout" id="${id}-werk-fout" hidden></p>
+          </div>`;
+  const velden = D ? `${veld('naam', F.naam, 'text', 'name', { verplicht: true })}
+          <div class="veld-rij">
+            ${veld('tel', F.tel, 'tel', 'tel', { verplicht: true, extra: ' inputmode="tel"' })}
+            ${veld('mail', F.mail, 'email', 'email', { verplicht: true, extra: ' inputmode="email"' })}
+          </div>
+          <div class="veld-rij">
+            ${veld('gemeente', F.werf, 'text', 'address-level2', { verplicht: true })}
+            ${keuze(F.type, F.typeLeeg, F.typeOpties, false)}
+          </div>
+          <div class="veld">
+            <label for="${id}-project">${esc(F.plannen)}</label>
+            <textarea id="${id}-project" name="project" rows="4" maxlength="1000"></textarea>
+          </div>
+          <div class="veld">
+            <label for="${id}-bijlagen">${esc(F.upload)} <span class="veld__optioneel">(${esc(F.optioneel)})</span></label>
+            <input id="${id}-bijlagen" name="bijlagen" type="file" accept="image/*,.pdf" multiple aria-describedby="${id}-bijlagen-fout">
+            <p class="veld__fout" id="${id}-bijlagen-fout" hidden></p>
+          </div>` : `${veld('naam', F.naam, 'text', 'name', { verplicht: true })}
           <div class="veld-rij">
             ${veld('tel', F.tel, 'tel', 'tel', { verplicht: true, extra: ' inputmode="tel"' })}
             ${veld('mail', F.mail, 'email', 'email', { extra: ' inputmode="email"' })}
           </div>
-          <div class="veld">
-            <label for="${id}-werk">${esc(F.werk)}${ster}</label>
-            <select id="${id}-werk" name="werk" aria-required="true" aria-describedby="${id}-werk-fout">
-              <option value="">${esc(F.werkLeeg)}</option>
-              ${DIENSTEN.map((d) => `<option>${esc(d.kortNaam)}</option>`).join('')}
-              <option>${esc(F.werkCombi)}</option>
-            </select>
-            <p class="veld__fout" id="${id}-werk-fout" hidden></p>
-          </div>
+          ${keuze(F.werk, F.werkLeeg, [...DIENSTEN.map((d) => d.kortNaam), F.werkCombi], true)}
           <div class="veld-rij">
             ${veld('straat', F.straat, 'text', 'address-line1')}
             ${veld('gemeente', F.gemeente, 'text', 'address-level2')}
@@ -248,7 +262,13 @@ function formulier(v, id, { kop = true, kopId = '', sub = true, knop = FORM.knop
           <div class="veld">
             <label for="${id}-project">${esc(F.project)}</label>
             <textarea id="${id}-project" name="project" rows="4" maxlength="1000" placeholder="${attr(F.projectHint)}"></textarea>
-          </div>
+          </div>`;
+  return `<form class="aanvraag" id="${id}" action="mailto:${SITE.mail}" method="post" enctype="text/plain" novalidate data-aanvraag>
+        <div class="aanvraag__stap" data-stap="form">
+          ${kop ? `<h2 class="aanvraag__kop"${kopId ? ` id="${kopId}"` : ''}>${esc(FORM.kop)}</h2>
+          ${sub ? `<p class="aanvraag__sub">${esc(FORM.sub)}</p>` : ''}` : ''}
+          <p class="aanvraag__verplicht">Velden met een sterretje zijn verplicht.</p>
+          ${velden}
           <p class="aanvraag__fout" role="alert" hidden></p>
           <button class="knop knop--accent knop--vol" type="submit">${esc(knop)}${knopIc()}</button>
           <p class="aanvraag__klein">${esc(FORM.privacy)} <a href="${rel(v, 'privacy/')}">${esc(FORM.privacyLink)}</a>.</p>
@@ -267,13 +287,14 @@ function formulier(v, id, { kop = true, kopId = '', sub = true, knop = FORM.knop
 }
 
 /* ── plaatsbezoek onderaan elke pagina (abgroep-opbouw: tekst + gegevens links, formulier rechts) ── */
-function plaats(v) {
+function plaats(v, variant = 'standaard') {
+  const D = variant === 'diensten';
   return `<section class="plaats" id="plaatsbezoek" aria-labelledby="plaats-kop">
   <div class="wrap">
     <div class="plaats__blok" data-reveal>
       <div class="plaats__tekst">
-        <h2 class="h2" id="plaats-kop">${esc(HOME.cta.kop)}</h2>
-        <p class="plaats__lede">${esc(HOME.cta.tekst)}</p>
+        <h2 class="h2" id="plaats-kop">${esc(D ? DIENSTEN_PAGINA.cta.kop : HOME.cta.kop)}</h2>
+        <p class="plaats__lede">${esc(D ? DIENSTEN_PAGINA.cta.tekst : HOME.cta.tekst)}</p>
         <ul class="plaats__info">
           <li><span class="plaats__info-ic">${ic('phone', 20)}</span><span><b>Telefoon</b><a href="${SITE.tel.href}">${esc(SITE.tel.toon)}</a></span></li>
           <li><span class="plaats__info-ic">${ic('pin', 20)}</span><span><b>Adres</b><span>${adresHtml()}</span></span></li>
@@ -283,7 +304,7 @@ function plaats(v) {
       </div>
       <div class="plaats__form kader">
         <div class="plaats__formkern">
-          ${formulier(v, 'aanvraag-onder', { kop: false, knop: HOME.cta.knop })}
+          ${formulier(v, 'aanvraag-onder', { kop: false, knop: D ? FORM_DIENSTEN.knop : HOME.cta.knop, variant })}
         </div>
       </div>
     </div>
@@ -300,12 +321,13 @@ ${js ? `<script src="${rel(v, 'site.js')}?v=${VERSIE}" defer></script>` : ''}
 }
 
 /* ── gedeelde secties ─────────────────────────────────────────────────── */
-function werkwijzeTegels(id, zacht = true) {
+function werkwijzeTegels(id, zacht = true, W = HOME.werkwijze) {
   return `<section class="waarom${zacht ? ' waarom--zacht' : ''}" aria-labelledby="${id}-kop">
   <div class="wrap">
-    <h2 class="h2 h2--midden" id="${id}-kop" data-reveal>${esc(HOME.werkwijze.kop)}</h2>
+    <h2 class="h2 h2--midden" id="${id}-kop" data-reveal>${esc(W.kop)}</h2>
+    ${W.tekst ? `<p class="waarom__intro" data-reveal>${esc(W.tekst)}</p>` : ''}
     <ul class="tegels" data-reveal>
-      ${HOME.werkwijze.punten.map((pt, i) => `<li class="tegel${i === 1 ? ' tegel--accent' : ''}">
+      ${W.punten.map((pt, i) => `<li class="tegel${i === 1 ? ' tegel--accent' : ''}">
         <span class="punt__ic">${ic(pt.ic, pt.ic === 'helm' ? 26 : 30)}</span>
         <h3 class="tegel__kop">${esc(pt.titel)}</h3>
         <p class="tegel__tekst">${esc(pt.tekst)}</p>
@@ -350,7 +372,7 @@ function kruimel(v, delen) {
 }
 
 /* split-hero (abgroep-opbouw): tekst links, foto rechts */
-function phero(v, { delen, kop, lede, beeld, alt, knoppen = true }) {
+function phero(v, { delen, kop, lede, beeld, alt, knoppen = true, knop = HOME.hero.knop1 }) {
   return `<section class="phero">
   <div class="phero__tekst">
     <div class="phero__in">
@@ -358,7 +380,7 @@ function phero(v, { delen, kop, lede, beeld, alt, knoppen = true }) {
       <h1 class="phero__kop">${kop2(kop, 'dim')}</h1>
       ${lede ? `<p class="phero__lede">${esc(lede)}</p>` : ''}
       ${knoppen ? `<div class="phero__knoppen">
-        <a class="knop knop--accent" href="#plaatsbezoek" data-naar-form>${esc(HOME.hero.knop1)}${knopIc()}</a>
+        <a class="knop knop--accent" href="#plaatsbezoek" data-naar-form>${esc(knop)}${knopIc()}</a>
         <a class="knop knop--rand" href="${SITE.tel.href}">${ic('phone')}${esc(SITE.tel.toon)}</a>
       </div>` : ''}
     </div>
@@ -556,7 +578,7 @@ PAGINAS.push(() => {
 ${SPRITE}
 ${header(v, v)}
 <main id="inhoud">
-${phero(v, { delen, kop: DIENSTEN_PAGINA.kop, lede: DIENSTEN_PAGINA.intro, beeld: 'd-totaal-2', alt: 'Afgewerkte, lichte leefruimte met een witte zetel en kleurrijke kussens' })}
+${phero(v, { delen, kop: DIENSTEN_PAGINA.kop, lede: DIENSTEN_PAGINA.intro, knop: DIENSTEN_PAGINA.knop, beeld: 'd-totaal-2', alt: 'Afgewerkte, lichte leefruimte met een witte zetel en kleurrijke kussens' })}
 
 <div class="sprongvak">
 <nav class="sprong" aria-label="Diensten op deze pagina">
@@ -568,38 +590,38 @@ ${phero(v, { delen, kop: DIENSTEN_PAGINA.kop, lede: DIENSTEN_PAGINA.intro, beeld
 </nav>
 
 <section class="rijen" aria-labelledby="rijen-kop">
-  <h2 class="vh" id="rijen-kop">Onze zes pijlers</h2>
   <div class="wrap">
+    <h2 class="h2 h2--midden rijen__kop" id="rijen-kop" data-reveal>${esc(DIENSTEN_PAGINA.expertisesKop)}</h2>
     ${DIENSTEN.map((d, i) => `<article class="rij${i % 2 ? ' rij--om' : ''}" id="${d.slug}" aria-labelledby="${d.slug}-kop" data-reveal>
       <div class="rij__beeld kader">
         ${pic(v, d.img, d.alt, { sizes: '(max-width: 1000px) calc(100vw - 60px), 548px' })}
       </div>
       <div class="rij__tekst">
         <p class="rij__nr">${d.nr}</p>
-        <h2 class="rij__kop" id="${d.slug}-kop">${esc(d.naam)}</h2>
+        <h3 class="rij__kop" id="${d.slug}-kop">${esc(d.naam)}</h3>
         <p class="rij__p">${esc(d.tekst)}</p>
         <ul class="vinkjes">
           ${d.punten.map((pt) => `<li><span class="vinkjes__ic">${ic('vink', 14)}</span>${esc(pt)}</li>`).join('\n          ')}
         </ul>
-        <a class="knop knop--accent" href="#plaatsbezoek" data-naar-form data-dienst="${attr(d.kortNaam)}">${esc(HOME.hero.knop1)}${knopIc()}</a>
+        <a class="knop knop--accent" href="#plaatsbezoek" data-naar-form data-dienst="${attr(d.formType)}">${esc(DIENSTEN_PAGINA.knop)}${knopIc()}</a>
       </div>
     </article>`).join('\n    ')}
   </div>
 </section>
 </div>
 
-${werkwijzeTegels('dw')}
+${werkwijzeTegels('dw', true, DIENSTEN_PAGINA.organisatie)}
 
 <section class="vragen vragen--wit" aria-labelledby="dv-kop">
   <div class="wrap">
     <h2 class="h2 h2--midden" id="dv-kop" data-reveal>${esc(VRAGEN.kop)}</h2>
     <div data-reveal>
-    ${accordeon(VRAGEN.lijst, 'dv')}
+    ${accordeon(DIENSTEN_PAGINA.vragen, 'dv')}
     </div>
   </div>
 </section>
 
-${plaats(v)}
+${plaats(v, 'diensten')}
 </main>
 ${slot(v)}`;
 });

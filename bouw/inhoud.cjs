@@ -73,71 +73,120 @@ const HOME = {
 };
 
 /* ── DIENSTEN ─────────────────────────────────────────────────────────── */
+/* Dienstenpagina: copy van Mohammed (7 okt 2026, avond: "Pagina: Diensten", bijgewerkte versie zonder "De zes pijlers"), woordelijk.
+   Bewuste afwijkingen, gemeld in de chat:
+   - tussentitel "Onze Expertises" in Nederlandse schrijfwijze: "Onze expertises";
+   - de dubbelpunt achter de drie kopjes van de organisatie is opmaak en staat er niet;
+   - de FAQ-vraag "Werken jullie met een vaste prijs?" staat er niet (zijn opdracht in de chat: "bij faq de vraag over prijs mag er ook uit").
+   De drie vragen hieronder vervangen ook op de andere pagina's de oude antwoorden op dezelfde vragen (één antwoord per vraag op de hele site). */
+const VRAGEN_WERF = [
+  { v: 'Moet ik zelf een architect of bouwvergunning regelen?', a: 'Voor ingrepen die de stabiliteit of het volume van uw woning veranderen (zoals een grote uitbouw of het weghalen van draagmuren) is een architect wettelijk verplicht. Hebt u al een architect? Dan voeren wij de plannen nauwgezet uit. Voor projecten zonder vergunningsplicht handelen wij alles rechtstreeks en vakkundig voor u af.' },
+  { v: 'Wanneer neem ik het best contact op voor een renovatie of nieuwbouw?', a: 'Zodra u de plannen of een goed uitgewerkt idee hebt. Totaalprojecten komen het best tot hun recht met een degelijke voorbereiding. Door ons in een vroeg stadium te betrekken, kunnen we gericht meedenken over de haalbaarheid en de werken optimaal inplannen.' },
+  { v: 'Wie volgt mijn werf op?', a: 'Uw project wordt van start tot finish geleid door één vaste projectleider. Hij is eindverantwoordelijk voor de bestellingen, de aansturing van onze vakmensen, de strenge kwaliteitscontroles en uw wekelijkse verslag.' },
+];
 const DIENSTEN_PAGINA = {
   titel: 'Diensten · INzicht bouw en renovatie',
-  beschrijving: 'Totaalrenovatie en nieuwbouw, ecologisch bouwen, dakwerken, gevelrenovatie, badkamers en interieurwerken. De zes pijlers van INzicht bouw en renovatie.',
-  kop: ['Onze expertise', 'onder één dak'],
-  intro: 'Bij INzicht werken we met gespecialiseerde afdelingen. Deze werken naadloos samen om uw totaalproject van de eerste steen tot de laatste lik verf vakkundig af te ronden. Dit zijn onze zes pijlers.',
+  beschrijving: 'Alle expertises van INzicht bouw en renovatie, gebundeld onder één aanneming.',
+  kop: ['Onze expertises,', 'gebundeld onder één aanneming'],
+  intro: 'Als totaalaannemer houden wij uw bouwproject volledig in eigen handen. We brengen al onze specialiteiten samen in één gestroomlijnde werking. Door alles toe te vertrouwen aan één partner, geniet u van een perfecte afstemming van de allereerste fundering tot de finale interieurafwerking.',
+  knop: 'Plan een plaatsbezoek in',
+  expertisesKop: 'Onze expertises',
+  organisatie: {
+    kop: 'Duidelijke afspraken, strakke uitvoering',
+    tekst: 'Wij gaan voluit voor een geslaagd resultaat. Om u topkwaliteit en een vlotte doorlooptijd te bieden, pakken we elk project op een gestructureerde en heldere manier aan:',
+    punten: [
+      { titel: 'Heldere budgettering vooraf', tekst: 'Goede afspraken vormen de basis van een sterke samenwerking. U krijgt van ons een gedetailleerde offerte per onderdeel. U kent de exacte prijs vóór de werken starten, zodat u bouwt met absolute financiële zekerheid.', ic: 'plan' },
+      { titel: 'Eén vaste projectleider', tekst: 'Overzicht is cruciaal voor een vlotte werf. Eén ervaren projectleider stuurt onze vakmensen aan, bewaakt de planning en is uw persoonlijke, vaste aanspreekpunt voor alle vragen.', ic: 'helm' },
+      { titel: 'Wekelijkse updates', tekst: 'We houden u graag proactief op de hoogte. U ontvangt elke week een overzichtelijk werfverslag met foto\'s en de concrete planning voor de komende dagen. U behoudt op elk moment het overzicht, wij zorgen voor de feilloze uitvoering.', ic: 'verslag' },
+    ],
+  },
+  vragen: VRAGEN_WERF,
+  cta: {
+    kop: 'Klaar om uw bouwplannen te realiseren?',
+    tekst: 'Bespreek uw project met ons. We komen graag ter plaatse om uw pand te analyseren en een sterk, vrijblijvend voorstel op te maken.',
+  },
 };
-
-/* naam = titel op de dienstenpagina; kort = titel + tekst uit "Diensten (Kort)" op de home;
-   punten = de onderdelen uit die korte tekst, als lijst gezet (zelfde woorden). */
+/* Zes diensten. naam, tekst en punten: zijn dienstencopy van 7 okt 2026 (woordelijk). kortNaam: menu, voet, home, formulieren.
+   kortTekst: zijn homecopy (alleen "Gyproc wanden" werd "Gyprocwanden", zoals in zijn nieuwe copy). formType: keuze in het dienstenformulier. */
 const DIENSTEN = [
   {
     slug: 'totaalrenovatie-en-nieuwbouw', nr: '01',
     naam: 'Totaalrenovatie en nieuwbouw',
     kortNaam: 'Totaalrenovatie en nieuwbouw',
+    formType: 'Totaalrenovatie of nieuwbouw',
     kortTekst: 'Volledige ontzorging. Van grondige totaalrenovatie en stevige uitbreiding tot een complete nieuwbouwwoning.',
-    tekst: 'Een vlotte werf vereist een strakke coördinatie. Of u nu een bestaande woning volledig stript, een aanbouw plaatst voor extra leefruimte of een nieuwbouw zet: wij bewaken de overgang tussen elke bouwfase. Zo loopt het project geen vertraging op en klopt het eindresultaat met uw oorspronkelijke visie.',
-    punten: ['Grondige totaalrenovatie', 'Stevige uitbreiding', 'Complete nieuwbouwwoning'],
+    tekst: 'Grote bouwprojecten vragen om een ijzersterke planning. Wij bouwen, verbouwen en plaatsen uitbreidingen met een vlotte, aaneensluitende doorlooptijd. Omdat we de ruwbouw, de technieken en de afwerking nauwkeurig op elkaar afstemmen, volgt elke stap in het bouwproces elkaar naadloos op.',
+    punten: ['Fundering, riolering en ruwbouw', 'Afbreken en veilig opvangen van draagmuren', 'Uitvoering van ruwbouw tot volledig sleutel-op-de-deur'],
     img: 'd-totaal', alt: 'Woning in renovatie, gestript tot de ruwbouw met stempels onder het plafond',
   },
   {
-    slug: 'ecologisch-en-energetisch', nr: '02',
-    naam: 'Ecologisch en energetisch bouwen',
-    kortNaam: 'Ecologisch en energetisch',
+    slug: 'energetisch-en-ecologisch', nr: '02',
+    naam: 'Energetisch en ecologisch bouwen',
+    kortNaam: 'Energetisch en ecologisch',
+    formType: 'Energetisch & Dak',
     kortTekst: 'Warmtepompen en hoogwaardige, naadloze isolatie van uw dak, vloer en wand.',
-    tekst: 'Klaar voor de energienormen van morgen. Wij optimaliseren de buitenschil van uw woning met hoogwaardige dak-, vloer- en wandisolatie. Daarnaast integreren we moderne technieken zoals warmtepompen, zodat uw woning niet alleen comfortabeler wordt, maar uw energiefactuur ook structureel daalt.',
-    punten: ['Warmtepompen', 'Naadloze isolatie van dak, vloer en wand'],
+    tekst: 'De bouwnormen worden terecht steeds strenger. Wij maken uw woning helemaal klaar voor de toekomst met hoogwaardige isolatie en moderne technieken zoals warmtepompen en ventilatiesystemen. Zo verhoogt u uw wooncomfort aanzienlijk, verlaagt u de energiefactuur en voldoet u moeiteloos aan de nieuwste EPC-eisen.',
+    punten: ['Grondige dak-, vloer- en wandisolatie', 'Installatie van warmtepompen', 'Mechanische ventilatiesystemen'],
     img: 'd-eco', alt: 'Warmtepomp naast een bakstenen woning in de tuin',
   },
   {
     slug: 'dakwerken', nr: '03',
     naam: 'Dakwerken',
     kortNaam: 'Dakwerken',
+    formType: 'Energetisch & Dak',
     kortTekst: 'Hellende daken met pannen en zinkwerk, platte daken, dakramen, dakkapellen en dakisolatie.',
-    tekst: 'Een dak moet tientallen jaren onderhoudsvrij meegaan. Wij vernieuwen hellende daken (inclusief pannen en zinkwerk op maat) en plaatsen naadloze platte daken. We integreren dakramen of dakkapellen voor meer lichtinval en zorgen altijd voor isolatie die voldoet aan de laatste EPB-eisen.',
-    punten: ['Hellende daken met pannen en zinkwerk', 'Platte daken', 'Dakramen en dakkapellen', 'Dakisolatie'],
+    tekst: 'Uw dak is de belangrijkste bescherming van uw woning. Wij construeren en isoleren zowel hellende als platte daken met de grootste precisie. We werken uitsluitend met robuuste materialen voor een resultaat dat decennialang perfect waterdicht, veilig en isolerend blijft.',
+    punten: ['Hellende daken en zinkwerk op maat', 'Platte daken (EPDM en roofing)', 'Dakisolatie (binnenkant of bovenkant van het dak)'],
     img: 'd-dak', alt: 'Dakwerker op een pannendak met stelling en valbeveiliging',
   },
   {
     slug: 'gevelrenovatie', nr: '04',
     naam: 'Gevelrenovatie',
     kortNaam: 'Gevelrenovatie',
+    formType: 'Gevel',
     kortTekst: 'Crepi, steenstrips, gevelbekleding in hout of composiet, perfect gecombineerd met buitenisolatie.',
-    tekst: 'Geef uw woning een strak, nieuw aanzicht én isoleer langs de buitenkant. Dat is de meest efficiënte manier van renoveren. Wij zijn gespecialiseerd in het aanbrengen van crepi, steenstrips en duurzame gevelbekleding (hout of composiet), steevast gecombineerd met de juiste buitenisolatie.',
-    punten: ['Crepi en steenstrips', 'Gevelbekleding in hout of composiet', 'Gecombineerd met buitenisolatie'],
+    tekst: 'Een nieuwe gevel is de slimste manier om uw woning een frisse look te geven en tegelijk maximaal te isoleren. Wij plaatsen hoogwaardige buitenisolatie en werken die strak af met crepi, steenstrips of duurzaam hout. We besteden extra zorg aan een feilloze detaillering rond ramen en dakranden.',
+    punten: ['Buitenisolatie tegen de gevel', 'Strakke afwerking in crepi of sierpleister', 'Steenstrips of duurzame houtbekleding'],
     img: 'd-gevel', alt: 'Bakstenen gevel met houten raamkader',
   },
   {
-    slug: 'badkamer-en-wellness', nr: '05',
-    naam: 'Badkamer en wellness',
-    kortNaam: 'Badkamer en wellness',
+    slug: 'badkamer-en-sanitair', nr: '05',
+    naam: 'Badkamer en sanitair',
+    kortNaam: 'Badkamer en sanitair',
+    formType: 'Badkamer',
     kortTekst: 'Volledige badkamerrenovatie, strakke inloopdouches, tegelwerk, sanitair en vloerverwarming.',
-    tekst: 'Wij strippen uw oude badkamer en bouwen hem volledig opnieuw op. We vernieuwen het achterliggende leidingwerk en zorgen voor een feilloze afwerking. Van waterdichte inloopdouches en grootformaat tegelwerk tot de installatie van modern sanitair en comfortabele vloerverwarming.',
-    punten: ['Volledige badkamerrenovatie', 'Strakke inloopdouches', 'Tegelwerk en sanitair', 'Vloerverwarming'],
+    tekst: 'Een badkamer renoveren is precisiewerk. Wij vernieuwen de volledige ruimte, leggen verse leidingen en zorgen voor een hoogwaardige opbouw. U kan rekenen op een gegarandeerd waterdichte inloopdouche, strak tegelwerk, en de vakkundige installatie van uw nieuwe sanitair en vloerverwarming.',
+    punten: ['Complete vernieuwing van leidingen en technieken', 'Waterdichte inloopdouches', 'Vloerverwarming en grootformaat tegelwerk'],
     img: 'd-bad', alt: 'Gerenoveerde badkamer met grijze tegels, inloopdouche en ligbad',
   },
   {
-    slug: 'interieurwerken', nr: '06',
-    naam: 'Interieurwerken',
-    kortNaam: 'Interieurwerken',
-    kortTekst: 'Gyproc wanden en plafonds, maatwerk (kasten, binnendeuren), vloeren en de inrichting van uw kantoor of thuiswerkplek.',
-    tekst: 'De afwerking bepaalt de sfeer van uw woning. Onze interieurafdeling plaatst strakke Gyproc wanden en verlaagde plafonds, en legt vloeren met uiterste precisie. Daarnaast verzorgen we maatwerk: van ingemaakte kasten en kamerhoge binnendeuren tot de complete inrichting van uw thuiskantoor.',
-    punten: ['Gyproc wanden en plafonds', 'Maatwerk: kasten en binnendeuren', 'Vloeren', 'Inrichting van uw kantoor of thuiswerkplek'],
+    slug: 'interieur-en-binnenschrijnwerk', nr: '06',
+    naam: 'Interieur en binnenschrijnwerk',
+    kortNaam: 'Interieur en binnenschrijnwerk',
+    formType: 'Interieur',
+    kortTekst: 'Gyprocwanden en plafonds, maatwerk (kasten, binnendeuren), vloeren en de inrichting van uw kantoor of thuiswerkplek.',
+    tekst: 'De afwerking is bepalend voor de uitstraling van uw pand. Onze vakmensen zorgen voor kaarsrechte gyprocwanden, naadloze plafonds en perfect geplaatste vloeren. Ook voor maatwerk bent u bij ons aan het juiste adres: van functionele kastenwanden en dressings tot kamerhoge binnendeuren.',
+    punten: ['Gyprocwanden en strak pleisterwerk', 'Maatwerkkasten, dressings en kantoorinrichting', 'Vloeren en binnendeuren'],
     img: 'd-interieur', alt: 'Ruimte in afwerking met gyprocplaten, verlaagd plafond en vloerverwarmingscollector',
   },
 ];
+/* Formulier onderaan de dienstenpagina: velden, keuzes en knop uit zijn dienstencopy van 7 okt 2026 ("Contactformulier Velden").
+   "Type project" heeft in zijn copy geen sterretje en is dus niet verplicht; e-mail en de gemeente van de werf wel. */
+const FORM_DIENSTEN = {
+  velden: {
+    naam: 'Voornaam & Naam',
+    tel: 'Telefoonnummer',
+    mail: 'E-mailadres',
+    werf: 'Postcode & Gemeente van de werf',
+    type: 'Type project',
+    typeLeeg: 'Maak een keuze',
+    typeOpties: ['Totaalrenovatie of nieuwbouw', 'Energetisch & Dak', 'Gevel', 'Badkamer', 'Interieur', 'Totaalproject'],
+    plannen: 'Korte omschrijving van uw plannen',
+    upload: 'Upload bouwplan of foto\'s',
+    optioneel: 'optioneel',
+  },
+  knop: 'Vraag uw plaatsbezoek aan',
+};
 
 /* ── OVER ONS ─────────────────────────────────────────────────────────── */
 /* Volledige Over ons-pagina: copy van Mohammed (7 okt 2026, "3. Volledige 'Over ons' Pagina"), woordelijk.
@@ -173,9 +222,7 @@ const VRAGEN = {
   beschrijving: 'Antwoorden op de vragen die bouwheren ons het vaakst stellen over hun bouw- of renovatieproject.',
   kop: 'Veelgestelde vragen',
   lijst: [
-    { v: 'Moet ik zelf een architect of bouwvergunning regelen?', a: 'Dat mag, maar hoeft niet. Heeft u nog geen architect, dan brengen we u in contact met onze vaste partners. We begeleiden u ook bij het aanvragen van de nodige vergunningen of meldingen voor uw project.' },
-    { v: 'Wanneer neem ik het best contact op voor een renovatie?', a: 'Een goed voorbereid project vraagt tijd. Voor totaalrenovaties of een uitbreiding neemt u best 3 tot 6 maanden voor de gewenste startdatum contact met ons op. Zo kunnen we het ontwerp, de materialen en de planning grondig voorbereiden.' },
-    { v: 'Wie volgt mijn werf op?', a: 'U krijgt een vaste projectleider toegewezen. Hij is verantwoordelijk voor de planning, de werfvergaderingen en de aansturing van alle vakmensen op de werf. U hoeft dus niet zelf achter aannemers aan te bellen.' },
+    ...VRAGEN_WERF,
     { v: 'Is het eerste plaatsbezoek echt gratis?', a: 'Ja, ons eerste bezoek is altijd gratis en vrijblijvend. We komen ter plaatse om de situatie in te schatten en uw wensen te bespreken, zodat we een accuraat voorstel kunnen doen.' },
   ],
 };
@@ -294,4 +341,4 @@ const CORRECTIES = [
   'Blog vergunning: meldingsplicht voor aangebouwde bijgebouwen is sinds 1 maart 2026 afgeschaft (wijziging Vrijstellingsbesluit); de cijfers 4 meter en 2 tot 3 meter zijn weg.',
 ];
 
-module.exports = { SITE, NAV, FOOTER_MENU, KNOP, HOME, DIENSTEN_PAGINA, DIENSTEN, OVER, VRAGEN, TIPS, BLOGS, CONTACT, FORM, PRIVACY, CORRECTIES };
+module.exports = { SITE, NAV, FOOTER_MENU, KNOP, HOME, DIENSTEN_PAGINA, DIENSTEN, VRAGEN_WERF, FORM_DIENSTEN, OVER, VRAGEN, TIPS, BLOGS, CONTACT, FORM, PRIVACY, CORRECTIES };

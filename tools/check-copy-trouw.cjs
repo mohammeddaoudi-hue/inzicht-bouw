@@ -14,7 +14,15 @@ const voeg = (route, t) => verwacht.push([route, t]);
 voeg('', I.HOME.hero.kop.join(' ')); voeg('', I.HOME.hero.tekst); voeg('', I.HOME.hero.knop1); voeg('', I.HOME.hero.knop2);
 voeg('', I.HOME.werkwijze.kop); I.HOME.werkwijze.punten.forEach((p) => { voeg('', p.titel); voeg('', p.tekst); });
 voeg('', I.HOME.diensten.kop); voeg('', I.HOME.diensten.knop); I.DIENSTEN.forEach((d) => { voeg('', d.kortNaam); voeg('', d.kortTekst); });
-voeg('', I.HOME.cta.kop); voeg('', I.HOME.cta.tekst); voeg('', I.HOME.cta.knop); voeg('diensten/', I.HOME.cta.knop); voeg('', I.HOME.vragenKop);
+voeg('', I.HOME.cta.kop); voeg('', I.HOME.cta.tekst); voeg('', I.HOME.cta.knop); voeg('', I.HOME.vragenKop);
+// dienstenpagina: zijn copy van 7 okt 2026 (hero, expertises, organisatie, FAQ, afsluitende oproep en formulier)
+{
+  const DP = I.DIENSTEN_PAGINA; const r = 'diensten/';
+  [DP.knop, DP.expertisesKop, DP.organisatie.kop, DP.organisatie.tekst, DP.cta.kop, DP.cta.tekst, I.FORM_DIENSTEN.knop].forEach((x) => voeg(r, x));
+  DP.organisatie.punten.forEach((p) => { voeg(r, p.titel); voeg(r, p.tekst); });
+  DP.vragen.forEach((q) => { voeg(r, q.v); voeg(r, q.a); });
+  Object.entries(I.FORM_DIENSTEN.velden).forEach(([k, w]) => { if (k === 'typeOpties') w.forEach((o) => voeg(r, o)); else voeg(r, w); });
+}
 I.VRAGEN.lijst.forEach((f) => { voeg('', f.v); voeg('', f.a); voeg('vragen/', f.v); voeg('vragen/', f.a); });
 voeg('diensten/', I.DIENSTEN_PAGINA.kop.join(' ')); voeg('diensten/', I.DIENSTEN_PAGINA.intro);
 I.DIENSTEN.forEach((d) => { voeg('diensten/', d.naam); voeg('diensten/', d.tekst); d.punten.forEach((p) => voeg('diensten/', p)); });
@@ -38,13 +46,14 @@ console.log(`gecontroleerd: ${verwacht.length} tekststukken op ${new Set(verwach
 if (mist.length) { console.log(`ROOD ${mist.length} ontbreken:`); mist.forEach(([r, t]) => console.log(`  /${r}: "${t.slice(0, 90)}"`)); process.exit(1); }
 // verwijderde copy mag op geen enkele pagina meer staan, ook niet in de gestructureerde gegevens (JSON-LD)
 const WEG = [
-  ['7 okt 2026, Mohammed: "bij faq de vraag over prijs mag er ook uit"', 'Werken jullie met een vaste prijs, of komen er achteraf kosten bij?'],
+  ['7 okt 2026, Mohammed: "bij faq de vraag over prijs mag er ook uit"', 'Werken jullie met een vaste prijs'],
+  ['7 okt 2026, zijn nieuwe dienstencopy: term "De zes pijlers" volledig verwijderd', 'zes pijlers'],
 ];
 const ALLE = ['', 'diensten/', 'over-ons/', 'vragen/', 'tips/', ...I.BLOGS.map((b) => `tips/${b.slug}/`), 'contact/', 'privacy/'];
 const ruw = (r) => fs.readFileSync(path.join(root, r, 'index.html'), 'utf8');
 // positieve controle: een vraag die er wel moet staan, wordt in de ruwe HTML gevonden
 if (!ruw('vragen/').includes(I.VRAGEN.lijst[0].v)) { console.error('ONGELDIGE METING (verwijderde copy)'); process.exit(2); }
 const terug = [];
-for (const [waarom, zin] of WEG) for (const r of ALLE) if (ruw(r).includes(zin)) terug.push(`  /${r}: "${zin}" (${waarom})`);
+for (const [waarom, zin] of WEG) for (const r of ALLE) if (ruw(r).toLowerCase().includes(zin.toLowerCase())) terug.push(`  /${r}: "${zin}" (${waarom})`);
 if (terug.length) { console.log(`ROOD ${terug.length} verwijderde zin(nen) staan er nog:`); terug.forEach((x) => console.log(x)); process.exit(1); }
 console.log('GROEN alle copy staat woordelijk op de juiste pagina');

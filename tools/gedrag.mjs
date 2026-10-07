@@ -9,7 +9,7 @@ let laatstePost = null; let aantalPosts = 0;
 const srv = http.createServer((q, r) => {
   if (q.method === 'POST' && q.url.startsWith('/test-endpoint')) {
     // antwoord pas na 400 ms, zodat een tweede verzending tijdens het wachten getest kan worden
-    let body = ''; q.on('data', (d) => { body += d; }); q.on('end', () => { aantalPosts++; laatstePost = JSON.parse(body); setTimeout(() => { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"ok":true}'); }, 400); }); return;
+    let body = ''; q.on('data', (d) => { body += d; }); q.on('end', () => { aantalPosts++; laatstePost = (q.headers['content-type'] || '').includes('application/json') ? JSON.parse(body) : { multipart: true, ruw: body }; setTimeout(() => { r.writeHead(200, { 'content-type': 'application/json' }); r.end('{"ok":true}'); }, 400); }); return;
   }
   let p = decodeURIComponent(q.url.split('?')[0]); if (!p.startsWith(BASIS)) { r.writeHead(404); r.end(); return; }
   p = p.slice(BASIS.length - 1); if (p.endsWith('/')) p += 'index.html';
@@ -145,13 +145,16 @@ const open = async (route, w = 1440, h = 900) => {
 /* 3. dienstenpagina: knop vult de dienst in, sprongbalk */
 {
   const p = await open('diensten/');
-  // eerst leeg verzenden (fout bij 'werk'), dan de knop bij Dakwerken: de fout moet weg zijn
+  // dienstenformulier leeg verzenden: naam, telefoon, e-mail en werfgemeente zijn verplicht, type project niet
   await p.evaluate(() => document.querySelector('#aanvraag-onder button[type=submit]').click()); await wacht(200);
+  const verplichtFout = await p.evaluate(() => ['naam', 'tel', 'mail', 'gemeente'].map((n) => !document.getElementById(`aanvraag-onder-${n}-fout`).hidden));
+  t('dienstenformulier leeg: fout bij naam, telefoon, e-mail en gemeente van de werf', verplichtFout.every(Boolean), JSON.stringify(verplichtFout));
+  t('dienstenformulier leeg: geen fout bij type project (niet verplicht in zijn copy)', await p.$eval('#aanvraag-onder-werk-fout', (e) => e.hidden));
   await p.click('#dakwerken [data-naar-form]'); await wacht(500);
-  t('diensten: knop bij Dakwerken vult "Dakwerken" in', (await p.$eval('#aanvraag-onder-werk', (s) => s.value)) === 'Dakwerken');
-  t('diensten: foutmelding bij "werk" verdwijnt na invullen via de knop', await p.$eval('#aanvraag-onder-werk-fout', (e) => e.hidden));
-  await p.evaluate(() => document.querySelector('#badkamer-en-wellness').scrollIntoView()); await wacht(400);
-  t('diensten: sprongbalk markeert huidige dienst', (await p.$eval('.sprong__lijst a.is-actief', (a) => a.getAttribute('href')).catch(() => '')) === '#badkamer-en-wellness');
+  t('diensten: knop bij Dakwerken kiest "Energetisch & Dak"', (await p.$eval('#aanvraag-onder-werk', (s) => s.value)) === 'Energetisch & Dak');
+  t('diensten: knop bij Badkamer kiest "Badkamer"', await p.evaluate(() => { document.querySelector('#badkamer-en-sanitair [data-naar-form]').click(); return document.querySelector('#aanvraag-onder-werk').value === 'Badkamer'; }));
+  await p.evaluate(() => document.querySelector('#badkamer-en-sanitair').scrollIntoView()); await wacht(400);
+  t('diensten: sprongbalk markeert huidige dienst', (await p.$eval('.sprong__lijst a.is-actief', (a) => a.getAttribute('href')).catch(() => '')) === '#badkamer-en-sanitair');
   await p.evaluate(() => document.querySelector('#plaatsbezoek').scrollIntoView()); await wacht(300);
   const sprongTop = await p.$eval('.sprong', (e) => e.getBoundingClientRect().bottom);
   t('diensten: sprongbalk niet meer zichtbaar boven het formulier', sprongTop <= 96, `onderkant ${Math.round(sprongTop)}`);
@@ -204,10 +207,32 @@ const open = async (route, w = 1440, h = 900) => {
   t('dubbele verzending geeft één aanvraag', aantalPosts === 1, `${aantalPosts} POST(s)`);
   t('endpoint-modus: geen uitwegregel en geen terugknop', (await q.$eval('#aanvraag-onder .aanvraag__uitweg', (e) => e.hidden)) && (await q.$eval('#aanvraag-onder [data-terug]', (e) => e.closest('[hidden]') !== null && e.offsetParent === null)));
   t('verzonden naar endpoint', !!laatstePost, laatstePost ? JSON.stringify(laatstePost).slice(0, 160) : 'niets ontvangen');
-  t('payload bevat dienst uit de knop', laatstePost && laatstePost.werk === 'Gevelrenovatie');
+  t('payload bevat type project uit de knop', laatstePost && laatstePost.werk === 'Gevel');
   t('na verzenden bevestiging zichtbaar', await q.$eval('#aanvraag-onder [data-stap="klaar"]', (e) => !e.hidden));
   t('bevestiging zegt bedankt (endpoint-modus)', (await q.$eval('#aanvraag-onder [data-klaar-kop]', (e) => e.textContent)) === 'Bedankt voor uw aanvraag');
   await q.close();
+  // met koppeling en een bijlage: één multipart-verzending met de velden en het bestand
+  const qb = await browser.newPage();
+  await qb.evaluateOnNewDocument(() => { window.__inzichtOpenMail = (h) => { window.__laatsteMail = h; }; });
+  await qb.setViewport({ width: 1440, height: 900 });
+  await qb.evaluateOnNewDocument((u) => { document.addEventListener('readystatechange', () => { if (document.readyState === 'interactive') document.documentElement.setAttribute('data-form-endpoint', u); }); }, ORIGIN + '/test-endpoint');
+  await qb.goto(BASE + 'diensten/', { waitUntil: 'networkidle0' });
+  laatstePost = null;
+  await qb.type('#aanvraag-onder-naam', 'Test Persoon'); await qb.type('#aanvraag-onder-tel', '0470 12 34 56'); await qb.type('#aanvraag-onder-mail', 'test@voorbeeld.be'); await qb.type('#aanvraag-onder-gemeente', '1910 Kampenhout');
+  await (await qb.$('#aanvraag-onder-bijlagen')).uploadFile(path.join(ROOT, 'img', 'favicon.png'));
+  await qb.evaluate(() => document.querySelector('#aanvraag-onder button[type=submit]').click());
+  for (let i = 0; i < 100 && !laatstePost; i++) await wacht(100);
+  t('endpoint met bijlage: multipart met velden en bestand', !!laatstePost && laatstePost.multipart && /name="naam"/.test(laatstePost.ruw) && /filename="favicon\.png"/.test(laatstePost.ruw), laatstePost ? String(laatstePost.ruw || '').slice(0, 80) : 'niets ontvangen');
+  await qb.close();
+  // zonder koppeling, met bijlage: de mail noemt de bijlage en de bevestiging vraagt ze zelf toe te voegen
+  const mb = await open('diensten/');
+  await mb.type('#aanvraag-onder-naam', 'Test Persoon'); await mb.type('#aanvraag-onder-tel', '0470 12 34 56'); await mb.type('#aanvraag-onder-mail', 'test@voorbeeld.be'); await mb.type('#aanvraag-onder-gemeente', '1910 Kampenhout');
+  await (await mb.$('#aanvraag-onder-bijlagen')).uploadFile(path.join(ROOT, 'img', 'favicon.png'));
+  await mb.evaluate(() => document.querySelector('#aanvraag-onder button[type=submit]').click()); await wacht(400);
+  const mailB = decodeURIComponent(await mb.evaluate(() => window.__laatsteMail || ''));
+  t('e-mailmodus met bijlage: mail noemt de bijlage, onderwerp zonder lege dienst', /Bijlagen \(zelf toevoegen aan deze e-mail\): favicon\.png/.test(mailB) && /subject=Aanvraag plaatsbezoek&/.test(mailB) && /Werf: 1910 Kampenhout/.test(mailB), mailB.slice(0, 120));
+  t('e-mailmodus met bijlage: bevestiging vraagt de bijlage toe te voegen', /als bijlage/.test(await mb.$eval('#aanvraag-onder [data-klaar-tekst]', (e) => e.textContent)));
+  await mb.close();
   // e-mailmodus: na Verzenden kan de bezoeker terug naar zijn ingevulde aanvraag
   const m = await open('contact/');
   await m.type('#aanvraag-contact-naam', 'Test Persoon'); await m.type('#aanvraag-contact-tel', '0470 12 34 56'); await m.select('#aanvraag-contact-werk', 'Dakwerken');

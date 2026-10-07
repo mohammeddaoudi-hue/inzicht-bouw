@@ -348,6 +348,7 @@ ul, ol { padding: 0; list-style: none; }
 .stempel:hover .stempel__pijl { transform: translate(2px, -2px); }
 
 /* drie tegels (over ons) */
+.waarom__intro { max-width: 720px; margin: 22px auto 0; text-align: center; font-size: 18px; line-height: 1.6; }
 .tegels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 60px; }
 .tegel { background: var(--wit); border-radius: var(--r-l); padding: 34px 32px 36px; box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.05); }
 .tegel__kop { min-height: 2.6em; margin-top: 22px; font-size: 22px; line-height: 1.3; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; text-wrap: balance; }
@@ -407,18 +408,21 @@ ul, ol { padding: 0; list-style: none; }
 
 /* ══ DIENSTENPAGINA (abgroep-opbouw) ══ */
 .sprong { position: sticky; top: var(--nav-h); z-index: 20; background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--lijn); }
-.sprong__lijst { display: flex; justify-content: space-between; gap: 2px; overflow-x: auto; padding: 12px 0; scrollbar-width: none; }
+.sprong__lijst { display: flex; justify-content: space-between; gap: 0; overflow-x: auto; padding: 12px 0; scrollbar-width: none; }
 .sprong__lijst::-webkit-scrollbar { display: none; }
-.sprong__lijst a { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; padding: 10px 13px; border-radius: var(--r-pil); font-size: 15px; font-weight: 500; color: var(--ink); transition: background-color 0.2s var(--ease); }
+.sprong__lijst a { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; padding: 10px 9px; border-radius: var(--r-pil); font-size: 14px; font-weight: 500; color: var(--ink); transition: background-color 0.2s var(--ease); }
 .sprong__lijst a span { font-size: 13px; font-weight: 600; color: var(--mute); }
 .sprong__lijst a:hover, .sprong__lijst a.is-actief { background: var(--chip); }
 .sprong__lijst a.is-actief span { color: var(--ink); }
 .sprong__lijst a:focus-visible { outline-offset: -3px; }
+/* valt er rechts nog een dienst buiten de balk, dan vervaagt de rand: zo is te zien dat de balk verder schuift */
+.sprong__lijst.is-meer { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 56px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 56px), transparent); }
 
 .sprongvak { position: relative; }
 /* ankers naar een dienst landen onder de vaste balk én onder de sprongbalk (69 px) */
 .sprongvak .rij { scroll-margin-top: calc(var(--nav-h) + 85px); }
 .rijen { padding: 110px 0 40px; }
+.rijen__kop { margin-bottom: 90px; }
 .rij { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 80px; align-items: center; padding-bottom: 110px; }
 .rij--om .rij__beeld { order: 2; }
 .rij__beeld img { width: 100%; aspect-ratio: 4 / 3; height: auto; object-fit: cover; }
@@ -533,6 +537,15 @@ ul, ol { padding: 0; list-style: none; }
   background-size: 6px 6px, 6px 6px; background-repeat: no-repeat;
 }
 .veld textarea { resize: vertical; min-height: 120px; line-height: 1.5; }
+.veld__optioneel { font-weight: 400; color: var(--mute); }
+/* upload: het systeemveld, met een knop in de stijl van de site */
+.veld input[type="file"] { padding: 9px 12px; min-height: 52px; cursor: pointer; font-size: 15px; color: var(--body); }
+.veld input[type="file"]::file-selector-button {
+  margin-right: 14px; padding: 8px 18px; border: 0; border-radius: var(--r-pil);
+  background: var(--chip); color: var(--ink); font: inherit; font-weight: 600; cursor: pointer;
+  transition: background-color var(--snel) var(--ease);
+}
+.veld input[type="file"]::file-selector-button:hover { background: var(--accent); }
 .veld input::placeholder, .veld textarea::placeholder { color: #767272; }
 .veld input:focus, .veld select:focus, .veld textarea:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 4px rgba(17, 17, 17, 0.07); }
 .veld [aria-invalid="true"] { border-color: var(--fout); }
@@ -687,7 +700,8 @@ main:has(> section:last-child:is(.vragen:not(.vragen--wit), .kopband)) + .voet {
   .nav__acties { gap: 18px; }
   .paneel__kaart { left: auto; right: 0; }
   .plaats__blok { padding: 56px; gap: 40px; }
-  .sprong__lijst a { font-size: 14px; padding: 9px 10px; gap: 6px; }
+  .sprong__lijst { gap: 0; }
+  .sprong__lijst a { font-size: 13.5px; padding: 9px 9px; gap: 6px; }
   .sprong__lijst a > span { display: none; }
 }
 @media (max-width: 1140px) {
@@ -695,6 +709,7 @@ main:has(> section:last-child:is(.vragen:not(.vragen--wit), .kopband)) + .voet {
   .nav__acties { gap: 14px; }
   .voet__kolommen { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 30px 20px; }
   .voet__kolommen > div:last-child { grid-column: 1 / -1; }
+  .sprong__lijst a { font-size: 13px; padding: 9px 8px; }
 }
 /* één belknop per schermformaat: vanaf 1001 px het nummer in de balk, daaronder de ronde knop */
 @media (min-width: 1001px) {
@@ -770,7 +785,10 @@ main:has(> section:last-child:is(.vragen:not(.vragen--wit), .kopband)) + .voet {
 
   .sprong .wrap { padding: 0; }
   .sprong__lijst { justify-content: flex-start; gap: 4px; padding: 12px var(--goot); scroll-padding-inline: var(--goot); }
+  .sprong__lijst a { font-size: 14px; padding: 9px 12px; }
   .rijen { padding: 60px 0 10px; }
+  .rijen__kop { margin-bottom: 44px; }
+  .waarom__intro { font-size: 17px; }
   .rij { grid-template-columns: minmax(0, 1fr); gap: 28px; padding-bottom: 72px; }
   .rij--om .rij__beeld { order: 0; }
   .rij__tekst { max-width: none; }

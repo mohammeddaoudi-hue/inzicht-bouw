@@ -180,6 +180,16 @@
     });
   });
 
+  /* ── sprongbalk: vervaagde rechterrand zolang er nog diensten buiten beeld staan ── */
+  const sprongLijst = $('.sprong__lijst');
+  if (sprongLijst) {
+    const meer = () => sprongLijst.classList.toggle('is-meer', sprongLijst.scrollLeft < sprongLijst.scrollWidth - sprongLijst.clientWidth - 2);
+    meer();
+    sprongLijst.addEventListener('scroll', meer, { passive: true });
+    window.addEventListener('resize', meer);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(meer);
+  }
+
   /* ── sprongmenu op de dienstenpagina: huidige dienst markeren ── */
   const sprongLinks = $$('.sprong__lijst a');
   if (sprongLinks.length && 'IntersectionObserver' in window) {
@@ -238,25 +248,31 @@
   /* ── aanvraagformulieren ── */
   const ENDPOINT = document.documentElement.getAttribute('data-form-endpoint') || '';
   const MAIL = 'inzicht.bouw@gmail.com';
+  const MAX_BIJLAGEN = 10 * 1024 * 1024; // samen, alleen relevant met een koppeling (echte upload)
   const cijfers = (s) => s.replace(/\D/g, '');
+  const mailOk = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
   $$('form[data-aanvraag]').forEach((form) => {
     const veld = (n) => form.elements[n];
+    // welke velden verplicht zijn, staat in de HTML (aria-required): het dienstenformulier vraagt meer dan de andere
+    const verplicht = (el) => !!el && el.getAttribute('aria-required') === 'true';
     const foutEl = $('.aanvraag__fout', form);
     const knop = form.querySelector('button[type="submit"]');
     const stapForm = $('[data-stap="form"]', form);
     const klaar = $('[data-stap="klaar"]', form);
+    const klaarKop = $('[data-klaar-kop]', klaar); const klaarTekst = $('[data-klaar-tekst]', klaar);
+    const standaard = { kop: klaarKop.textContent, tekst: klaarTekst.textContent };
     const zetFout = (el, tekst) => {
       const p = document.getElementById(`${el.id}-fout`);
       el.setAttribute('aria-invalid', tekst ? 'true' : 'false');
       if (p) { p.textContent = tekst || ''; p.hidden = !tekst; }
     };
-    ['naam', 'tel', 'mail', 'werk'].forEach((n) => {
+    ['naam', 'tel', 'mail', 'werk', 'gemeente', 'bijlagen'].forEach((n) => {
       const el = veld(n);
-      if (el) el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => { if (el.getAttribute('aria-invalid') === 'true') zetFout(el, ''); });
+      if (el) el.addEventListener(el.tagName === 'SELECT' || el.type === 'file' ? 'change' : 'input', () => { if (el.getAttribute('aria-invalid') === 'true') zetFout(el, ''); });
     });
     const toonKlaar = (kop, tekst, verzonden = false) => {
-      if (kop) $('[data-klaar-kop]', klaar).textContent = kop;
-      if (tekst) $('[data-klaar-tekst]', klaar).textContent = tekst;
+      klaarKop.textContent = kop || standaard.kop;
+      klaarTekst.textContent = tekst || standaard.tekst;
       // na een echte verzending opent er geen e-mailprogramma: geen uitwegregel en geen terugknop
       $$('.aanvraag__uitweg, .aanvraag__acties', klaar).forEach((el) => { el.hidden = verzonden; });
       stapForm.hidden = true;
@@ -297,13 +313,20 @@
       e.preventDefault();
       if (form.dataset.bezig) return; // een tweede verzending terwijl de eerste nog loopt, telt niet
       foutEl.hidden = true;
-      const naam = veld('naam'); const tel = veld('tel'); const mail = veld('mail'); const werk = veld('werk');
+      const naam = veld('naam'); const tel = veld('tel'); const mail = veld('mail'); const werk = veld('werk'); const gemeente = veld('gemeente');
+      const bijlagenVeld = veld('bijlagen');
+      const bestanden = bijlagenVeld && bijlagenVeld.files ? [...bijlagenVeld.files] : [];
       const fouten = [];
-      const check = (el, ok, tekst) => { zetFout(el, ok ? '' : tekst); if (!ok) fouten.push(el); };
+      const check = (el, ok, tekst) => { if (!el) return; zetFout(el, ok ? '' : tekst); if (!ok) fouten.push(el); };
       check(naam, naam.value.trim().length > 1, 'Vul uw voor- en achternaam in.');
       check(tel, cijfers(tel.value).length >= 8, 'Vul uw telefoonnummer in (minstens 8 cijfers).');
-      check(mail, !mail.value.trim() || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail.value.trim()), 'Dit e-mailadres klopt niet.');
-      check(werk, !!werk.value, 'Kies om welk werk het gaat.');
+      if (mail) {
+        const m = mail.value.trim();
+        check(mail, m ? mailOk(m) : !verplicht(mail), m ? 'Dit e-mailadres klopt niet.' : 'Vul uw e-mailadres in.');
+      }
+      if (verplicht(werk)) check(werk, !!werk.value, 'Kies om welk werk het gaat.');
+      if (verplicht(gemeente)) check(gemeente, gemeente.value.trim().length > 1, 'Vul de postcode en gemeente van de werf in.');
+      if (ENDPOINT && bijlagenVeld) check(bijlagenVeld, bestanden.reduce((s, f) => s + f.size, 0) <= MAX_BIJLAGEN, 'Uw bestanden zijn samen groter dan 10 MB. Kies minder of kleinere bestanden.');
       if (fouten.length) {
         // melding bij de knop, en het eerste foute veld midden in beeld (ook op gsm, waar het ver boven de knop staat)
         foutEl.textContent = fouten.length === 1 ? 'Kijk het veld met de melding na.' : `Kijk de ${fouten.length} velden met een melding na.`;
@@ -313,9 +336,11 @@
         return;
       }
 
+      const waarde = (n) => (veld(n) ? veld(n).value.trim() : '');
       const gegevens = {
-        naam: naam.value.trim(), telefoon: tel.value.trim(), email: mail.value.trim(), werk: werk.value,
-        straat: veld('straat').value.trim(), gemeente: veld('gemeente').value.trim(), project: veld('project').value.trim(),
+        naam: waarde('naam'), telefoon: waarde('tel'), email: waarde('mail'), werk: werk ? werk.value : '',
+        straat: waarde('straat'), gemeente: waarde('gemeente'), project: waarde('project'),
+        bijlagen: bestanden.map((f) => f.name).join(', '),
         pagina: location.pathname, verstuurd: new Date().toISOString(),
       };
 
@@ -323,9 +348,17 @@
         form.dataset.bezig = '1';
         knop.setAttribute('aria-busy', 'true');
         const ctrl = new AbortController();
-        const t = setTimeout(() => ctrl.abort(), 8000);
+        const t = setTimeout(() => ctrl.abort(), bestanden.length ? 30000 : 8000);
+        // met bestanden: multipart (velden + bestanden), anders JSON
+        let body = JSON.stringify(gegevens); let headers = { 'Content-Type': 'application/json' };
+        if (bestanden.length) {
+          body = new FormData();
+          Object.entries(gegevens).forEach(([k, w]) => body.append(k, w));
+          bestanden.forEach((f) => body.append('bestanden', f, f.name));
+          headers = undefined;
+        }
         try {
-          const r = await fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(gegevens), keepalive: true, signal: ctrl.signal });
+          const r = await fetch(ENDPOINT, { method: 'POST', headers, body, keepalive: !bestanden.length, signal: ctrl.signal });
           if (!r.ok) throw new Error(String(r.status));
           toonKlaar('Bedankt voor uw aanvraag', 'We nemen contact met u op om het plaatsbezoek in te plannen.', true);
         } catch (err) {
@@ -336,15 +369,19 @@
       }
 
       // Zonder koppeling: de aanvraag gaat als e-mail vanuit het e-mailprogramma van de bezoeker.
+      // Bestanden kunnen niet mee in een mailto-link: de bezoeker voegt ze zelf toe als bijlage.
+      const plaatsLabel = veld('straat') ? 'Adres' : 'Werf';
       const regels = [
         'Aanvraag gratis plaatsbezoek via de website', '',
         `Naam: ${gegevens.naam}`, `Telefoon: ${gegevens.telefoon}`,
         gegevens.email ? `E-mail: ${gegevens.email}` : null,
-        `Werk: ${gegevens.werk}`,
-        gegevens.straat || gegevens.gemeente ? `Adres: ${[gegevens.straat, gegevens.gemeente].filter(Boolean).join(', ')}` : null,
+        gegevens.werk ? `${veld('straat') ? 'Werk' : 'Type project'}: ${gegevens.werk}` : null,
+        gegevens.straat || gegevens.gemeente ? `${plaatsLabel}: ${[gegevens.straat, gegevens.gemeente].filter(Boolean).join(', ')}` : null,
+        bestanden.length ? `Bijlagen (zelf toevoegen aan deze e-mail): ${gegevens.bijlagen}` : null,
         ...(gegevens.project ? ['', 'Project:', gegevens.project] : []),
       ].filter((r) => r !== null);
-      const maakHref = (lijst) => `mailto:${MAIL}?subject=${encodeURIComponent(`Aanvraag plaatsbezoek: ${gegevens.werk}`)}&body=${encodeURIComponent(lijst.join('\n'))}`;
+      const onderwerp = gegevens.werk ? `Aanvraag plaatsbezoek: ${gegevens.werk}` : 'Aanvraag plaatsbezoek';
+      const maakHref = (lijst) => `mailto:${MAIL}?subject=${encodeURIComponent(onderwerp)}&body=${encodeURIComponent(lijst.join('\n'))}`;
       // Windows geeft een mailto-link van meer dan 2.083 tekens niet volledig door: een lange projecttekst inkorten
       let href = maakHref(regels);
       if (href.length > 2000 && gegevens.project) {
@@ -354,8 +391,8 @@
           href = maakHref([...regels.slice(0, -1), `${tekst} [ingekort]`]);
         }
       }
-      mailTekst = [`Aan: ${MAIL}`, `Onderwerp: Aanvraag plaatsbezoek: ${gegevens.werk}`, '', ...regels].join('\n');
-      toonKlaar();
+      mailTekst = [`Aan: ${MAIL}`, `Onderwerp: ${onderwerp}`, '', ...regels].join('\n');
+      toonKlaar(null, bestanden.length ? 'Uw e-mailprogramma opent met uw aanvraag. Voeg uw bouwplan of foto\'s toe als bijlage en verstuur de e-mail.' : null);
       // testhaak: alleen de testsuite zet window.__inzichtOpenMail klaar; dan opent er geen e-mailprogramma op de pc
       if (typeof window.__inzichtOpenMail === 'function') window.__inzichtOpenMail(href);
       else window.location.href = href;
