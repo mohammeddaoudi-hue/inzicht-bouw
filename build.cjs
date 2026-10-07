@@ -340,7 +340,7 @@ function kruimel(v, delen) {
 function phero(v, { delen, kop, lede, beeld, alt, knoppen = true }) {
   return `<section class="phero">
   <div class="phero__tekst">
-    <div class="phero__in" data-reveal>
+    <div class="phero__in">
       ${kruimel(v, delen)}
       <h1 class="phero__kop">${kop2(kop, 'dim')}</h1>
       ${lede ? `<p class="phero__lede">${esc(lede)}</p>` : ''}
@@ -359,7 +359,7 @@ function phero(v, { delen, kop, lede, beeld, alt, knoppen = true }) {
 /* compacte kop zonder foto */
 function kopband(v, { delen, kop, lede }) {
   return `<section class="kopband">
-  <div class="wrap kopband__in" data-reveal>
+  <div class="wrap kopband__in">
     ${kruimel(v, delen)}
     <h1 class="kopband__kop">${Array.isArray(kop) ? kop2(kop, 'dim') : esc(kop)}</h1>
     ${lede ? `<p class="kopband__lede">${esc(lede)}</p>` : ''}
@@ -416,7 +416,7 @@ ${header(v, '')}
   </picture>
   <div class="hero__laag" aria-hidden="true"></div>
   <div class="wrap hero__in">
-    <div class="hero__tekstblok" data-reveal>
+    <div class="hero__tekstblok">
       <h1 class="hero__kop">${kop2(HOME.hero.kop, 'hero__kop2')}</h1>
       <p class="hero__tekst">${esc(HOME.hero.tekst)}</p>
       <div class="hero__knoppen">
@@ -649,7 +649,7 @@ ${header(v, v)}
 <main id="inhoud">
 ${kopband(v, { delen, kop: VRAGEN.kop })}
 <section class="vragen vragen--pagina" aria-label="Vragen en antwoorden">
-  <div class="wrap" data-reveal>
+  <div class="wrap">
     ${accordeon(VRAGEN.lijst, 'vp')}
   </div>
 </section>
@@ -671,7 +671,7 @@ ${header(v, v)}
 ${kopband(v, { delen, kop: TIPS.kop })}
 <section class="tips tips--pagina" aria-label="Alle tips">
   <div class="wrap">
-    <div class="tips__rij" data-reveal>
+    <div class="tips__rij">
       ${BLOGS.map((b) => tipKaart(v, b, 'h2')).join('\n      ')}
     </div>
   </div>
@@ -695,14 +695,14 @@ ${header(v, 'tips/')}
 <main id="inhoud">
 <article class="artikel">
   <header class="artikel__kop">
-    <div class="wrap wrap--smal" data-reveal>
+    <div class="wrap wrap--smal">
       ${kruimel(v, delen)}
       <p class="artikel__meta"><span>${ic('tag', 16)}${esc(b.label)}</span><span>${ic('user', 16)}INzicht bouw en renovatie</span></p>
       <h1 class="artikel__titel">${esc(b.titel)}</h1>
     </div>
   </header>
   <div class="wrap wrap--midden">
-    <div class="artikel__beeld kader" data-reveal>
+    <div class="artikel__beeld kader">
       ${pic(v, b.img, b.alt, { eager: true, sizes: '(max-width: 1000px) 100vw, 960px' })}
     </div>
   </div>
@@ -743,12 +743,7 @@ ${header(v, v, '#aanvraag-contact')}
 ${kopband(v, { delen, kop: CONTACT.kop, lede: CONTACT.tekst })}
 <section class="contact" aria-label="Contactformulier en gegevens">
   <div class="wrap contact__grid">
-    <div class="contact__form kader" data-reveal>
-      <div class="contact__formkern">
-        ${formulier(v, 'aanvraag-contact', { kop: true })}
-      </div>
-    </div>
-    <aside class="contact__gegevens" data-reveal aria-label="${attr(CONTACT.gegevensKop)}">
+    <aside class="contact__gegevens" aria-label="${attr(CONTACT.gegevensKop)}">
       <h2 class="contact__kop">${esc(CONTACT.gegevensKop)}</h2>
       <p class="contact__naam">${esc(SITE.volledig)}</p>
       <ul class="contact__lijst">
@@ -762,6 +757,11 @@ ${kopband(v, { delen, kop: CONTACT.kop, lede: CONTACT.tekst })}
       </dl>
       <a class="knop knop--accent knop--vol contact__bel" href="${SITE.tel.href}">${ic('phone')}${esc(SITE.tel.toon)}</a>
     </aside>
+    <div class="contact__form kader">
+      <div class="contact__formkern">
+        ${formulier(v, 'aanvraag-contact', { kop: true })}
+      </div>
+    </div>
   </div>
 </section>
 <section class="vragen" aria-labelledby="cv-kop">
@@ -788,7 +788,7 @@ ${header(v, '', rel(v, 'contact/'))}
 <main id="inhoud">
 ${kopband(v, { delen, kop: PRIVACY.kop })}
 <section class="juridisch">
-  <div class="wrap wrap--smal prose" data-reveal>
+  <div class="wrap wrap--smal prose">
     <p class="prose__intro">${esc(PRIVACY.intro)}</p>
     ${PRIVACY.delen.map((d) => `<h2>${esc(d.kop)}</h2>
     ${d.p.map((x) => `<p>${esc(x).replace(esc(SITE.mail), `<a href="mailto:${SITE.mail}">${esc(SITE.mail)}</a>`)}</p>`).join('\n    ')}

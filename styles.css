@@ -547,6 +547,8 @@ ul, ol { padding: 0; list-style: none; }
 /* ══ CONTACTPAGINA ══ */
 .contact { padding: 70px 0 var(--sectie); }
 .contact__grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 32px; align-items: start; }
+.contact__form { grid-column: 1; grid-row: 1; }
+.contact__gegevens { grid-column: 2; grid-row: 1; }
 .contact__formkern { background: var(--wit); border-radius: calc(var(--r-l) - 6px); padding: 44px 44px 40px; }
 .contact__gegevens { position: sticky; top: calc(var(--nav-h) + 24px); background: var(--donker); color: rgba(255, 255, 255, 0.82); border-radius: var(--r-l); padding: 42px 38px 38px; }
 .contact__kop { font-size: 22px; font-weight: 600; color: var(--wit); letter-spacing: -0.01em; }
@@ -752,7 +754,8 @@ ul, ol { padding: 0; list-style: none; }
 
   .contact { padding: 40px 0 80px; }
   .contact__grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
-  .contact__gegevens { position: static; order: -1; padding: 32px 24px; }
+  .contact__form, .contact__gegevens { grid-column: auto; grid-row: auto; }
+  .contact__gegevens { position: static; padding: 32px 24px; }
   .contact__formkern { padding: 30px 22px 26px; }
 
   .intro__grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
