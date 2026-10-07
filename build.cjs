@@ -33,9 +33,9 @@ const nb = (s) => esc(s)
   .replace(/(categorie) (\d)/g, '$1 $2')
   .replace(/(\d) (vierkante meter)/g, '$1 $2');
 
-/* <picture> met webp + jpg, 800 en 1600 breed (4:3) */
+/* <picture> met webp + jpg, 800, 1200 en 1600 breed (4:3); sizes = echte weergavebreedte per plek */
 function pic(van, naam, alt, { sizes = '(max-width: 1000px) 100vw, 50vw', eager = false, lui = true, klasse = '' } = {}) {
-  const s = (ext) => `${rel(van, `img/${naam}-800.${ext}`)} 800w, ${rel(van, `img/${naam}-1600.${ext}`)} 1600w`;
+  const s = (ext) => [800, 1200, 1600].map((w) => `${rel(van, `img/${naam}-${w}.${ext}`)} ${w}w`).join(', ');
   return `<picture${klasse ? ` class="${klasse}"` : ''}>
         <source type="image/webp" srcset="${s('webp')}" sizes="${sizes}">
         <img src="${rel(van, `img/${naam}-800.jpg`)}" srcset="${s('jpg')}" sizes="${sizes}" width="1600" height="1200" alt="${attr(alt)}"${eager ? ' fetchpriority="high"' : lui ? ' loading="lazy"' : ''} decoding="async">
@@ -331,7 +331,7 @@ function dienstenStrook(v) {
       <ul class="strook__rij" data-rail>
         ${DIENSTEN.map((d) => `<li class="strook__item">
           <a class="strook__kaart kader" href="${rel(v, 'diensten/')}#${d.slug}">
-            <span class="strook__foto">${pic(v, d.img, d.alt, { sizes: '(max-width: 1000px) 80vw, 380px' })}</span>
+            <span class="strook__foto">${pic(v, d.img, d.alt, { sizes: '(max-width: 1000px) calc(78vw - 50px), 372px' })}</span>
             <span class="strook__body"><span class="strook__nr">${d.nr}</span><span class="strook__naam">${esc(d.kortNaam)}</span>${ic('chev', 20)}</span>
           </a>
         </li>`).join('\n        ')}
@@ -392,10 +392,10 @@ function accordeon(lijst, prefix, eersteOpen = true, kop = 'h3') {
     </div>`;
 }
 
-function tipKaart(v, b, kopNiveau = 'h3', beeld = {}) {
+function tipKaart(v, b, kopNiveau = 'h3', beeld = { sizes: '(max-width: 1000px) calc(100vw - 60px), 369px' }) {
   return `<article class="tip kader">
         <a class="tip__kern" href="${rel(v, `tips/${b.slug}/`)}">
-          <div class="tip__foto">${pic(v, b.img, b.alt, { sizes: '(max-width: 1000px) 100vw, 33vw', ...beeld })}</div>
+          <div class="tip__foto">${pic(v, b.img, b.alt, { sizes: '(max-width: 1000px) calc(100vw - 60px), 369px', ...beeld })}</div>
           <div class="tip__body">
             <${kopNiveau} class="tip__kop">${esc(b.titel)}</${kopNiveau}>
 
@@ -444,7 +444,7 @@ ${header(v, '', '#plaatsbezoek', true)}
 <section class="intro" id="over" aria-labelledby="intro-kop">
   <div class="wrap intro__grid">
     <div class="intro__beeld kader" data-reveal>
-      ${pic(v, 'over-werf', 'Ruwbouw van een woning in verbouwing, met een stelling, stempels en planken', { sizes: '(max-width: 1000px) 100vw, 560px' })}
+      ${pic(v, 'over-werf', 'Ruwbouw van een woning in verbouwing, met een stelling, stempels en planken', { sizes: '(max-width: 1000px) calc(100vw - 60px), 548px' })}
     </div>
     <div class="intro__tekst" data-reveal>
       <h2 class="h2" id="intro-kop">${esc(HOME.intro.kop)}</h2>
@@ -465,7 +465,7 @@ ${header(v, '', '#plaatsbezoek', true)}
       <div class="podium__panelen" data-rail>
         ${DIENSTEN.map((d, i) => `<div class="paneel${i === 0 ? ' is-actief' : ''}" id="paneel-${i + 1}" role="tabpanel" aria-labelledby="tab-${i + 1}"${i === 0 ? '' : ' hidden'}>
           <div class="paneel__foto kader kader--donker">
-            ${pic(v, d.img, d.alt, { sizes: '(max-width: 1000px) 100vw, 700px' })}
+            ${pic(v, d.img, d.alt, { sizes: '(max-width: 1000px) calc(84vw - 52px), 688px' })}
           </div>
           <div class="paneel__kaart">
             <div class="paneel__kern">
@@ -572,7 +572,7 @@ ${phero(v, { delen, kop: DIENSTEN_PAGINA.kop, lede: DIENSTEN_PAGINA.intro, beeld
   <div class="wrap">
     ${DIENSTEN.map((d, i) => `<article class="rij${i % 2 ? ' rij--om' : ''}" id="${d.slug}" aria-labelledby="${d.slug}-kop" data-reveal>
       <div class="rij__beeld kader">
-        ${pic(v, d.img, d.alt, { sizes: '(max-width: 1000px) 100vw, 560px' })}
+        ${pic(v, d.img, d.alt, { sizes: '(max-width: 1000px) calc(100vw - 60px), 548px' })}
       </div>
       <div class="rij__tekst">
         <p class="rij__nr">${d.nr}</p>
@@ -620,7 +620,7 @@ ${phero(v, { delen, kop: OVER.kop, lede: OVER.alineas[0], beeld: 'over-werf', al
   <h2 class="vh" id="verhaal-kop">Ons verhaal</h2>
   <div class="wrap verhaal__grid">
     <div class="verhaal__beeld kader" data-reveal>
-      ${pic(v, 'd-totaal-2', 'Afgewerkte, lichte leefruimte', { sizes: '(max-width: 1000px) 100vw, 560px' })}
+      ${pic(v, 'd-totaal-2', 'Afgewerkte, lichte leefruimte', { sizes: '(max-width: 1000px) calc(100vw - 60px), 548px' })}
     </div>
     <div class="verhaal__tekst" data-reveal>
       ${OVER.alineas.slice(1).map((a, i) => `<p class="${i === 0 ? 'verhaal__lead' : ''}">${esc(a)}</p>`).join('\n      ')}
@@ -707,7 +707,7 @@ ${header(v, 'tips/')}
   </header>
   <div class="wrap wrap--midden">
     <div class="artikel__beeld kader">
-      ${pic(v, b.img, b.alt, { eager: true, sizes: '(max-width: 1000px) 100vw, 960px' })}
+      ${pic(v, b.img, b.alt, { eager: true, sizes: '(max-width: 1000px) calc(100vw - 60px), 988px' })}
     </div>
   </div>
   <div class="wrap wrap--smal artikel__body">
@@ -724,7 +724,7 @@ ${header(v, 'tips/')}
   <div class="wrap">
     <h2 class="h2 h2--midden" id="meer-kop">Meer tips</h2>
     <div class="tips__rij tips__rij--twee">
-      ${anderen.map((x) => tipKaart(v, x)).join('\n      ')}
+      ${anderen.map((x) => tipKaart(v, x, 'h3', { sizes: '(max-width: 1000px) calc(100vw - 60px), 384px' })).join('\n      ')}
     </div>
   </div>
 </section>

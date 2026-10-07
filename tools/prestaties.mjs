@@ -1,9 +1,12 @@
-// Meet per pagina op een gesimuleerde gsm (390 px, 4x tragere CPU, snelle 4G): LCP, CLS, overdracht en aantal verzoeken.
+// Meet per pagina op een gesimuleerde gsm (390 px, pixeldichtheid 3 zoals een iPhone, 4x tragere CPU, snelle 4G),
+// op desktop 1440 px en op een retina-laptop (1440 px, dichtheid 2, 10 Mbit/s): LCP, CLS, overdracht, verzoeken
+// en de grootte van het LCP-beeld (maximaal 200 kB).
 // Gebruik (vanuit pixelperfect-photo-painter): node <pad>/tools/prestaties.mjs
 import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path'; import { createRequire } from 'node:module';
 const puppeteer = createRequire('C:/Users/Mohammed/pixelperfect-photo-painter/package.json')('puppeteer-core');
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Z]:)/, '$1')), '..');
-const ROUTES = ['', 'diensten/', 'over-ons/', 'vragen/', 'tips/', 'tips/aanbouw-vergunning/', 'contact/', 'privacy/'];
+const ROUTES = ['', 'diensten/', 'over-ons/', 'vragen/', 'tips/', 'tips/badkamerrenovatie-waarde-woning/', 'tips/aanbouw-vergunning/', 'tips/renovatiepremies-dak-gevel/', 'contact/', 'privacy/'];
+const MAX_LCP_BEELD = 200 * 1024;
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.woff2': 'font/woff2' };
 const BASIS = '/inzicht-bouw/';
 const srv = http.createServer((q, r) => {
@@ -16,7 +19,7 @@ const BASE = `http://127.0.0.1:${srv.address().port}${BASIS}`;
 const browser = await puppeteer.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: 'new' });
 const rij = [];
 for (const route of ['', ...ROUTES.slice(1)]) {
-  for (const [w, h, mobiel] of [[390, 844, true], [1440, 900, false]]) {
+  for (const [w, h, mobiel, dichtheid, retina] of [[390, 844, true, 3, false], [1440, 900, false, 1, false], [1440, 900, false, 2, true]]) {
     const p = await browser.newPage();
     const cdp = await p.createCDPSession();
     await cdp.send('Network.enable');
@@ -24,22 +27,32 @@ for (const route of ['', ...ROUTES.slice(1)]) {
       await cdp.send('Network.emulateNetworkConditions', { offline: false, latency: 60, downloadThroughput: (9 * 1024 * 1024) / 8, uploadThroughput: (1.5 * 1024 * 1024) / 8 });
       await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
     }
+    if (retina) await cdp.send('Network.emulateNetworkConditions', { offline: false, latency: 40, downloadThroughput: (10 * 1024 * 1024) / 8, uploadThroughput: (2 * 1024 * 1024) / 8 });
     let bytes = 0, verzoeken = 0;
     cdp.on('Network.loadingFinished', (e) => { bytes += e.encodedDataLength; verzoeken++; });
-    await p.setViewport({ width: w, height: h, isMobile: mobiel, hasTouch: mobiel });
+    await p.setViewport({ width: w, height: h, isMobile: mobiel, hasTouch: mobiel, deviceScaleFactor: dichtheid });
     await p.evaluateOnNewDocument(() => {
-      window.__lcp = 0; window.__cls = 0;
-      new PerformanceObserver((l) => { for (const e of l.getEntries()) window.__lcp = e.startTime; }).observe({ type: 'largest-contentful-paint', buffered: true });
+      window.__lcp = 0; window.__cls = 0; window.__lcpBeeld = '';
+      new PerformanceObserver((l) => { for (const e of l.getEntries()) { window.__lcp = e.startTime; window.__lcpBeeld = e.url || ''; } }).observe({ type: 'largest-contentful-paint', buffered: true });
       new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) window.__cls += e.value; }).observe({ type: 'layout-shift', buffered: true });
     });
     await p.goto(BASE + route, { waitUntil: 'networkidle0' });
     await new Promise((r) => setTimeout(r, 800));
-    const m = await p.evaluate(() => ({ lcp: Math.round(window.__lcp), cls: Math.round(window.__cls * 1000) / 1000, fcp: Math.round((performance.getEntriesByName('first-contentful-paint')[0] || {}).startTime || 0) }));
-    rij.push({ pagina: '/' + route, breedte: w, ...m, kB: Math.round(bytes / 1024), verzoeken });
+    const m = await p.evaluate(() => {
+      const res = window.__lcpBeeld ? performance.getEntriesByName(window.__lcpBeeld)[0] : null;
+      return { lcp: Math.round(window.__lcp), cls: Math.round(window.__cls * 1000) / 1000, fcp: Math.round((performance.getEntriesByName('first-contentful-paint')[0] || {}).startTime || 0),
+        lcpBeeld: window.__lcpBeeld ? window.__lcpBeeld.split('/').pop().split('?')[0] : '(tekst)', lcpKB: res ? Math.round((res.encodedBodySize || res.transferSize) / 1024) : 0 };
+    });
+    rij.push({ pagina: '/' + route, breedte: `${w}@${dichtheid}`, ...m, kB: Math.round(bytes / 1024), verzoeken });
     await p.close();
   }
 }
 await browser.close(); srv.close();
 console.table(rij);
-const slecht = rij.filter((r) => r.lcp > 2500 || r.cls > 0.1);
-console.log(slecht.length ? `ROOD: ${slecht.length} meting(en) boven LCP 2,5 s of CLS 0,1` : 'GROEN: alle pagina\'s LCP < 2,5 s en CLS < 0,1');
+const slecht = rij.filter((r) => r.lcp > 2500 || r.cls > 0.1 || r.lcpKB * 1024 > MAX_LCP_BEELD);
+// positieve controle: de meting moet minstens één LCP-beeld met een grootte gevonden hebben
+const gemeten = rij.filter((r) => r.lcpKB > 0).length;
+if (!gemeten) { console.log('ROOD: ONGELDIGE METING, geen enkel LCP-beeld gemeten'); process.exit(1); }
+console.log(slecht.length ? `ROOD: ${slecht.length} meting(en) boven LCP 2,5 s, CLS 0,1 of LCP-beeld 200 kB` : `GROEN: alle pagina's LCP < 2,5 s, CLS < 0,1 en LCP-beeld <= 200 kB (${gemeten} beelden gemeten)`);
+// zonder foutcode zou de poort bij een rode meting toch opengaan (gevonden op 7 okt 2026)
+process.exit(slecht.length ? 1 : 0);
