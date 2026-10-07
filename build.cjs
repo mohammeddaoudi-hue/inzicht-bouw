@@ -237,10 +237,8 @@ function formulier(v, id, { kop = true, kopId = '', sub = true, knop = FORM.knop
             ${veld('tel', F.tel, 'tel', 'tel', { verplicht: true, extra: ' inputmode="tel"' })}
             ${veld('mail', F.mail, 'email', 'email', { verplicht: true, extra: ' inputmode="email"' })}
           </div>
-          <div class="veld-rij">
-            ${veld('gemeente', F.werf, 'text', 'address-level2', { verplicht: true })}
-            ${keuze(F.type, F.typeLeeg, F.typeOpties, false)}
-          </div>
+          ${veld('gemeente', F.werf, 'text', 'address-level2', { verplicht: true })}
+          ${keuze(F.type, F.typeLeeg, F.typeOpties, false)}
           <div class="veld">
             <label for="${id}-project">${esc(F.plannen)}</label>
             <textarea id="${id}-project" name="project" rows="4" maxlength="1000"></textarea>
