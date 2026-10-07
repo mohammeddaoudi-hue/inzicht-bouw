@@ -233,7 +233,7 @@ function formulier(v, id, { kop = true, kopId = '' } = {}) {
             <p class="veld__fout" id="${id}-werk-fout" hidden></p>
           </div>
           <div class="veld-rij">
-            ${veld('straat', F.straat, 'text', 'street-address')}
+            ${veld('straat', F.straat, 'text', 'address-line1')}
             ${veld('gemeente', F.gemeente, 'text', 'address-level2')}
           </div>
           <div class="veld">
@@ -382,12 +382,12 @@ function accordeon(lijst, prefix, eersteOpen = true) {
 function tipKaart(v, b, kopNiveau = 'h3') {
   return `<article class="tip kader">
         <a class="tip__kern" href="${rel(v, `tips/${b.slug}/`)}">
-          <span class="tip__foto">${pic(v, b.img, b.alt, { sizes: '(max-width: 1000px) 100vw, 33vw' })}</span>
-          <span class="tip__body">
+          <div class="tip__foto">${pic(v, b.img, b.alt, { sizes: '(max-width: 1000px) 100vw, 33vw' })}</div>
+          <div class="tip__body">
             <span class="tip__meta"><span>${ic('tag', 16)}${esc(b.label)}</span><span>${ic('user', 16)}INzicht</span></span>
             <${kopNiveau} class="tip__kop">${esc(b.titel)}</${kopNiveau}>
             <span class="link">Lees meer${ic('chev')}</span>
-          </span>
+          </div>
         </a>
       </article>`;
 }
@@ -447,7 +447,7 @@ ${header(v, '')}
     <h2 class="h2 h2--wit h2--midden" id="diensten-kop" data-reveal>${esc(HOME.diensten.kop)}</h2>
     <div class="podium" data-reveal>
       <div class="podium__panelen" data-rail>
-        ${DIENSTEN.map((d, i) => `<article class="paneel${i === 0 ? ' is-actief' : ''}" id="paneel-${i + 1}" role="tabpanel" aria-labelledby="tab-${i + 1}"${i === 0 ? '' : ' hidden'}>
+        ${DIENSTEN.map((d, i) => `<div class="paneel${i === 0 ? ' is-actief' : ''}" id="paneel-${i + 1}" role="tabpanel" aria-labelledby="tab-${i + 1}"${i === 0 ? '' : ' hidden'}>
           <div class="paneel__foto kader kader--donker">
             ${pic(v, d.img, d.alt, { sizes: '(max-width: 1000px) 100vw, 700px' })}
           </div>
@@ -458,7 +458,7 @@ ${header(v, '')}
               <p class="paneel__tekst">${esc(d.kortTekst)}</p>
             </div>
           </div>
-        </article>`).join('\n        ')}
+        </div>`).join('\n        ')}
       </div>
       <div class="rail-bediening" data-bediening>
         <button class="rail-knop" type="button" data-vorige aria-label="Vorige dienst">${ic('terug', 20)}</button>
@@ -565,7 +565,8 @@ ${phero(v, { delen, kop: DIENSTEN_PAGINA.kop, lede: DIENSTEN_PAGINA.intro, beeld
   </div>
 </nav>
 
-<section class="rijen" aria-label="Onze zes pijlers">
+<section class="rijen" aria-labelledby="rijen-kop">
+  <h2 class="vh" id="rijen-kop">Onze zes pijlers</h2>
   <div class="wrap">
     ${DIENSTEN.map((d, i) => `<article class="rij${i % 2 ? ' rij--om' : ''}" id="${d.slug}" aria-labelledby="${d.slug}-kop" data-reveal>
       <div class="rij__beeld kader">
@@ -613,7 +614,8 @@ ${header(v, v)}
 <main id="inhoud">
 ${phero(v, { delen, kop: OVER.kop, lede: OVER.alineas[0], beeld: 'over-werf', alt: 'Werf in een woning in verbouwing, met ladders en ruwe muren' })}
 
-<section class="verhaal" aria-label="Ons verhaal">
+<section class="verhaal" aria-labelledby="verhaal-kop">
+  <h2 class="vh" id="verhaal-kop">Ons verhaal</h2>
   <div class="wrap verhaal__grid">
     <div class="verhaal__beeld kader" data-reveal>
       ${pic(v, 'd-totaal-2', 'Afgewerkte, lichte leefruimte', { sizes: '(max-width: 1000px) 100vw, 560px' })}

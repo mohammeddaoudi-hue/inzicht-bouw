@@ -652,6 +652,7 @@ ul, ol { padding: 0; list-style: none; }
   .nav__tel { display: none; }
   .paneel__kaart { left: auto; right: 0; }
   .plaats__blok { padding: 56px; gap: 40px; }
+  .sprong__lijst a { font-size: 14px; padding: 9px 10px; gap: 6px; }
 }
 
 @media (hover: none) {
