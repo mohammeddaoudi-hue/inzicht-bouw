@@ -64,4 +64,37 @@ for (const [waar, tekst] of [['home-hero', I.HOME.hero.tekst], ['Over ons-hero',
   const zinnen = tekst.split(/(?<=[.!?])\s+/).filter(Boolean).length; const woorden = tekst.split(/\s+/).length;
   if (zinnen > 2 || woorden > 30) { console.log(`ROOD subheadline ${waar} te lang: ${zinnen} zinnen, ${woorden} woorden (max 2 en 30)`); process.exit(1); }
 }
+// Negatieve en contrastconstructies (8 okt 2026, Mohammed: "GEEN NEGATIVITEIT, eruit halen, en overal die ai slop, geen dit wel dit,
+// its not this its that, from this to this, ERUIT" + "het mag in mate, waar het nodig is" + "en geen em dashes").
+// Elke zin in alle copy wordt getoetst; alleen de zinnen in TOEGESTAAN zijn bewuste uitzonderingen (geldfeit, privacyverplichting, formulierkeuze).
+const SLOP = [
+  ['geen/niet ... maar/wel', /\b(geen|niet|nooit)\b[^.?!]{0,90}\b(maar|wel)\b/i],
+  ['niet enkel/alleen', /\bniet (enkel|alleen)\b/i],
+  ['van ... tot ...', /\bvan\b[^.?!]{1,80}\btot\b/i],
+  ['zonder dat', /\bzonder dat\b/i],
+  ['"Geen X" als zin', /(^|[.!?]\s+)Geen\b/],
+  ['of u nu / of het nu', /\b(of u nu|of het nu)\b/i],
+  ['Het resultaat?', /\bHet resultaat\?/],
+  ['gedachtestreepje', /[–—]/],
+];
+const TOEGESTAAN = new Set([
+  'Voor de hoogste en middelste inkomens (categorie 1 en 2) is er sinds 1 maart 2026 geen premie meer voor dak of buitenmuur.',
+  'Uw gegevens worden nooit verkocht aan derden.',
+]);
+const slop = [];
+const doorloop = (pad, w) => {
+  if (typeof w === 'string') {
+    if (/\.(slug|img|href|ic|nr|pad|datum|formType)$|^CORRECTIES|^SITE\.(url|tel|mail)/.test(pad)) return;
+    for (const zin of w.split(/(?<=[.!?])\s+/)) for (const [naam, re] of SLOP) if (re.test(zin) && !TOEGESTAAN.has(zin)) slop.push(`  ${pad}: [${naam}] "${zin.slice(0, 100)}"`);
+    return;
+  }
+  if (Array.isArray(w)) return w.forEach((x, i) => doorloop(`${pad}[${i}]`, x));
+  if (w && typeof w === 'object') Object.entries(w).forEach(([k, x]) => doorloop(pad ? `${pad}.${k}` : k, x));
+};
+for (const [k, v] of Object.entries(I)) doorloop(k, v);
+// positieve controle: een geplante slopzin moet gevonden worden
+{ const proef = []; for (const [, re] of SLOP) if (re.test('Geen loze beloftes, wel daadkracht.')) proef.push(1); if (!proef.length) { console.error('ONGELDIGE METING (slop)'); process.exit(2); } }
+// gedachtestreepjes ook in de gebouwde HTML (eigen teksten in de sjablonen)
+for (const r of ALLE) if (/[–—]/.test(ruw(r).replace(/<script[\s\S]*?<\/script>/g, ''))) slop.push(`  /${r}: gedachtestreepje in de HTML`);
+if (slop.length) { console.log(`ROOD ${slop.length} negatieve of contrastconstructie(s):`); slop.forEach((x) => console.log(x)); process.exit(1); }
 console.log('GROEN alle copy staat woordelijk op de juiste pagina');

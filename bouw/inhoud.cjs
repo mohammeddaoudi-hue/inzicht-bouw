@@ -56,16 +56,16 @@ const HOME = {
   werkwijze: {
     kop: 'Uw werf loopt volgens plan',
     punten: [
-      { titel: 'Een concept binnen uw budget', tekst: 'We luisteren eerst naar uw wensen. Daarna werken we een concept uit dat binnen uw budget past. Wat we afspreken, voeren we uit voor die prijs. Geen onaangename verrassingen achteraf.', ic: 'plan' },
+      { titel: 'Een concept binnen uw budget', tekst: 'We luisteren eerst naar uw wensen. Daarna werken we een concept uit dat binnen uw budget past. Wat we afspreken, voeren we uit voor die prijs.', ic: 'plan' },
       { titel: 'Een projectleider vanaf de startvergadering', tekst: 'Vanaf de eerste bespreking krijgt u één vaste projectleider toegewezen. Hij regelt de planning, stuurt de vakmensen aan en coördineert externe partners. Voor alle vragen heeft u één direct aanspreekpunt.', ic: 'helm' },
-      { titel: 'Elke week een werfverslag', tekst: 'Tot de laatste afwerking ontvangt u elke week een gedetailleerde vorderingsstaat van uw werf. Zo volgt u de voortgang op de voet, zonder dat u zelf dagelijks aanwezig hoeft te zijn.', ic: 'verslag' },
+      { titel: 'Elke week een werfverslag', tekst: 'Tot de laatste afwerking ontvangt u elke week een gedetailleerde vorderingsstaat van uw werf. Zo volgt u de voortgang op de voet, waar u ook bent.', ic: 'verslag' },
     ],
   },
   /* Inleiding onder de hero: kop en knop van Claude; tekst = zijn vorige hero-tekst (woordelijk), sinds de alinea TOTAALAANNEMER in de hero staat (8 okt 2026). */
   intro: {
     // zijn titel uit de Over ons-copy: de positionering (totaalaannemer) op de voorgrond, niet de gemeente
     kop: OVER_TITEL,
-    lead: 'Wij nemen uw renovatie of nieuwbouw volledig aan, met het ontwerp en de coördinatie erbij. Geen stress over overlappende planningen met losse aannemers: wij regelen uw werf van A tot Z, met één vast aanspreekpunt.',
+    lead: 'Wij nemen uw renovatie of nieuwbouw volledig aan, met het ontwerp en de coördinatie erbij. Voor de hele werf heeft u één vast aanspreekpunt.',
     knop: 'Lees ons verhaal',
   },
   diensten: { kop: 'Wat wij bouwen en verbouwen', knop: 'Ontdek alle diensten in detail' },
@@ -86,15 +86,15 @@ const HOME = {
    - de FAQ-vraag "Werken jullie met een vaste prijs?" staat er niet (zijn opdracht in de chat: "bij faq de vraag over prijs mag er ook uit").
    De drie vragen hieronder vervangen ook op de andere pagina's de oude antwoorden op dezelfde vragen (één antwoord per vraag op de hele site). */
 const VRAGEN_WERF = [
-  { v: 'Moet ik zelf een architect of bouwvergunning regelen?', a: 'Voor ingrepen die de stabiliteit of het volume van uw woning veranderen (zoals een grote uitbouw of het weghalen van draagmuren) is een architect wettelijk verplicht. Hebt u al een architect? Dan voeren wij de plannen nauwgezet uit. Voor projecten zonder vergunningsplicht handelen wij alles rechtstreeks en vakkundig voor u af.' },
+  { v: 'Moet ik zelf een architect of bouwvergunning regelen?', a: 'Voor ingrepen die de stabiliteit of het volume van uw woning veranderen (zoals een grote uitbouw of het weghalen van draagmuren) is een architect wettelijk verplicht. Hebt u al een architect? Dan voeren wij de plannen nauwgezet uit. Voor vergunningsvrije projecten handelen wij alles rechtstreeks en vakkundig voor u af.' },
   { v: 'Wanneer neem ik het best contact op voor een renovatie of nieuwbouw?', a: 'Zodra u de plannen of een goed uitgewerkt idee hebt. Totaalprojecten komen het best tot hun recht met een degelijke voorbereiding. Door ons in een vroeg stadium te betrekken, kunnen we gericht meedenken over de haalbaarheid en de werken optimaal inplannen.' },
-  { v: 'Wie volgt mijn werf op?', a: 'Uw project wordt van start tot finish geleid door één vaste projectleider. Hij is eindverantwoordelijk voor de bestellingen, de aansturing van onze vakmensen, de strenge kwaliteitscontroles en uw wekelijkse verslag.' },
+  { v: 'Wie volgt mijn werf op?', a: 'Eén vaste projectleider leidt uw volledige project. Hij is eindverantwoordelijk voor de bestellingen, de aansturing van onze vakmensen, de strenge kwaliteitscontroles en uw wekelijkse verslag.' },
 ];
 const DIENSTEN_PAGINA = {
   titel: 'Diensten · INzicht bouw en renovatie',
   beschrijving: 'Alle expertises van INzicht bouw en renovatie, gebundeld onder één aanneming.',
   kop: ['Onze expertises,', 'gebundeld onder één aanneming'],
-  intro: 'Als totaalaannemer houden wij uw bouwproject volledig in eigen handen. We brengen al onze specialiteiten samen in één gestroomlijnde werking. Door alles toe te vertrouwen aan één partner, geniet u van een perfecte afstemming van de allereerste fundering tot de finale interieurafwerking.',
+  intro: 'Als totaalaannemer houden wij uw bouwproject volledig in eigen handen. We brengen al onze specialiteiten samen in één gestroomlijnde werking. Door alles toe te vertrouwen aan één partner, zijn alle bouwfases perfect op elkaar afgestemd.',
   knop: 'Plan een plaatsbezoek in',
   expertisesKop: 'Onze expertises',
   organisatie: {
@@ -120,9 +120,9 @@ const DIENSTEN = [
     naam: 'Totaalrenovatie en nieuwbouw',
     kortNaam: 'Totaalrenovatie en nieuwbouw',
     formType: 'Totaalrenovatie of nieuwbouw',
-    kortTekst: 'Volledige ontzorging. Van grondige totaalrenovatie en stevige uitbreiding tot een complete nieuwbouwwoning.',
+    kortTekst: 'Volledige ontzorging bij een grondige totaalrenovatie, een stevige uitbreiding of een complete nieuwbouwwoning.',
     tekst: 'Grote bouwprojecten vragen om een ijzersterke planning. Wij bouwen, verbouwen en plaatsen uitbreidingen met een vlotte, aaneensluitende doorlooptijd. Omdat we de ruwbouw, de technieken en de afwerking nauwkeurig op elkaar afstemmen, volgt elke stap in het bouwproces elkaar naadloos op.',
-    punten: ['Fundering, riolering en ruwbouw', 'Afbreken en veilig opvangen van draagmuren', 'Uitvoering van ruwbouw tot volledig sleutel-op-de-deur'],
+    punten: ['Fundering, riolering en ruwbouw', 'Afbreken en veilig opvangen van draagmuren', 'Volledige uitvoering, sleutel-op-de-deur'],
     img: 'd-totaal', alt: 'Woning in renovatie, gestript tot de ruwbouw met stempels onder het plafond',
   },
   {
@@ -171,7 +171,7 @@ const DIENSTEN = [
     kortNaam: 'Interieur en binnenschrijnwerk',
     formType: 'Interieur',
     kortTekst: 'Gyprocwanden en plafonds, maatwerk (kasten, binnendeuren), vloeren en de inrichting van uw kantoor of thuiswerkplek.',
-    tekst: 'De afwerking is bepalend voor de uitstraling van uw pand. Onze vakmensen zorgen voor kaarsrechte gyprocwanden, naadloze plafonds en perfect geplaatste vloeren. Ook voor maatwerk bent u bij ons aan het juiste adres: van functionele kastenwanden en dressings tot kamerhoge binnendeuren.',
+    tekst: 'De afwerking is bepalend voor de uitstraling van uw pand. Onze vakmensen zorgen voor kaarsrechte gyprocwanden, naadloze plafonds en perfect geplaatste vloeren. Ook voor maatwerk bent u bij ons aan het juiste adres: functionele kastenwanden, dressings en kamerhoge binnendeuren.',
     punten: ['Gyprocwanden en strak pleisterwerk', 'Maatwerkkasten, dressings en kantoorinrichting', 'Vloeren en binnendeuren'],
     img: 'd-interieur', alt: 'Ruimte in afwerking met gyprocplaten, verlaagd plafond en vloerverwarmingscollector',
   },
@@ -202,11 +202,11 @@ const OVER = {
   beschrijving: 'INzicht bouw en renovatie is totaalaannemer: één partner met de volledige regie over uw bouwproject.',
   kop: ['Dé totaalaannemer', 'voor hoogwaardige bouwprojecten'],
   sub: TOTAALAANNEMER,
-  intro: 'Bouwen is vooruitkijken. Of het nu gaat om een complexe totaalrenovatie, een exclusieve nieuwbouw of een grootschalig ontwikkelingsproject: u investeert in de toekomst. Bij INzicht staan we garant voor een bouwproces dat even solide is als het eindresultaat. Geen loze beloftes, wel daadkracht en doordacht projectmanagement.',
+  intro: 'Bouwen is vooruitkijken. Met een complexe totaalrenovatie, een exclusieve nieuwbouw of een grootschalig ontwikkelingsproject investeert u in de toekomst. Bij INzicht staan we garant voor een bouwproces dat even solide is als het eindresultaat, met daadkracht en doordacht projectmanagement.',
   delen: [
     {
       kop: 'De kracht van totaalaanneming',
-      tekst: 'Wij nemen de volledige verantwoordelijkheid voor uw project. Door alle bouwfases naadloos op elkaar af te stemmen – van de fundering en ruwbouw tot de meest verfijnde interieurafwerking – elimineren we de typische wachttijden en faalkosten van de klassieke bouw. Wij overzien het grotere plaatje én bewaken de kleinste details. Het resultaat? Een aanzienlijk vlotter traject en een afwerkingsgraad van het hoogste niveau.',
+      tekst: 'Wij nemen de volledige verantwoordelijkheid voor uw project. We stemmen alle bouwfases op elkaar af, inclusief de fundering, de ruwbouw en de verfijnde interieurafwerking. Zo elimineren we de typische wachttijden en faalkosten van de klassieke bouw. Wij overzien het grotere plaatje én bewaken de kleinste details. Dat levert een aanzienlijk vlotter traject op en een afwerkingsgraad van het hoogste niveau.',
       img: 'd-totaal-2', alt: 'Afgewerkte, lichte leefruimte met een witte zetel en kleurrijke kussens',
     },
     {
@@ -216,7 +216,7 @@ const OVER = {
     },
     {
       kop: 'Absolute controle en transparantie',
-      tekst: 'Een premium project vereist een waterdicht financieel en operationeel beheer. Wij werken uitsluitend met gedetailleerde meetstaten, reële inschattingen en een strakke centrale werfcoördinatie. U wordt continu op de hoogte gehouden van de voortgang, zonder dat u zich hoeft te verdiepen in de operationele details. Geen onverwachte verrassingen, maar een transparante samenwerking waarbij budget en timing strikt gerespecteerd worden.',
+      tekst: 'Een premium project vereist een waterdicht financieel en operationeel beheer. Wij werken uitsluitend met gedetailleerde meetstaten, reële inschattingen en een strakke centrale werfcoördinatie. U wordt continu op de hoogte gehouden van de voortgang. De operationele details regelen wij. U krijgt een transparante samenwerking waarbij budget en timing strikt gerespecteerd worden.',
       img: 'meetstaat', alt: 'Bouwplannen op tafel met een rekenmachine en een potlood',
     },
   ],
@@ -278,7 +278,7 @@ const BLOGS = [
     titel: 'Welke renovatiepremies kunt u nog aanvragen voor dak of gevel?',
     intro: 'Een dak dat warmte binnenhoudt of een strak geïsoleerde gevel zijn de meest rendabele investeringen in uw woning. Om deze kosten te verzachten, kunt u in Vlaanderen rekenen op de Mijn VerbouwPremie.',
     punten: [
-      { b: 'Dakwerken en dakisolatie:', t: 'De premie geldt niet enkel voor de isolatie, maar vaak ook voor werken eromheen: het afbreken van de oude bedekking, een nieuw onderdak, pannen, leien en soms zelfs de draagstructuur. Ook dakramen kunnen in aanmerking komen.' },
+      { b: 'Dakwerken en dakisolatie:', t: 'De premie geldt voor de isolatie en vaak ook voor werken eromheen: het afbreken van de oude bedekking, een nieuw onderdak, pannen, leien en soms zelfs de draagstructuur. Ook dakramen kunnen in aanmerking komen.' },
       { b: 'Buitenmuur en gevelrenovatie:', t: 'Plaatst u isolatie langs de buitenzijde, afgewerkt met crepi of steenstrips? Dan kunt u via Mijn VerbouwPremie een aanzienlijk deel recupereren.' },
       // GECORRIGEERD (vlaanderen.be, ruwe pagina's dak en buitenmuur gelezen op 7 okt 2026): categorie 1 en 2 krijgen sinds 1 maart 2026 niets meer; bedragen per categorie
       { b: 'Hoeveel krijgt u terug?', t: 'Dit hangt af van uw inkomenscategorie. Voor de hoogste en middelste inkomens (categorie 1 en 2) is er sinds 1 maart 2026 geen premie meer voor dak of buitenmuur. Voor de laagste inkomens kan dit oplopen tot 35% (categorie 3) of 50% (categorie 4) van het factuurbedrag zonder btw. Het maximum is 4.025 of 5.750 euro voor het dak en 3.500 of 5.000 euro voor de buitenmuur.' },
