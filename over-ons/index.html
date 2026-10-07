@@ -22,7 +22,7 @@
 <link rel="icon" href="../img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
 <link rel="preload" href="../fonts/pjs-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../styles.css?v=muyi4umd">
+<link rel="stylesheet" href="../styles.css?v=muyjgasu">
 <script>document.documentElement.className='js';setTimeout(function(){if(!window.__inzicht)document.documentElement.classList.add('reveal-klaar')},1500)</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mohammeddaoudi-hue.github.io/inzicht-bouw/"},{"@type":"ListItem","position":2,"name":"Over ons","item":"https://mohammeddaoudi-hue.github.io/inzicht-bouw/over-ons/"}]}</script>
 </head>
@@ -83,11 +83,11 @@
 </header>
 <div class="mob" id="mobmenu" hidden>
   <nav class="mob__links" aria-label="Mobiel menu">
-    <a href="../diensten/" style="--i:0">Diensten</a>
-    <a href="../over-ons/" style="--i:1" aria-current="page">Over ons</a>
-    <a href="../vragen/" style="--i:2">Vragen</a>
-    <a href="../tips/" style="--i:3">Tips</a>
-    <a href="../contact/" style="--i:4">Contact</a>
+    <a href="../diensten/">Diensten</a>
+    <a href="../over-ons/" aria-current="page">Over ons</a>
+    <a href="../vragen/">Vragen</a>
+    <a href="../tips/">Tips</a>
+    <a href="../contact/">Contact</a>
   </nav>
   <div class="mob__cta">
     <a class="knop knop--accent knop--vol" href="#plaatsbezoek" data-naar-form>Gratis plaatsbezoek<span class="knop__ic"><svg width="16" height="16" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></span></a>
@@ -110,7 +110,7 @@
   <div class="phero__beeld">
     <picture>
         <source type="image/webp" srcset="../img/over-werf-800.webp 800w, ../img/over-werf-1600.webp 1600w" sizes="(max-width: 1000px) 100vw, 50vw">
-        <img src="../img/over-werf-800.jpg" srcset="../img/over-werf-800.jpg 800w, ../img/over-werf-1600.jpg 1600w" sizes="(max-width: 1000px) 100vw, 50vw" width="1600" height="1200" alt="Werf in een woning in verbouwing, met ladders en ruwe muren" fetchpriority="high" decoding="async">
+        <img src="../img/over-werf-800.jpg" srcset="../img/over-werf-800.jpg 800w, ../img/over-werf-1600.jpg 1600w" sizes="(max-width: 1000px) 100vw, 50vw" width="1600" height="1200" alt="Ruwbouw van een woning in verbouwing, met een stelling, stempels en planken" fetchpriority="high" decoding="async">
       </picture>
   </div>
 </section>
@@ -235,10 +235,10 @@
         <p class="plaats__lede">Vertel ons wat u wilt bouwen of verbouwen. We komen langs voor een vrijblijvende offerte in de ruime regio rond Kampenhout.</p>
         <ul class="plaats__info">
           <li><span class="plaats__info-ic"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></span><span><b>Telefoon</b><a href="tel:+32468359093">0468 35 90 93</a></span></li>
-          <li><span class="plaats__info-ic"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg></span><span><b>Adres</b><span>Tiendeschuurstraat 134, 1910 Kampenhout</span></span></li>
+          <li><span class="plaats__info-ic"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg></span><span><b>Adres</b><span>Tiendeschuurstraat 134, <span class="nw">1910 Kampenhout</span></span></span></li>
           <li><span class="plaats__info-ic"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-klok"/></svg></span><span><b>Openingsuren</b><span>Ma - do: 8.30 - 16.30<br>Vrijdag: 9.00 - 15.30<br>Za - zo: Gesloten</span></span></li>
         </ul>
-        <img class="plaats__logo" src="../img/logo-tegel.png" width="640" height="439" alt="" loading="lazy" decoding="async">
+        <img class="plaats__logo" src="../img/logo-tegel.png" width="640" height="440" alt="" loading="lazy" decoding="async">
       </div>
       <div class="plaats__form kader">
         <div class="plaats__formkern">
@@ -286,7 +286,7 @@
           </div>
           <div class="veld">
             <label for="aanvraag-onder-project">Beschrijf kort uw project</label>
-            <textarea id="aanvraag-onder-project" name="project" rows="4" placeholder="Type werken, gewenste startdatum, etc."></textarea>
+            <textarea id="aanvraag-onder-project" name="project" rows="4" maxlength="1000" placeholder="Type werken, gewenste startdatum, etc."></textarea>
           </div>
           <p class="aanvraag__fout" role="alert" hidden></p>
           <button class="knop knop--accent knop--vol" type="submit">Verzenden<span class="knop__ic"><svg width="16" height="16" aria-hidden="true" focusable="false"><use href="#i-chev"/></svg></span></button>
@@ -297,6 +297,7 @@
           <h2 class="aanvraag__kop" data-klaar-kop>Uw e-mail staat klaar</h2>
           <p class="aanvraag__sub" role="status" data-klaar-tekst>Uw e-mailprogramma opent met uw aanvraag. Verstuur die e-mail om uw aanvraag af te ronden.</p>
           <p class="aanvraag__uitweg">Opent er niets? Bel <a href="tel:+32468359093">0468 35 90 93</a> of mail naar <a href="mailto:inzicht.bouw@gmail.com">inzicht.bouw@gmail.com</a>.</p>
+          <button class="knop knop--rand aanvraag__terug" type="button" data-terug>Terug naar uw aanvraag</button>
         </div>
       </form>
         </div>
@@ -312,7 +313,7 @@
         <img class="voet__logo" src="../img/logo-ink.png" width="227" height="140" alt="INzicht bouw en renovatie" loading="lazy">
         <p class="voet__naam">INzicht bouw en renovatie</p>
         <ul class="voet__contact">
-          <li><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg><span>Tiendeschuurstraat 134, 1910 Kampenhout</span></li>
+          <li><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg><span>Tiendeschuurstraat 134, <span class="nw">1910 Kampenhout</span></span></li>
           <li><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><a href="tel:+32468359093">0468 35 90 93</a></li>
           <li><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg><a href="mailto:inzicht.bouw@gmail.com">inzicht.bouw@gmail.com</a></li>
         </ul>
@@ -355,8 +356,8 @@
       <a href="../privacy/">Privacybeleid</a>
     </div>
   </div>
+  <a class="fab" href="tel:+32468359093" aria-label="Bel 0468 35 90 93"><svg width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></a>
 </footer>
-<a class="fab" href="tel:+32468359093" aria-label="Bel 0468 35 90 93"><svg width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></a>
-<script src="../site.js?v=muyi4umd" defer></script>
+<script src="../site.js?v=muyjgasu" defer></script>
 </body>
 </html>

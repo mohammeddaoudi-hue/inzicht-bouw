@@ -20,7 +20,6 @@ const SITE = {
   copyright: '© 2026 INzicht bouw en renovatie',
   // publicatie-instellingen
   url: 'https://mohammeddaoudi-hue.github.io/inzicht-bouw',
-  basis404: '/inzicht-bouw/',
   noindex: true,
 };
 
@@ -37,7 +36,7 @@ const KNOP = { plaatsbezoek: 'Gratis plaatsbezoek' };
 
 /* ── HOME ─────────────────────────────────────────────────────────────── */
 const HOME = {
-  titel: 'INzicht – bouw en renovatie',
+  titel: 'INzicht bouw en renovatie · Kampenhout',
   beschrijving: 'Wij nemen uw renovatie of nieuwbouw volledig aan, met het ontwerp en de coördinatie erbij. Gratis plaatsbezoek in de ruime regio rond Kampenhout.',
   hero: {
     kop: ['Bouw en renovatie', 'naar uw wens'],
@@ -182,7 +181,8 @@ const BLOGS = [
       { b: 'Technisch op orde:', t: 'Nieuw leidingwerk, een waterbesparende regendouche en een energiezuinige warmtepompboiler verbeteren de energetische score van uw woning. Vandaag een keihard verkoopargument.' },
     ],
     noot: '',
-    img: 'd-bad-2', alt: 'Badkamer met ligbad, houten lamellen en grote spiegel',
+    datum: '2026-10-07',
+    img: 'd-bad-3', alt: 'Badkamer met beige tegels, een houten badmeubel met twee wastafels en een inloopdouche',
   },
   {
     slug: 'aanbouw-vergunning', label: 'Vergunning',
@@ -190,12 +190,18 @@ const BLOGS = [
     intro: 'Een stuk aanbouwen voor een leefkeuken of thuiskantoor is een populaire manier om meer uit uw woning te halen. Maar mag u zomaar beginnen bouwen?',
     punten: [
       // GECORRIGEERD (zie CORRECTIES): de meldingsplicht voor aangebouwde bijgebouwen is sinds 1 maart 2026 afgeschaft
-      { b: 'De meldingsplicht is afgeschaft:', t: 'Voor een aangebouwd bijgebouw gold vroeger vaak een meldingsplicht. Sinds 1 maart 2026 valt een aanbouw aan uw woning terug onder de vergunningsplicht. Alleen vrijstaande bijgebouwen blijven onder strikte voorwaarden vrijgesteld, tot samen maximaal 40 vierkante meter per perceel.' },
+      { b: 'De meldingsplicht is afgeschaft:', t: 'Voor een aangebouwd bijgebouw gold vroeger vaak een meldingsplicht. Sinds 1 maart 2026 valt een aanbouw aan uw woning terug onder de vergunningsplicht. Alleen vrijstaande bijgebouwen blijven onder strikte voorwaarden vrijgesteld, tot samen maximaal 40 vierkante meter per woning.' },
       { b: 'Wanneer is een omgevingsvergunning nodig?', t: 'Voor een aanbouw of uitbreiding aan uw woning heeft u sinds 1 maart 2026 in de regel een omgevingsvergunning nodig. Kijk de voorwaarden na op het Omgevingsloket of bij uw gemeente voor u plannen laat tekenen.' },
       { b: 'Heeft u een architect nodig?', t: 'Zodra we voor uw aanbouw een gat maken in een dragende buitenmuur, raakt dit aan de stabiliteit van de woning. Op dat moment eist de wetgever altijd de tussenkomst van een architect.' },
     ],
     noot: '',
-    img: 'd-totaal', alt: 'Woning in verbouwing met stempels onder het plafond',
+    // bronnen gelezen op 7 okt 2026 (ruwe HTML vlaanderen.be)
+    bron: [
+      { label: 'Een woning uitbreiden met een aanbouw', href: 'https://www.vlaanderen.be/omgevingsvergunning/stedenbouwkundige-handelingen/uitbreiden-en-aanbouwen' },
+      { label: 'Vrijstaande bijgebouwen', href: 'https://www.vlaanderen.be/omgevingsvergunning/stedenbouwkundige-handelingen/vrijstaande-bijgebouwen' },
+    ],
+    datum: '2026-10-07',
+    img: 'werkwijze-hero', alt: 'Handen die een bouwplan tekenen op een houten tafel',
   },
   {
     slug: 'renovatiepremies-dak-gevel', label: 'Premies',
@@ -212,6 +218,7 @@ const BLOGS = [
       { label: 'Mijn VerbouwPremie voor dak', href: 'https://www.vlaanderen.be/premies-voor-renovatie/mijn-verbouwpremie/mijn-verbouwpremie-voor-dak' },
       { label: 'Mijn VerbouwPremie voor buitenmuur', href: 'https://www.vlaanderen.be/premies-voor-renovatie/mijn-verbouwpremie/mijn-verbouwpremie-voor-buitenmuur' },
     ],
+    datum: '2026-10-07',
     img: 'd-eco-2', alt: 'Zolder met nieuwe isolatie en dakramen',
   },
 ];

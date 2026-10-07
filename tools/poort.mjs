@@ -7,7 +7,7 @@ const snel = process.argv.includes('--snel');
 const stappen = [
   ['bouwen', 'node', [path.join(T, '..', 'build.cjs')]],
   ['copy-trouw', 'node', [path.join(T, 'check-copy-trouw.cjs')]],
-  ['keuring pagina\'s', 'node', [path.join(T, 'keur.mjs'), path.join(os.tmpdir(), 'inzicht-poort-shots'), '1440,390']],
+  ['keuring pagina\'s', 'node', [path.join(T, 'keur.mjs'), path.join(os.tmpdir(), 'inzicht-poort-shots'), '1440,1024,390']],
   ['gedrag', 'node', [path.join(T, 'gedrag.mjs')]],
   ['menucontrast', 'node', [path.join(T, 'nav-contrast.mjs')]],
   ...(snel ? [] : [['prestaties', 'node', [path.join(T, 'prestaties.mjs')]]]),

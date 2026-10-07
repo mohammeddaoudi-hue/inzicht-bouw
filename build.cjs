@@ -1,7 +1,7 @@
 /* Bouwt alle pagina's van de INzicht-site uit bouw/inhoud.cjs.
    Gebruik: node build.cjs
    Links zijn relatief (werkt op localhost, GitHub Pages in een submap en op een eigen domein);
-   alleen 404.html gebruikt absolute paden met SITE.basis404 (die pagina wordt op elk pad getoond). */
+   alleen 404.html gebruikt absolute paden, afgeleid van SITE.url (die pagina wordt op elk pad getoond). */
 const fs = require('fs');
 const path = require('path');
 const I = require('./bouw/inhoud.cjs');
@@ -23,13 +23,22 @@ const rel = (van, naar) => {
   return r === '' ? './' : r;
 };
 const kop2 = (delen, klasse) => `${esc(delen[0])} <span class="${klasse}">${esc(delen[1])}</span>`;
+/* adres met postcode en gemeente samen op één regel */
+const adresHtml = () => `${esc(SITE.adres.straat)}, <span class="nw">${esc(SITE.adres.postcode)} ${esc(SITE.adres.gemeente)}</span>`;
+/* harde spatie in datum, bedrag, categorie en oppervlakte, zodat die niet over twee regels breken */
+const MAANDEN = 'januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december';
+const nb = (s) => esc(s)
+  .replace(new RegExp(`(\\d{1,2}) (${MAANDEN}) (\\d{4})`, 'g'), '$1 $2 $3')
+  .replace(/(\d) (euro)/g, '$1 $2')
+  .replace(/(categorie) (\d)/g, '$1 $2')
+  .replace(/(\d) (vierkante meter)/g, '$1 $2');
 
 /* <picture> met webp + jpg, 800 en 1600 breed (4:3) */
-function pic(van, naam, alt, { sizes = '(max-width: 1000px) 100vw, 50vw', eager = false, klasse = '' } = {}) {
+function pic(van, naam, alt, { sizes = '(max-width: 1000px) 100vw, 50vw', eager = false, lui = true, klasse = '' } = {}) {
   const s = (ext) => `${rel(van, `img/${naam}-800.${ext}`)} 800w, ${rel(van, `img/${naam}-1600.${ext}`)} 1600w`;
   return `<picture${klasse ? ` class="${klasse}"` : ''}>
         <source type="image/webp" srcset="${s('webp')}" sizes="${sizes}">
-        <img src="${rel(van, `img/${naam}-800.jpg`)}" srcset="${s('jpg')}" sizes="${sizes}" width="1600" height="1200" alt="${attr(alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">
+        <img src="${rel(van, `img/${naam}-800.jpg`)}" srcset="${s('jpg')}" sizes="${sizes}" width="1600" height="1200" alt="${attr(alt)}"${eager ? ' fetchpriority="high"' : lui ? ' loading="lazy"' : ''} decoding="async">
       </picture>`;
 }
 
@@ -81,7 +90,8 @@ function head(p) {
     mainEntity: p.faq.map((f) => ({ '@type': 'Question', name: f.v, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   } : null, p.artikel ? {
     '@context': 'https://schema.org', '@type': 'Article', headline: p.artikel.titel, inLanguage: 'nl-BE',
-    image: SITE.url + '/img/' + p.artikel.img + '-1600.jpg', author: { '@type': 'Organization', name: SITE.volledig },
+    image: SITE.url + '/img/' + p.artikel.img + '-1600.jpg', datePublished: p.artikel.datum, dateModified: p.artikel.datum,
+    author: { '@type': 'Organization', name: SITE.volledig, url: SITE.url + '/' },
     publisher: { '@type': 'Organization', name: SITE.volledig, logo: { '@type': 'ImageObject', url: SITE.url + '/img/logo-ink.png' } },
     mainEntityOfPage: canon,
   } : null].filter(Boolean);
@@ -93,14 +103,14 @@ function head(p) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(p.titel)}</title>
 <meta name="description" content="${attr(p.beschrijving)}">
-${SITE.noindex ? '<meta name="robots" content="noindex, nofollow">\n' : ''}<link rel="canonical" href="${attr(canon)}">
+${SITE.noindex || p.fout ? '<meta name="robots" content="noindex, nofollow">\n' : ''}${p.fout ? '' : `<link rel="canonical" href="${attr(canon)}">`}
 <meta name="theme-color" content="#0b0b0b">
 <meta property="og:type" content="${p.artikel ? 'article' : 'website'}">
 <meta property="og:locale" content="nl_BE">
 <meta property="og:site_name" content="${attr(SITE.volledig)}">
 <meta property="og:title" content="${attr(p.ogTitel || p.titel)}">
 <meta property="og:description" content="${attr(p.beschrijving)}">
-<meta property="og:url" content="${attr(canon)}">
+${p.fout ? '' : `<meta property="og:url" content="${attr(canon)}">`}
 <meta property="og:image" content="${attr(og)}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -151,7 +161,7 @@ function header(v, actief, anker = '#plaatsbezoek') {
 </header>
 <div class="mob" id="mobmenu" hidden>
   <nav class="mob__links" aria-label="Mobiel menu">
-    ${NAV.map((n, i) => `<a href="${rel(v, n.pad)}" style="--i:${i}"${actief === n.pad ? ' aria-current="page"' : ''}>${esc(n.label)}</a>`).join('\n    ')}
+    ${NAV.map((n) => `<a href="${rel(v, n.pad)}"${actief === n.pad ? ' aria-current="page"' : ''}>${esc(n.label)}</a>`).join('\n    ')}
   </nav>
   <div class="mob__cta">
     <a class="knop knop--accent knop--vol" href="${anker}" data-naar-form>${esc(I.KNOP.plaatsbezoek)}${knopIc()}</a>
@@ -169,7 +179,7 @@ function footer(v) {
         <img class="voet__logo" src="${rel(v, 'img/logo-ink.png')}" width="227" height="140" alt="${attr(SITE.volledig)}" loading="lazy">
         <p class="voet__naam">${esc(SITE.volledig)}</p>
         <ul class="voet__contact">
-          <li>${ic('pin', 20)}<span>${esc(SITE.adres.regel)}</span></li>
+          <li>${ic('pin', 20)}<span>${adresHtml()}</span></li>
           <li>${ic('phone', 20)}<a href="${SITE.tel.href}">${esc(SITE.tel.toon)}</a></li>
           <li>${ic('mail', 20)}<a href="mailto:${SITE.mail}">${esc(SITE.mail)}</a></li>
         </ul>
@@ -200,12 +210,12 @@ function footer(v) {
       <a href="${rel(v, 'privacy/')}">Privacybeleid</a>
     </div>
   </div>
-</footer>
-<a class="fab" href="${SITE.tel.href}" aria-label="Bel ${attr(SITE.tel.toon)}">${ic('phone', 24)}</a>`;
+  <a class="fab" href="${SITE.tel.href}" aria-label="Bel ${attr(SITE.tel.toon)}">${ic('phone', 24)}</a>
+</footer>`;
 }
 
 /* ── formulier (onderaan elke pagina + contactpagina), vragen zoals op abgroep ── */
-function formulier(v, id, { kop = true, kopId = '' } = {}) {
+function formulier(v, id, { kop = true, kopId = '', sub = true } = {}) {
   const F = FORM.velden;
   const ster = '<span class="ster" aria-hidden="true">*</span>';
   const veld = (naam, label, type, auto, { verplicht = false, extra = '' } = {}) => `<div class="veld">
@@ -216,7 +226,7 @@ function formulier(v, id, { kop = true, kopId = '' } = {}) {
   return `<form class="aanvraag" id="${id}" action="mailto:${SITE.mail}" method="post" enctype="text/plain" novalidate data-aanvraag>
         <div class="aanvraag__stap" data-stap="form">
           ${kop ? `<h2 class="aanvraag__kop"${kopId ? ` id="${kopId}"` : ''}>${esc(FORM.kop)}</h2>
-          <p class="aanvraag__sub">${esc(FORM.sub)}</p>` : ''}
+          ${sub ? `<p class="aanvraag__sub">${esc(FORM.sub)}</p>` : ''}` : ''}
           <p class="aanvraag__verplicht">Velden met een sterretje zijn verplicht.</p>
           ${veld('naam', F.naam, 'text', 'name', { verplicht: true })}
           <div class="veld-rij">
@@ -238,7 +248,7 @@ function formulier(v, id, { kop = true, kopId = '' } = {}) {
           </div>
           <div class="veld">
             <label for="${id}-project">${esc(F.project)}</label>
-            <textarea id="${id}-project" name="project" rows="4" placeholder="${attr(F.projectHint)}"></textarea>
+            <textarea id="${id}-project" name="project" rows="4" maxlength="1000" placeholder="${attr(F.projectHint)}"></textarea>
           </div>
           <p class="aanvraag__fout" role="alert" hidden></p>
           <button class="knop knop--accent knop--vol" type="submit">${esc(FORM.knop)}${knopIc()}</button>
@@ -249,6 +259,7 @@ function formulier(v, id, { kop = true, kopId = '' } = {}) {
           <h2 class="aanvraag__kop" data-klaar-kop>Uw e-mail staat klaar</h2>
           <p class="aanvraag__sub" role="status" data-klaar-tekst>Uw e-mailprogramma opent met uw aanvraag. Verstuur die e-mail om uw aanvraag af te ronden.</p>
           <p class="aanvraag__uitweg">Opent er niets? Bel <a href="${SITE.tel.href}">${esc(SITE.tel.toon)}</a> of mail naar <a href="mailto:${SITE.mail}">${esc(SITE.mail)}</a>.</p>
+          <button class="knop knop--rand aanvraag__terug" type="button" data-terug>Terug naar uw aanvraag</button>
         </div>
       </form>`;
 }
@@ -263,10 +274,10 @@ function plaats(v) {
         <p class="plaats__lede">${esc(HOME.cta.tekst)}</p>
         <ul class="plaats__info">
           <li><span class="plaats__info-ic">${ic('phone', 20)}</span><span><b>Telefoon</b><a href="${SITE.tel.href}">${esc(SITE.tel.toon)}</a></span></li>
-          <li><span class="plaats__info-ic">${ic('pin', 20)}</span><span><b>Adres</b><span>${esc(SITE.adres.regel)}</span></span></li>
+          <li><span class="plaats__info-ic">${ic('pin', 20)}</span><span><b>Adres</b><span>${adresHtml()}</span></span></li>
           <li><span class="plaats__info-ic">${ic('klok', 20)}</span><span><b>Openingsuren</b><span>${SITE.uren.map(([d, u]) => `${esc(d)}: ${esc(u)}`).join('<br>')}</span></span></li>
         </ul>
-        <img class="plaats__logo" src="${rel(v, 'img/logo-tegel.png')}" width="640" height="439" alt="" loading="lazy" decoding="async">
+        <img class="plaats__logo" src="${rel(v, 'img/logo-tegel.png')}" width="640" height="440" alt="" loading="lazy" decoding="async">
       </div>
       <div class="plaats__form kader">
         <div class="plaats__formkern">
@@ -367,25 +378,25 @@ function kopband(v, { delen, kop, lede }) {
 </section>`;
 }
 
-function accordeon(lijst, prefix, eersteOpen = true) {
+function accordeon(lijst, prefix, eersteOpen = true, kop = 'h3') {
   return `<div class="acc" data-acc>
       ${lijst.map((f, i) => {
         const open = eersteOpen && i === 0;
         return `<div class="acc__item${open ? ' is-open' : ''}">
-        <h3><button class="acc__vraag" type="button" aria-expanded="${open}" aria-controls="${prefix}-a${i}" id="${prefix}-v${i}">${esc(f.v)}<span class="acc__ic">${ic('down', 18)}</span></button></h3>
+        <${kop}><button class="acc__vraag" type="button" aria-expanded="${open}" aria-controls="${prefix}-a${i}" id="${prefix}-v${i}">${esc(f.v)}<span class="acc__ic">${ic('down', 18)}</span></button></${kop}>
         <div class="acc__antw" id="${prefix}-a${i}" role="region" aria-labelledby="${prefix}-v${i}"${open ? '' : ' hidden'}><p>${esc(f.a)}</p></div>
       </div>`;
       }).join('\n      ')}
     </div>`;
 }
 
-function tipKaart(v, b, kopNiveau = 'h3') {
+function tipKaart(v, b, kopNiveau = 'h3', beeld = {}) {
   return `<article class="tip kader">
         <a class="tip__kern" href="${rel(v, `tips/${b.slug}/`)}">
-          <div class="tip__foto">${pic(v, b.img, b.alt, { sizes: '(max-width: 1000px) 100vw, 33vw' })}</div>
+          <div class="tip__foto">${pic(v, b.img, b.alt, { sizes: '(max-width: 1000px) 100vw, 33vw', ...beeld })}</div>
           <div class="tip__body">
-            <span class="tip__meta"><span>${ic('tag', 16)}${esc(b.label)}</span><span>${ic('user', 16)}INzicht</span></span>
             <${kopNiveau} class="tip__kop">${esc(b.titel)}</${kopNiveau}>
+            <span class="tip__meta"><span>${ic('tag', 16)}${esc(b.label)}</span></span>
             <span class="link">Lees meer${ic('chev')}</span>
           </div>
         </a>
@@ -398,7 +409,7 @@ const PAGINAS = [];
 /* HOME */
 PAGINAS.push(() => {
   const v = '';
-  const p = { pad: v, titel: HOME.titel, ogTitel: SITE.volledig, beschrijving: HOME.beschrijving, home: true,
+  const p = { pad: v, titel: HOME.titel, beschrijving: HOME.beschrijving, home: true,
     preload: `<link rel="preload" as="image" href="img/hero-vol.webp" type="image/webp" media="(min-width: 701px)">\n<link rel="preload" as="image" href="img/hero-vol-m.webp" type="image/webp" media="(max-width: 700px)">\n` };
   const W = HOME.werkwijze;
   return `${head(p)}
@@ -412,7 +423,7 @@ ${header(v, '')}
     <source media="(max-width: 700px)" srcset="img/hero-vol-m.webp" type="image/webp">
     <source media="(max-width: 700px)" srcset="img/hero-vol-m.jpg">
     <source srcset="img/hero-vol.webp" type="image/webp">
-    <img src="img/hero-vol.jpg" width="1920" height="1280" alt="Lichte, afgewerkte leefruimte met zetels en een witte vloer" decoding="async" fetchpriority="high">
+    <img src="img/hero-vol.jpg" width="1920" height="1280" alt="Lichte ruimte met witte wanden, zetels en papieren hanglampen" decoding="async" fetchpriority="high">
   </picture>
   <div class="hero__laag" aria-hidden="true"></div>
   <div class="wrap hero__in">
@@ -431,7 +442,7 @@ ${header(v, '')}
 <section class="intro" id="over" aria-labelledby="intro-kop">
   <div class="wrap intro__grid">
     <div class="intro__beeld kader" data-reveal>
-      ${pic(v, 'over-werf', 'Werf in een woning in verbouwing, met ladders en ruwe muren', { sizes: '(max-width: 1000px) 100vw, 560px' })}
+      ${pic(v, 'over-werf', 'Ruwbouw van een woning in verbouwing, met een stelling, stempels en planken', { sizes: '(max-width: 1000px) 100vw, 560px' })}
     </div>
     <div class="intro__tekst" data-reveal>
       <h2 class="h2" id="intro-kop">${esc(HOME.intro.kop)}</h2>
@@ -446,6 +457,9 @@ ${header(v, '')}
   <div class="wrap">
     <h2 class="h2 h2--wit h2--midden" id="diensten-kop" data-reveal>${esc(HOME.diensten.kop)}</h2>
     <div class="podium" data-reveal>
+      <div class="tabs" role="tablist" aria-label="Diensten" aria-orientation="vertical">
+        ${DIENSTEN.map((d, i) => `<button class="tab${i === 0 ? ' is-actief' : ''}" id="tab-${i + 1}" role="tab" aria-selected="${i === 0}" aria-controls="paneel-${i + 1}"${i === 0 ? '' : ' tabindex="-1"'}><span class="tab__nr">${d.nr}</span><span class="tab__naam">${esc(d.kortNaam)}</span></button>`).join('\n        ')}
+      </div>
       <div class="podium__panelen" data-rail>
         ${DIENSTEN.map((d, i) => `<div class="paneel${i === 0 ? ' is-actief' : ''}" id="paneel-${i + 1}" role="tabpanel" aria-labelledby="tab-${i + 1}"${i === 0 ? '' : ' hidden'}>
           <div class="paneel__foto kader kader--donker">
@@ -464,9 +478,6 @@ ${header(v, '')}
         <button class="rail-knop" type="button" data-vorige aria-label="Vorige dienst">${ic('terug', 20)}</button>
         <span class="rail-balk" aria-hidden="true"><span class="rail-balk__vul"></span></span>
         <button class="rail-knop" type="button" data-volgende aria-label="Volgende dienst">${ic('chev', 20)}</button>
-      </div>
-      <div class="tabs" role="tablist" aria-label="Diensten">
-        ${DIENSTEN.map((d, i) => `<button class="tab${i === 0 ? ' is-actief' : ''}" id="tab-${i + 1}" role="tab" aria-selected="${i === 0}" aria-controls="paneel-${i + 1}"${i === 0 ? '' : ' tabindex="-1"'}><span class="tab__nr">${d.nr}</span><span class="tab__naam">${esc(d.kortNaam)}</span></button>`).join('\n        ')}
       </div>
     </div>
     <div class="diensten__meer" data-reveal>
@@ -505,7 +516,7 @@ ${header(v, '')}
       <a class="stempel" href="#plaatsbezoek" data-naar-form aria-label="Gratis plaatsbezoek aanvragen">
         <svg class="stempel__ring" viewBox="0 0 160 160" aria-hidden="true">
           <defs><path id="cirkel" d="M80 80m-58 0a58 58 0 1 1 116 0a58 58 0 1 1-116 0"/></defs>
-          <text><textPath href="#cirkel" textLength="364">Gratis plaatsbezoek · Gratis plaatsbezoek ·</textPath></text>
+          <text><textPath href="#cirkel" textLength="364">Gratis plaatsbezoek · Gratis plaatsbezoek ·&#160;</textPath></text>
         </svg>
         ${ic('arrow', 32).replace('<svg ', '<svg class="stempel__pijl" ')}
       </a>
@@ -527,7 +538,7 @@ ${header(v, '')}
   </div>
 </section>
 
-<section class="vragen" id="vragen" aria-labelledby="vragen-kop">
+<section class="vragen vragen--wit" id="vragen" aria-labelledby="vragen-kop">
   <div class="wrap">
     <h2 class="h2 h2--midden" id="vragen-kop" data-reveal>${esc(HOME.vragenKop)}</h2>
     <div data-reveal>
@@ -612,7 +623,7 @@ PAGINAS.push(() => {
 ${SPRITE}
 ${header(v, v)}
 <main id="inhoud">
-${phero(v, { delen, kop: OVER.kop, lede: OVER.alineas[0], beeld: 'over-werf', alt: 'Werf in een woning in verbouwing, met ladders en ruwe muren' })}
+${phero(v, { delen, kop: OVER.kop, lede: OVER.alineas[0], beeld: 'over-werf', alt: 'Ruwbouw van een woning in verbouwing, met een stelling, stempels en planken' })}
 
 <section class="verhaal" aria-labelledby="verhaal-kop">
   <h2 class="vh" id="verhaal-kop">Ons verhaal</h2>
@@ -652,7 +663,7 @@ ${header(v, v)}
 ${kopband(v, { delen, kop: VRAGEN.kop })}
 <section class="vragen vragen--pagina" aria-label="Vragen en antwoorden">
   <div class="wrap">
-    ${accordeon(VRAGEN.lijst, 'vp')}
+    ${accordeon(VRAGEN.lijst, 'vp', true, 'h2')}
   </div>
 </section>
 ${plaats(v)}
@@ -674,7 +685,7 @@ ${kopband(v, { delen, kop: TIPS.kop })}
 <section class="tips tips--pagina" aria-label="Alle tips">
   <div class="wrap">
     <div class="tips__rij">
-      ${BLOGS.map((b) => tipKaart(v, b, 'h2')).join('\n      ')}
+      ${BLOGS.map((b, i) => tipKaart(v, b, 'h2', i === 0 ? { eager: true } : {})).join('\n      ')}
     </div>
   </div>
 </section>
@@ -699,8 +710,8 @@ ${header(v, 'tips/')}
   <header class="artikel__kop">
     <div class="wrap wrap--smal">
       ${kruimel(v, delen)}
-      <p class="artikel__meta"><span>${ic('tag', 16)}${esc(b.label)}</span><span>${ic('user', 16)}INzicht bouw en renovatie</span></p>
       <h1 class="artikel__titel">${esc(b.titel)}</h1>
+      <p class="artikel__meta"><span>${ic('tag', 16)}${esc(b.label)}</span><span>${ic('user', 16)}INzicht bouw en renovatie</span></p>
     </div>
   </header>
   <div class="wrap wrap--midden">
@@ -709,11 +720,11 @@ ${header(v, 'tips/')}
     </div>
   </div>
   <div class="wrap wrap--smal artikel__body">
-    <p class="artikel__intro">${esc(b.intro)}</p>
+    <p class="artikel__intro">${nb(b.intro)}</p>
     <ul class="artikel__lijst">
-      ${b.punten.map((pt) => `<li><strong>${esc(pt.b)}</strong> ${esc(pt.t)}</li>`).join('\n      ')}
+      ${b.punten.map((pt) => `<li><strong>${esc(pt.b)}</strong> ${nb(pt.t)}</li>`).join('\n      ')}
     </ul>
-    ${b.noot ? `<p class="artikel__noot">${ic('info', 20)}<span>${esc(b.noot)}</span></p>` : ''}
+    ${b.noot ? `<p class="artikel__noot">${ic('info', 20)}<span>${nb(b.noot)}</span></p>` : ''}
     ${b.bron ? `<p class="artikel__bron">Bron: ${[].concat(b.bron).map((x) => `<a href="${attr(x.href)}" rel="noopener" target="_blank">${esc(x.label)}</a>`).join(' en ')}, op vlaanderen.be.</p>` : ''}
     <a class="link artikel__terug" href="${rel(v, 'tips/')}">${ic('terug')}Alle tips</a>
   </div>
@@ -745,11 +756,11 @@ ${header(v, v, '#aanvraag-contact')}
 ${kopband(v, { delen, kop: CONTACT.kop, lede: CONTACT.tekst })}
 <section class="contact" aria-label="Contactformulier en gegevens">
   <div class="wrap contact__grid">
-    <aside class="contact__gegevens" aria-label="${attr(CONTACT.gegevensKop)}">
+    <div class="contact__gegevens">
       <h2 class="contact__kop">${esc(CONTACT.gegevensKop)}</h2>
       <p class="contact__naam">${esc(SITE.volledig)}</p>
       <ul class="contact__lijst">
-        <li>${ic('pin', 22)}<span>${esc(SITE.adres.regel)}<br><a class="contact__route" href="${attr(kaart)}" target="_blank" rel="noopener">Route in Google Maps${ic('arrow', 14)}</a></span></li>
+        <li>${ic('pin', 22)}<span>${adresHtml()}<br><a class="contact__route" href="${attr(kaart)}" target="_blank" rel="noopener">Route in Google Maps${ic('arrow', 14)}</a></span></li>
         <li>${ic('phone', 22)}<a href="${SITE.tel.href}">${esc(SITE.tel.toon)}</a></li>
         <li>${ic('mail', 22)}<a href="mailto:${SITE.mail}">${esc(SITE.mail)}</a></li>
       </ul>
@@ -758,10 +769,10 @@ ${kopband(v, { delen, kop: CONTACT.kop, lede: CONTACT.tekst })}
         ${SITE.urenContact.map(([d, u]) => `<div><dt>${esc(d)}</dt><dd>${esc(u)}</dd></div>`).join('\n        ')}
       </dl>
       <a class="knop knop--accent knop--vol contact__bel" href="${SITE.tel.href}">${ic('phone')}${esc(SITE.tel.toon)}</a>
-    </aside>
+    </div>
     <div class="contact__form kader">
       <div class="contact__formkern">
-        ${formulier(v, 'aanvraag-contact', { kop: true })}
+        ${formulier(v, 'aanvraag-contact', { kop: true, sub: false })}
       </div>
     </div>
   </div>
@@ -803,9 +814,9 @@ ${slot(v)}`;
 
 /* 404 */
 function pagina404() {
-  BASIS_ABS = SITE.basis404;
+  BASIS_ABS = new URL(SITE.url + '/').pathname;
   const v = '';
-  const p = { pad: '404.html', titel: 'Pagina niet gevonden · INzicht', beschrijving: 'Deze pagina bestaat niet.' };
+  const p = { pad: '404.html', fout: true, titel: 'Pagina niet gevonden · INzicht bouw en renovatie', beschrijving: 'Deze pagina bestaat niet.' };
   const html = `${head(p)}
 <body class="sub">
 ${SPRITE}
@@ -813,7 +824,6 @@ ${header(v, '', rel(v, 'contact/'))}
 <main id="inhoud">
 <section class="kopband kopband--404">
   <div class="wrap kopband__in">
-    <p class="kopband__code">404</p>
     <h1 class="kopband__kop">Pagina niet gevonden</h1>
     <p class="kopband__lede">Het adres klopt niet of de pagina is verhuisd.</p>
     <div class="phero__knoppen kopband__knoppen">
